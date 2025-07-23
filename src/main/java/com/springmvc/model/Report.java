@@ -27,7 +27,7 @@ public class Report {
     private User reporter;
 
     @ManyToOne
-    @JoinColumn(name = "reported_email")
+    @JoinColumn(name = "reported_role_id")
     private Tutor reported;
 
 

@@ -24,7 +24,7 @@ public class Skill {
 	private String skillName;
 	
 	@ManyToOne
-    @JoinColumn(name = "tutor_email")
+    @JoinColumn(name = "tutor_role_id")
     private Tutor tutor;
 	 
 	

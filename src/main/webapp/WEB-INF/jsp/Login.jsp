@@ -184,7 +184,7 @@
 	    const email = document.getElementById("email").value.trim();
 	    const password = document.getElementById("password").value;
 	
-	    const emailRegex = /^MJU\d{10}@mju\.ac\.th$/;
+	    const emailRegex = /^MJU\d{10}@mju\.ac\.th$/i;
 	
 	    if (email === "" || password === "") {
 	        alert("กรุณากรอกอีเมลและรหัสผ่าน");
@@ -207,7 +207,7 @@
 	    }
 	
 	    return true;
-}
+		}
 </script>
 
 </head>
