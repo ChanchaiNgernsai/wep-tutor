@@ -1,10 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %> 
 <!DOCTYPE html> 
 <html>
 <head>
     <meta charset="UTF-8" />
     <title>Home</title>
+    
+    <script>
+	    function validateSearchForm() {
+	        const keyword = document.forms["searchForm"]["keyword"].value.trim();
+	        const regex = /^[\u0E00-\u0E7Fa-zA-Z\s]{1,20}$/;
+	
+	        if (keyword === "") {
+	            alert("กรุณากรอกคำค้นหา");
+	            return false;
+	        }
+	
+	        if (!regex.test(keyword)) {
+	            alert("กรุณากรอกเฉพาะตัวอักษรภาษาไทยหรืออังกฤษ (ไม่เกิน 20 ตัว)");
+	            return false;
+	        }
+	
+	        return true;
+	    }
+	</script>
+    
     <style>
         body {
             background-color: white;
@@ -70,10 +90,10 @@
         </a>
      	<h2>ช่วยติวในมหาวิทยาลัยแม่โจ้</h2>
         
-		 <form action="search" method="get">
-		    <input type="text" name="keyword" placeholder="ค้นหาคอร์ส" required />
-		    <input type="submit" value="ค้นหา" />
-		 </form>
+	        <form name="searchForm" action="search" method="get" onsubmit="return validateSearchForm();">
+			    <input type="text" name="keyword" placeholder="ค้นหาคอร์ส" />
+			    <input type="submit" value="ค้นหา" />
+			</form>
     </div>
 
     <div class="main-content">
@@ -101,7 +121,7 @@
     			
 
 
-                <c:if test="${sessionScope.Stu.type == 'Admin'}">
+                <c:if test="${sessionScope.User == 'Admin'}">
                     <a class="btn" href="goListReport">--หน้ารายงาน--</a><br />
                 </c:if>
 

@@ -50,7 +50,7 @@ public class TutorManager {
 	        session.beginTransaction();
 
 	        
-	        String hql = "FROM User u WHERE u.member.email = :email";
+	        String hql = "FROM User u WHERE u.user.email = :email";
 	        user = (User) session.createQuery(hql)
 	                             .setParameter("email", email)
 	                             .uniqueResult();
@@ -88,7 +88,7 @@ public class TutorManager {
 	        Session session = sessionFactory.openSession();
 	        session.beginTransaction();
 
-	        String hql = "FROM Student s WHERE s.member.email = :email";
+	        String hql = "FROM Student s WHERE s.user.email = :email";
 	        student = (Student) session.createQuery(hql)
 	                                   .setParameter("email", email)
 	                                   .uniqueResult();
@@ -143,11 +143,9 @@ public class TutorManager {
 	                            .uniqueResult();
 
 	        if (count != null && count > 0) {
-	            // มีข้อมูลซ้ำ ไม่ต้องบันทึก
 	            return false;
 	        }
 
-	        // เริ่ม transaction หลังจากเช็คเสร็จ
 	        session.beginTransaction();
 	        
 	        tutor.setUser(user);
@@ -189,7 +187,7 @@ public class TutorManager {
 	        Session session = sessionFactory.openSession();
 	        session.beginTransaction();
 
-	        String hql = "FROM Tutor t WHERE t.member.email = :email";
+	        String hql = "FROM Tutor t WHERE t.user.email = :email";
 	        tutor = (Tutor) session.createQuery(hql)
 	                                   .setParameter("email", email)
 	                                   .uniqueResult();
@@ -203,33 +201,45 @@ public class TutorManager {
 	}
 	
 	public boolean insertCourse(Course course, Category category, List<CourseDate> cdl) {
+	    Session session = null;
 	    try {
-	        SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
-	        Session session = sessionFactory.openSession();
+	        session = HibernateConnection.doHibernateConnection().openSession();
 	        session.beginTransaction();
 
-	        
-	        session.save(category); 
 
-	      
+	        if (category.getCategoryID() == 0) {
+	            session.save(category);
+	        }
 	        course.setCategory(category);
+
+
+	        Tutor tutor = course.getTutor();
+	        if (tutor != null && tutor.getRoleId() == 0) {
+	            session.save(tutor);
+	        }
+
+	        course.setTutor(tutor);
+
 
 	        session.save(course);
 
+
 	        for (CourseDate cd : cdl) {
-	            cd.setCourse(course); // 
+	            cd.setCourse(course);
 	            session.save(cd);
 	        }
-	        
 
 	        session.getTransaction().commit();
-	        session.close();
 	        return true;
-	    } catch (Exception ex) {
-	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        if (session != null) session.getTransaction().rollback();
+	        return false;
+	    } finally {
+	        if (session != null) session.close();
 	    }
-	    return false;
 	}
+
 	
 	public List<Course> getCoursesByTutorEmail(String email) {
 	    List<Course> courses = null;
@@ -241,7 +251,7 @@ public class TutorManager {
 	        String hql = "SELECT DISTINCT c FROM Course c " +
 	                     "LEFT JOIN FETCH c.category " +
 	                     "LEFT JOIN FETCH c.courseDates " +
-	                     "WHERE c.tutor.member.email = :email";
+	                     "WHERE c.tutor.user.email = :email";
 
 	        Query<Course> query = session.createQuery(hql, Course.class);
 	        query.setParameter("email", email);
@@ -284,11 +294,12 @@ public class TutorManager {
 	        SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 	        Session session = sessionFactory.openSession();
 	        session.beginTransaction();
+
 	        String hql = "SELECT c FROM Course c " +
 	                     "LEFT JOIN FETCH c.tutor t " +
-	                     "LEFT JOIN FETCH t.member " +
-	                     "LEFT JOIN FETCH c.category " +
-	                     "LEFT JOIN FETCH c.courseDates " +
+	                     "LEFT JOIN FETCH t.user u " +   
+	                     "LEFT JOIN FETCH c.category cat " +
+	                     "LEFT JOIN FETCH c.courseDates cd " +
 	                     "WHERE c.courseId = :courseId";
 
 	        course = session.createQuery(hql, Course.class)
@@ -302,6 +313,43 @@ public class TutorManager {
 	    }
 	    return course;
 	}
+
+	
+	
+	
+	public List<Course> searchCoursesByKeyword(String keyword) {
+	    List<Course> courses = null;
+	    try {
+	        SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+	        Session session = sessionFactory.openSession();
+	        session.beginTransaction();
+
+	        String hql = "SELECT DISTINCT c FROM Course c " +
+	                     "LEFT JOIN FETCH c.category " +
+	                     "LEFT JOIN FETCH c.courseDates " +
+	                     "LEFT JOIN FETCH c.tutor t " +
+	                     "LEFT JOIN FETCH t.user " +
+	                     "WHERE lower(c.courseName) LIKE :kw OR lower(c.courseDescription) LIKE :kw";
+
+	        Query<Course> query = session.createQuery(hql, Course.class);
+	        query.setParameter("kw", "%" + keyword.toLowerCase() + "%");
+
+	        courses = query.getResultList();
+
+	        session.getTransaction().commit();
+	        session.close();
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	    }
+	    return courses;
+	}
+
+
+
+	
+	
+	
+	
 
 
 

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.springmvc.model.*" %>
-<%@ taglib prefix="c" uri ="jakarta.tags.core" %> 
+<%@ taglib prefix="c" uri ="jakarta.tags.core" %>  
 <!DOCTYPE html>
 <html>
 <head>

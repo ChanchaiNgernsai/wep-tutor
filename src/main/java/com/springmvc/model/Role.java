@@ -2,6 +2,7 @@ package com.springmvc.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +21,7 @@ public class Role {
 	
 	
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "email", referencedColumnName = "email")
     private User user;
 
@@ -46,6 +47,19 @@ public class Role {
 	public Role(User user, String type) {
 	    this.user = user;
 	}
+
+
+
+	public int getRoleId() {
+		return roleId;
+	}
+
+
+
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
+	
 	
 
 

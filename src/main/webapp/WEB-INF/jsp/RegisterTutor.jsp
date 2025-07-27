@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.springmvc.model.*" %>
-<%@ taglib prefix="c" uri ="jakarta.tags.core" %> 
+<%@ taglib prefix="c" uri ="jakarta.tags.core" %>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,7 +57,6 @@
 
 	  if (!isValid) return false;
 
-	  // ตรวจสอบ experience
 	  const exp = document.getElementById("expertise").value.trim();
 	  if (exp.length > 0) {
 	    if (exp.length < 20 || exp.length > 255) {

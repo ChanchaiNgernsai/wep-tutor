@@ -115,17 +115,18 @@ public class AddCourseController {
 	
 	
 	 @RequestMapping(value = "/search", method = RequestMethod.GET)
-	    public ModelAndView lordPageSearch(HttpServletRequest request) {
-	        String keyword = request.getParameter("keyword");
+	 public ModelAndView lordPageSearch(HttpServletRequest request) {
+	     String keyword = request.getParameter("keyword");
 
-	        TutorManager tmg = new TutorManager();
-	        List<Course> result = tmg.getAllCourses();
+	     TutorManager tmg = new TutorManager();
+	     List<Course> result = tmg.searchCoursesByKeyword(keyword);
 
-	        ModelAndView mav = new ModelAndView("SearchCourse");
-	        mav.addObject("results", result);
-	        mav.addObject("keyword", keyword);
-	        return mav;
-	    }
+	     ModelAndView mav = new ModelAndView("SearchCourse");
+	     mav.addObject("results", result);
+	     mav.addObject("keyword", keyword);
+	     return mav;
+	 }
+
 	 
 	 @RequestMapping(value = "/getViewCourse", method = RequestMethod.GET)
 	 public ModelAndView lordViewCourse(HttpServletRequest request) {
