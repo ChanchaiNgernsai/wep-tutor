@@ -393,31 +393,14 @@
       <span class="error" id="err_stu_id"></span>
       <input type="text" name="student_id" id="student_id" placeholder="Student ID">
 
-      <span class="error" id="err_email"></span>
-      <div class="email-wrapper">
-		  <input type="text" name="email_prefix" id="email_prefix" placeholder="Email (เช่น MJU6512345678)" autocomplete="off">
-		  <span class="email-domain">@mju.ac.th</span>
-		  <input type="hidden" name="email" id="email">
-		  <span id="err_email" class="error"></span>
-	</div>
-      
-
       <span class="error" id="err_fname"></span>
       <input type="text" name="fname" id="fname" placeholder="First Name">
 
       <span class="error" id="err_lname"></span>
       <input type="text" name="lname" id="lname" placeholder="Last Name">
 
-      <div class="radio-group">
-        <label><input type="radio" name="gender" value="man" checked> Man</label>
-        <label><input type="radio" name="gender" value="women"> Women</label>
-      </div>
-
       <span class="error" id="err_phone"></span>
       <input type="text" name="phon_num" id="phon_num" placeholder="Phone Number">
-
-      <span class="error" id="err_image"></span>
-      <input type="file" name="image" id="image">
 
       <select name="yfs">
         <option value="">-- เลือกชั้นปี --</option>
@@ -427,8 +410,24 @@
         <option value="Y4">ชั้นปีที่ 4</option>
       </select>
 
+      <span class="error" id="err_email"></span>
+      <div class="email-wrapper">
+		  <input type="text" name="email_prefix" id="email_prefix" placeholder="Email (เช่น MJU6512345678)" autocomplete="off">
+		  <span class="email-domain">@mju.ac.th</span>
+		  <input type="hidden" name="email" id="email">
+		  <span id="err_email" class="error"></span>
+	  </div>
+	  
       <span class="error" id="err_password"></span>
       <input type="password" name="password" id="password" placeholder="Password">
+      
+      <div class="radio-group">
+        <label><input type="radio" name="gender" value="man" checked> Man</label>
+        <label><input type="radio" name="gender" value="women"> Women</label>
+      </div>
+      
+      <span class="error" id="err_image"></span>
+      <input type="file" name="image" id="image">
 
       <div class="btn-group">
         <input type="reset" value="ยกเลิก">
