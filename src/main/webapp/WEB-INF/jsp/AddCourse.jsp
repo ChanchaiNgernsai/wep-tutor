@@ -10,20 +10,20 @@
 <title>Add Course</title>
 </head>
 <script>
-  function showDay() {
-    const input = document.getElementById('classDate').value;
-    if (!input) {
-      document.getElementById('dayName').innerText = '';
-      return;
-    }
-    const date = new Date(input);
-    const daysThai = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
-    const dayName = daysThai[date.getDay()];
-    document.getElementById('dayName').innerText = dayName;
-  }
+function showDay(dateStr, dayNameId) {
+	  if (!dateStr) {
+	    document.getElementById(dayNameId).innerText = '';
+	    return;
+	  }
+	  const date = new Date(dateStr);
+	  const daysThai = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
+	  const dayName = daysThai[date.getDay()];
+	  document.getElementById(dayNameId).innerText = dayName;
+	}
 
-  let DateCount = 1;
-  function addClassDate() {
+
+	let DateCount = 1;
+	function addClassDate() {
 	  if (DateCount >= 5) {
 	    alert("เพิ่มได้ไม่เกิน 4 สัปดาห์");
 	    return;
@@ -31,46 +31,70 @@
 
 	  const container = document.getElementById('addClassDate');
 
-	  const section = document.createElement('div');
-	  section.id = 'classSection' + DateCount;
+	  // === กล่องหลักสำหรับวันสอนแถวเดียว ===
+	  const flexDiv = document.createElement('div');
+	  flexDiv.style.display = 'flex';
+	  flexDiv.style.alignItems = 'center';
+	  flexDiv.style.gap = '8px';
+	  flexDiv.style.flexWrap = 'wrap';
+	  flexDiv.style.marginBottom = '10px';
+	  flexDiv.id = 'classSection' + DateCount;
 
-	  // ... สร้าง element อื่น ๆ เหมือนเดิม
-
-	  const classDateLabel = document.createElement('p');
+	  // วันที่สอน
+	  const classDateLabel = document.createElement('label');
+	  classDateLabel.htmlFor = 'classDate' + DateCount;
 	  classDateLabel.innerText = 'วันที่สอน';
 
 	  const dateInput = document.createElement('input');
 	  dateInput.type = 'date';
 	  dateInput.name = 'classDate';
 	  dateInput.id = 'classDate' + DateCount;
+	  dateInput.style.width = '150px';
 
 	  const dayNameP = document.createElement('p');
 	  dayNameP.id = 'dayName' + DateCount;
+	  dayNameP.style.minWidth = '80px';
+	  dayNameP.style.margin = '0';
 
-	  const startLabel = document.createElement('p');
+	  dateInput.addEventListener('change', function () {
+	    showDay(this.value, dayNameP.id);
+	  });
+
+	  // เวลาเริ่ม
+	  const startLabel = document.createElement('label');
+	  startLabel.htmlFor = 'startTime' + DateCount;
 	  startLabel.innerText = 'เริ่ม';
 
 	  const startInput = document.createElement('input');
 	  startInput.type = 'time';
 	  startInput.name = 'startTime';
 	  startInput.id = 'startTime' + DateCount;
+	  startInput.style.width = '100px';
 
-	  const endLabel = document.createElement('p');
+	  // เวลาสิ้นสุด
+	  const endLabel = document.createElement('label');
+	  endLabel.htmlFor = 'endTime' + DateCount;
 	  endLabel.innerText = 'ถึง';
 
 	  const endInput = document.createElement('input');
 	  endInput.type = 'time';
 	  endInput.name = 'endTime';
 	  endInput.id = 'endTime' + DateCount;
-	  
-	  // **สร้างปุ่มลบวันสำหรับ section นี้**
+	  endInput.style.width = '100px';
+
+	  // ปุ่มลบวัน
 	  const btnRemoveDay = document.createElement('button');
 	  btnRemoveDay.type = 'button';
 	  btnRemoveDay.innerText = 'ลบวัน';
 	  btnRemoveDay.onclick = function () {
-	    container.removeChild(section);
+	    container.removeChild(flexDiv);
+	    container.removeChild(topicSection);
+	    container.removeChild(hr);
 	    DateCount--;
 	  };
+
+	  // === หัวข้อการสอน ===
+	  const topicSection = document.createElement('div');
 
 	  const topicLabel = document.createElement('p');
 	  topicLabel.innerText = 'เรื่องที่จะสอน';
@@ -98,27 +122,35 @@
 	    removeLastTopic(topicContainer);
 	  };
 
+	  // สร้างเส้นคั่น
+	  const hr = document.createElement('hr');
 
+	  // === เพิ่มทั้งหมดเข้าไป ===
+	  flexDiv.appendChild(classDateLabel);
+	  flexDiv.appendChild(dateInput);
+	  flexDiv.appendChild(dayNameP);
+	  flexDiv.appendChild(startLabel);
+	  flexDiv.appendChild(startInput);
+	  flexDiv.appendChild(endLabel);
+	  flexDiv.appendChild(endInput);
+	  flexDiv.appendChild(btnRemoveDay);
 
-	  // ใส่ element ลงใน section
-	  section.appendChild(classDateLabel);
-	  section.appendChild(dateInput);
-	  section.appendChild(dayNameP);
-	  section.appendChild(startLabel);
-	  section.appendChild(startInput);
-	  section.appendChild(endLabel);
-	  section.appendChild(endInput);
-	  section.appendChild(btnRemoveDay);
-	  section.appendChild(topicLabel);
-	  section.appendChild(topicInput);
-	  section.appendChild(btnAddTopic);
-	  section.appendChild(btnRemoveTopic);
-	  section.appendChild(topicContainer);
+	  topicSection.appendChild(topicLabel);
+	  topicSection.appendChild(topicInput);
+	  topicSection.appendChild(btnAddTopic);
+	  topicSection.appendChild(btnRemoveTopic);
+	  topicSection.appendChild(topicContainer);
 
-	  container.appendChild(section);
+	  container.appendChild(flexDiv);
+	  container.appendChild(topicSection);
+	  container.appendChild(hr);
 
 	  DateCount++;
 	}
+
+
+
+
   
   function removeLastClassDate() {
 	  if (DateCount <= 1) {
@@ -326,6 +358,138 @@
   }
 </script>
 
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    background: #f9f9f9;
+    color: #333;
+  }
+  h1 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+  a {
+    margin-right: 15px;
+    color: #2980b9;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  }
+  th, td {
+    padding: 15px;
+    vertical-align: top;
+  }
+  th {
+    background-color: #3498db;
+    color: white;
+    text-align: left;
+  }
+  input[type=text], input[type=date], input[type=time], select, textarea {
+    width: 100%;
+    padding: 8px 10px;
+    margin: 6px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+  input[type=text]:focus, input[type=date]:focus, input[type=time]:focus, select:focus, textarea:focus {
+    border-color: #2980b9;
+    outline: none;
+  }
+  textarea {
+    resize: vertical;
+  }
+  button {
+    background-color: #2980b9;
+    border: none;
+    color: white;
+    padding: 7px 14px;
+    margin: 5px 5px 15px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #1c5980;
+  }
+  /* วันที่สอน + หัวข้อ */
+  #addClassDate > div, #addClassDate > hr, #addClassDate > div + div {
+    margin-bottom: 15px;
+  }
+  /* Flex container for each class date */
+  .classDateRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  .classDateRow label {
+    min-width: 60px;
+    font-weight: 600;
+  }
+  .classDateRow input[type=date], 
+  .classDateRow input[type=time] {
+    width: 140px;
+  }
+  .dayNameDisplay {
+    min-width: 90px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #2c3e50;
+  }
+  /* หัวข้อสอน */
+  .topicSection {
+    background: #f0f8ff;
+    padding: 10px 12px;
+    border-radius: 6px;
+  }
+  .topicSection p {
+    margin: 5px 0 10px 0;
+    font-weight: 600;
+  }
+  .topicSection input[type=text] {
+    width: auto;
+    min-width: 200px;
+    margin-right: 10px;
+    margin-bottom: 8px;
+  }
+  .topicSection button {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  /* ปุ่ม submit/reset */
+  input[type=submit], input[type=reset] {
+    background-color: #27ae60;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  input[type=submit]:hover {
+    background-color: #1e8449;
+  }
+  input[type=reset] {
+    background-color: #c0392b;
+  }
+  input[type=reset]:hover {
+    background-color: #922b21;
+  }
+</style>
 
 
 <body>
@@ -334,7 +498,7 @@
   <a href="listTutorCourses">คอร์สของฉัน</a> 
 
   <form name="frm1" action="addCourse" method="post" onsubmit="return validateAddCourse(this);">
-    <table border="1" style="width: 100%;">
+    <table>
       <thead>
         <tr>
           <th>ข้อมูลหลักคอร์ส</th>
@@ -365,27 +529,32 @@
             <input type="text" name="price" id="price" placeholder="ระบุ" >
           </td>
           <td valign="top">
-            <p>วันที่สอน</p>
-            <input type="date" name="classDate" id="classDate" onchange="showDay()">
-            <p id="dayName"></p>
-
-            <p>เริ่ม</p>
-            <input type="time" name="startTime" id="startTime" >
-
-            <p>ถึง</p>
-            <input type="time" name="endTime" id="endTime" >
-
-            <button type="button" onclick="addClassDate()">เพิ่มวัน</button>
-
+            
+            
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+				  <label for="classDate">วันที่สอน</label>
+				  <input type="date" name="classDate" id="classDate" onchange="showDay(this.value, 'dayName')" style="width: 150px;">
+				  
+				  <p id="dayName"></p>
+				  
+				  <label for="startTime">เริ่ม</label>
+				  <input type="time" name="startTime" id="startTime" style="width: 100px;">
+				  
+				  <label for="endTime">ถึง</label>
+				  <input type="time" name="endTime" id="endTime" style="width: 100px;">
+				  
+				  <button type="button" onclick="addClassDate()">เพิ่มวัน</button>
+		 </div>
+				
             <p>เรื่องที่จะสอน</p>
             <input type="text" name="topicName" id="topicName" placeholder="เช่น บทที่ 1-2" >
 
             <button type="button" onclick="addTopic(document.getElementById('addTopic'))">เพิ่มหัวข้อ</button>
             <button type="button" onclick="removeLastTopic(document.getElementById('addTopic'))">ลบหัวข้อ</button>
-
-            <div id="addTopic"></div>
-
-            <div id="addClassDate"></div>
+            	<div id="addTopic"></div>
+			<hr>
+            	<div id="addClassDate"></div>
+              
           </td>
         </tr>
         <tr>

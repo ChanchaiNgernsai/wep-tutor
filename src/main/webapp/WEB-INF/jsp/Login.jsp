@@ -7,25 +7,24 @@
 <meta charset="UTF-8">
 <title>Login</title>
 <style>
-  /* พื้นหลังสีโทนอุ่น */
-	 body {
-	  background-color: #EBEBEB; 
-	  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	  color: #222;
-	  margin: 0;
-	  min-height: 100vh;
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  padding: 20px;
-	}
+  body {
+    background-color: #EBEBEB; 
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #222;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
 
   .main-container {
     display: flex;
     gap: 30px;
     max-width: 900px;
     width: 100%;
-    background-color: #ffffffcc; /* สีขาวโปร่งแสง */
+    background-color: #ffffffcc;
     border-radius: 16px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     padding: 30px 40px;
@@ -77,7 +76,42 @@
     letter-spacing: 1.1px;
   }
 
-  input[type="text"],
+  .email-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 25px;
+  }
+
+  .email-wrapper input[type="text"] {
+    width: 100%;
+    padding: 14px 16px;
+    padding-right: 90px;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    border: 2px solid #A1A1A1;
+    border-radius: 8px;
+    color: #222;
+    transition: border-color 0.3s ease;
+  }
+
+  .email-wrapper input[type="text"]:focus {
+    border-color: #0288d1;
+    outline: none;
+  }
+
+  .email-domain {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    font-weight: 600;
+    font-size: 1.1rem;
+    pointer-events: none;
+    user-select: none;
+  }
+
   input[type="password"] {
     width: 100%;
     padding: 14px 16px;
@@ -90,7 +124,6 @@
     transition: border-color 0.3s ease;
   }
 
-  input[type="text"]:focus,
   input[type="password"]:focus {
     border-color: #0288d1;
     outline: none;
@@ -149,16 +182,6 @@
     min-height: 26px;
   }
 
-  /* ลิงก์ลงทะเบียน */
-  .register-link {
-    margin-top: 25px;
-    font-weight: 600;
-    font-size: 1rem;
-    color: #0288d1;
-    text-decoration: none;
-    align-self: flex-start;
-    transition: color 0.3s ease;
-  }
   .register-link {
     margin-top: 25px;
     font-weight: 600;
@@ -166,48 +189,45 @@
     color: #0288d1;
     text-decoration: none;
     text-align: center;
-    display: block; /* สำคัญมากเพื่อให้ใช้ margin auto ได้ */
+    display: block;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
     transition: color 0.3s ease;
-    
-}
- .register-link:hover {
+  }
+  .register-link:hover {
     color: #01579b;
     text-decoration: underline;
-}
+  }
 </style>
 
 <script>
-	function validateLogin() {
-	    const email = document.getElementById("email").value.trim();
-	    const password = document.getElementById("password").value;
-	
-	    const emailRegex = /^MJU\d{10}@mju\.ac\.th$/i;
-	
-	    if (email === "" || password === "") {
-	        alert("กรุณากรอกอีเมลและรหัสผ่าน");
-	        return false;
-	    }
-	
-	    if (/\s/.test(email)) {
-	        alert("ห้ามมีช่องว่างในอีเมล");
-	        return false;
-	    }
-	
-	    if (!emailRegex.test(email)) {
-	        alert("รูปแบบอีเมลต้องเป็น MJUxxxxxxxxxx@mju.ac.th");
-	        return false;
-	    }
-	
-	    if (/\s/.test(password)) {
-	        alert("ห้ามมีช่องว่างในรหัสผ่าน");
-	        return false;
-	    }
-	
-	    return true;
-		}
+  function validateLogin() {
+    const prefix = document.getElementById("email_prefix").value.trim();
+    const password = document.getElementById("password").value;
+
+    const fullEmail = prefix + "@mju.ac.th";
+    document.getElementById("email").value = fullEmail;
+
+    const emailRegex = /^mju\d{10}@mju\.ac\.th$/i;
+
+    if (prefix === "" || password === "") {
+      alert("กรุณากรอกรหัสนักศึกษาและรหัสผ่าน");
+      return false;
+    }
+
+    if (/\s/.test(prefix) || /\s/.test(password)) {
+      alert("ห้ามมีช่องว่าง");
+      return false;
+    }
+
+    if (!emailRegex.test(fullEmail)) {
+      alert("อีเมลนักศึกษาต้องขึ้นต้นด้วย mju และตามด้วยเลข 10 หลัก เช่น mju65******01");
+      return false;
+    }
+
+    return true;
+  }
 </script>
 
 </head>
@@ -218,16 +238,24 @@
     </div>
 
     <div class="right-container">
-      <p class="error">${add_result}</p>
       <h1>Sign in</h1>
+      <p class="error">${add_result}</p>
       <form name="frm2" action="loginUser" method="post" onsubmit="return validateLogin();">
-        <input type="text" name="email" id="email" placeholder="Email" ><br>
+        <div class="email-wrapper">
+          <input type="text" id="email_prefix" name="email_prefix" placeholder="email เช่น mju65******01">
+          <span class="email-domain">@mju.ac.th</span>
+          <input type="hidden" id="email" name="email">
+        </div>
+
         <input type="password" name="password" id="password" placeholder="Password"><br>
+
         <div class="btn-group">
           <input type="reset" value="ยกเลิก">
           <input type="submit" value="เข้าสู่ระบบ">
         </div>
+
         <hr>
+
         <a class="register-link" href="goRegisterStu">ลงทะเบียนสมาชิกใหม่</a>
       </form>
     </div>

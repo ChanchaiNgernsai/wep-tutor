@@ -2,8 +2,6 @@ package com.springmvc.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -128,10 +126,6 @@ public class RegisterStudentController {
 	        	    }
 	        	}
 	        	session.setAttribute("Roles", roleTypes);
-
-
-	        	session.setAttribute("Roles", roleTypes);
-
 	            
 	            Student student = tmg.getStudentByEmail(email);
 	            session.setAttribute("Stu", student);

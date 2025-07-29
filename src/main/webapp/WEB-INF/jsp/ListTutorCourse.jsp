@@ -11,17 +11,14 @@
 </head>
 <body>
 	<h1>List Tutor Course</h1>
-<a href="goHome">กลับหน้า Home</a><br>
 
+	<h2>คอร์สที่คุณเปิดสอน</h2>
+	<a href="goHome">กลับหน้า Home</a><br>
 	<c:forEach var="course" items="${courses}">
-    	<p>
-        	ชื่อวิชา: ${course.courseName} - ประเภท: ${course.category.categoryName}
-    	</p>
+    	<p>ชื่อวิชา: ${course.courseName} - ประเภท: ${course.category.categoryName}</p>
 
     	<c:forEach var="cd" items="${course.courseDates}">
-        	<p>
-            วันที่: ${cd.class_date} เวลา: ${cd.startTime} - ${cd.endTime}
-        </p>
+        	<p>วันที่: ${cd.class_date} เวลา: ${cd.startTime} - ${cd.endTime}</p>
     	</c:forEach>
 
     	<hr>

@@ -70,7 +70,7 @@
         .profile-img {
            border-radius: 50%;
 		   object-fit: cover;
-		   width: 120px;
+		   width: 20px;
 		   height: 120px;
         }
         .btn {
@@ -80,13 +80,47 @@
         .role-list {
             padding-left: 20px;
         }
+        
+	  .header form {
+	    margin-left: auto;
+	    display: flex;
+	    align-items: center;
+	  }
+	
+	  .header input[type="text"] {
+	    padding: 8px 12px;
+	    border: 1px solid #ccc;
+	    border-radius: 20px 0 0 20px;
+	    outline: none;
+	    font-size: 16px;
+	    width: 200px;
+	    transition: border-color 0.3s;
+	  }
+	
+	
+	  .header input[type="submit"] {
+	    padding: 8px 18px;
+	    border: 1px solid #ccc;
+	    border-radius: 20px 0 0 20px;
+	    background-color: #2CC06C;
+	    color: white;
+	    font-weight: bold;
+	    border-radius: 0 20px 20px 0;
+	    cursor: pointer;
+	    transition: background-color 0.3s;
+	  }
+	
+	  .header input[type="submit"]:hover {
+	    background-color: #2853B8;
+	  }
+</style>
     </style>
 </head>
 <body>
 
     <div class="header">
         <a href="goHome">
-            <img src="resources/images/home_on.png" width="80" height="80" alt="Home" />
+            <img src="resources/images/home_on.png" width="120" height="120" alt="Home" />
         </a>
      	<h2>ช่วยติวในมหาวิทยาลัยแม่โจ้</h2>
         
@@ -107,8 +141,8 @@
                     alt="รูปโปรไฟล์"
                 /><br />
                 <a class="btn" href="goProfile">ดูโปรไฟล์</a><br />
-                <p>ชื่อ: ${sessionScope.User.firstName} ${sessionScope.Mem.lastName}</p>
-                <p>สถานะของคุณ:</p>
+                <p>ชื่อ: ${sessionScope.User.firstName} ${sessionScope.User.lastName}</p>
+                <p>สถานะของคุณ</p>
                 <ul class="role-list">
                     <c:forEach var="role" items="${sessionScope.Roles}">
                         <li>${role}</li>
