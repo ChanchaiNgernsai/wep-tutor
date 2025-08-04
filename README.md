@@ -23,4 +23,3 @@ mvn compile
 mvn clean package
 
 http://localhost:8080/SpringMVCProject-0.0.1-SNAPSHOT
-
