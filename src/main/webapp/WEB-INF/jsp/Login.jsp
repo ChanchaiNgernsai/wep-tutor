@@ -202,32 +202,47 @@
 </style>
 
 <script>
-  function validateLogin() {
-    const prefix = document.getElementById("email_prefix").value.trim();
-    const password = document.getElementById("password").value;
+    function validateLogin() {
+      const prefix = document.getElementById("email_prefix").value.trim();
+      const password = document.getElementById("password").value;
 
-    const fullEmail = prefix + "@mju.ac.th";
-    document.getElementById("email").value = fullEmail;
+      const fullEmail = prefix + "@mju.ac.th";
+      document.getElementById("email").value = fullEmail;
 
-    const emailRegex = /^mju\d{10}@mju\.ac\.th$/i;
+      const emailRegex = /^mju\d{10}$/i; // ตรวจสอบแค่ prefix
 
-    if (prefix === "" || password === "") {
-      alert("กรุณากรอกรหัสนักศึกษาและรหัสผ่าน");
-      return false;
-    }
+      if (prefix === "" || password === "") {
+        alert("กรุณากรอกรหัสนักศึกษาและรหัสผ่าน");
+        return false;
+      }
+     
+      if (prefix.length !== 13) {
+        alert("ความยาวรหัสนักศึกษาต้องมี 13 ตัวพอดี");
+        return false;
+      }
 
-    if (/\s/.test(prefix) || /\s/.test(password)) {
-      alert("ห้ามมีช่องว่าง");
-      return false;
-    }
+      if (/\s/.test(prefix) || /\s/.test(password)) {
+        alert("กรุณากรอกข้อมูลอีเมล์และรหัสผ่านโดยห้ามมีช่องว่าง");
+        return false;
+      }
 
-    if (!emailRegex.test(fullEmail)) {
-      alert("อีเมลนักศึกษาต้องขึ้นต้นด้วย mju และตามด้วยเลข 10 หลัก เช่น mju65******01");
-      return false;
-    }
+      if (!emailRegex.test(prefix)) {
+        alert("กรุณากรอกรหัสนักศึกษาให้อยู่ในรูปแบบของ MJU เช่น mju65******01");
+        return false;
+      }
 
-    return true;
+       if (password.length < 8 || password.length > 16) {
+        alert("รหัสผ่านต้องมีความยาวระหว่าง 8 - 16 ตัวอักษร");
+        return false;
+      }
+
+       if (/\s/.test(password)) {
+        alert("กรุณากรอกข้อมูลรหัสผ่านโดยห้ามมีช่องว่างระหว่างตัวอักษร");
+        return false;
+      }
+      return true;
   }
+
 </script>
 
 </head>
@@ -239,7 +254,8 @@
 
     <div class="right-container">
       <h1>Sign in</h1>
-      <p class="error">${add_result}</p>
+      <p class="error">${err_login}</p>
+      <p style="color:green;">${result_regis}</p>
       <form name="frm2" action="loginUser" method="post" onsubmit="return validateLogin();">
         <div class="email-wrapper">
           <input type="text" id="email_prefix" name="email_prefix" placeholder="email เช่น mju65******01">

@@ -86,6 +86,7 @@ function showDay(dateStr, dayNameId) {
 	  const btnRemoveDay = document.createElement('button');
 	  btnRemoveDay.type = 'button';
 	  btnRemoveDay.innerText = 'ลบวัน';
+    btnRemoveDay.className = 'removeBtn';
 	  btnRemoveDay.onclick = function () {
 	    container.removeChild(flexDiv);
 	    container.removeChild(topicSection);
@@ -118,6 +119,7 @@ function showDay(dateStr, dayNameId) {
 	  const btnRemoveTopic = document.createElement('button');
 	  btnRemoveTopic.type = 'button';
 	  btnRemoveTopic.innerText = 'ลบหัวข้อ';
+    btnRemoveTopic.className = 'removeBtn'; 
 	  btnRemoveTopic.onclick = function () {
 	    removeLastTopic(topicContainer);
 	  };
@@ -194,168 +196,204 @@ function showDay(dateStr, dayNameId) {
     }
   }
 
+  function isTimeBetween(timeStr, startStr, endStr) {
+    const [h, m] = timeStr.split(":").map(Number);
+    const [sh, sm] = startStr.split(":").map(Number);
+    const [eh, em] = endStr.split(":").map(Number);
 
-  function validateAddCourse(form) {
-    // ตรวจสอบชื่อรายวิชา
+    const time = h * 60 + m;
+    const start = sh * 60 + sm;
+    const end = eh * 60 + em;
+
+    return time >= start && time <= end;
+}
+
+function validateAddCourse(form) {
+    // ----- ตรวจสอบชื่อรายวิชา -----
     const courseName = form.courseName.value.trim();
     if (courseName === "") {
-      alert("กรุณากรอกชื่อรายวิชา");
-      form.courseName.focus();
-      return false;
+        alert("กรุณากรอกชื่อรายวิชา");
+        form.courseName.focus();
+        return false;
+    }
+    const courseNamePattern = /^[ก-๙เ-๛A-Za-z\s]+$/;
+    if (!courseNamePattern.test(courseName)) {
+        alert("กรุณากรอกเป็นอักขระภาษาไทย หรือ ภาษาอังกฤษเท่านั้น");
+        form.courseName.focus();
+        return false;
     }
     if (courseName.length < 4 || courseName.length > 100) {
-      alert("ชื่อรายวิชาต้องมีความยาว 4-100 ตัวอักษร");
-      form.courseName.focus();
-      return false;
+        alert("กรุณากรอกชื่อรายวิชาให้มีความยาวตั้งแต่ 4 ตัวอักษรขึ้นไป และไม่เกิน 100 ตัวอักษร");
+        form.courseName.focus();
+        return false;
     }
 
-    // ตรวจสอบคำอธิบาย
-    const courseDescrip = form.courseDescrip.value.trim();
-    const descripPattern = /^[ก-ฮA-Za-z0-9.,\/#\-\s]{20,255}$/;
-    if (courseDescrip === "") {
-      alert("กรุณากรอกคำอธิบายรายวิชา");
-      form.courseDescrip.focus();
-      return false;
-    }
-    if (!descripPattern.test(courseDescrip)) {
-      alert("คำอธิบายรายวิชาต้องเป็นภาษาไทย อังกฤษ ตัวเลข และ . , / # - เท่านั้น และความยาว 20-255 ตัวอักษร");
-      form.courseDescrip.focus();
-      return false;
-    }
-
-    // ตรวจสอบประเภทวิชา
+    // ----- ตรวจสอบประเภทวิชา -----
     const cateName = form.cateName.value.trim();
-    const catePattern = /^[ก-๙เ-๛A-Za-z\s]{4,50}$/;
+    const catePattern = /^[ก-ฮA-Za-z\s]+$/;
     if (cateName === "") {
-      alert("กรุณากรอกประเภทของวิชา");
-      form.cateName.focus();
-      return false;
+        alert("กรุณากรอกประเภทของวิชา");
+        form.cateName.focus();
+        return false;
     }
     if (!catePattern.test(cateName)) {
-      alert("ประเภทของวิชาต้องเป็นภาษาไทยหรืออังกฤษและช่องว่าง ความยาว 4-50 ตัวอักษร");
-      form.cateName.focus();
-      return false;
+        alert("กรุณากรอกประเภทรายวิชาเป็นอักขระภาษาไทยหรือภาษาอังกฤษเท่านั้น");
+        form.cateName.focus();
+        return false;
     }
-    if (/^\d/.test(cateName)) {
-      alert("ประเภทของวิชาไม่สามารถขึ้นต้นด้วยตัวเลขได้");
-      form.cateName.focus();
-      return false;
+    if (cateName.length < 2 || cateName.length > 50) {
+        alert("กรุณากรอกประเภทรายวิชาได้ตั้งแต่ระหว่าง 2 ถึง 50 ตัวอักษร");
+        form.cateName.focus();
+        return false;
     }
 
-    // ตรวจสอบจำนวนรับ
+    // ----- ตรวจสอบคำอธิบาย -----
+    const courseDescrip = form.courseDescrip.value.trim();
+    const descripPattern = /^[\u0E00-\u0E7FA-Za-z0-9.,\/#\-\s]+$/;
+    if (courseDescrip === "") {
+        alert("กรุณากรอกคำอธิบายรายวิชา");
+        form.courseDescrip.focus();
+        return false;
+    }
+    if (!descripPattern.test(courseDescrip)) {
+        alert("กรุณากรอกคำอธิบายรายวิชาเป็นอักขระภาษาไทย [ก-ฮ], ภาษาอังกฤษ [A-Z, a-z], ตัวเลข [0-9] และอักขระพิเศษ [., /#-]");
+        form.courseDescrip.focus();
+        return false;
+    }
+    if (courseDescrip.length < 10 || courseDescrip.length > 255) {
+        alert("กรุณากรอกคำอธิบายรายวิชาได้ตั้งแต่ 10 ตัวอักษรขึ้นไป และไม่เกิน 255 ตัวอักษร");
+        form.courseDescrip.focus();
+        return false;
+    }
+
+    // ----- ตรวจสอบจำนวนรับ -----
     const maxStu = form.maxStu.value.trim();
     if (maxStu === "") {
-      alert("กรุณาเลือกจำนวนที่รับ");
-      form.maxStu.focus();
-      return false;
-    }
-    if (!/^\d+$/.test(maxStu)) {
-      alert("จำนวนที่รับต้องเป็นตัวเลขจำนวนเต็มบวกเท่านั้น");
-      form.maxStu.focus();
-      return false;
-    }
-    const maxStuNum = parseInt(maxStu, 10);
-    if (maxStuNum < 1 || maxStuNum > 150) {
-      alert("จำนวนที่รับต้องไม่น้อยกว่า 1 และไม่เกิน 150 คน");
-      form.maxStu.focus();
-      return false;
+        alert("กรุณาเลือกจำนวนนักศึกษาที่รับ");
+        form.maxStu.focus();
+        return false;
     }
 
-    // ตรวจสอบราคา
+    // ----- ตรวจสอบราคา -----
     const price = form.price.value.trim();
     if (price === "") {
-      alert("กรุณากรอกราคาคอร์ส");
-      form.price.focus();
-      return false;
+        alert("กรุณากรอกราคาคอร์ส");
+        form.price.focus();
+        return false;
     }
-    if (!/^\d+$/.test(price)) {
-      alert("ราคาต้องเป็นตัวเลขจำนวนเต็มบวกเท่านั้น");
-      form.price.focus();
-      return false;
+    const pricePattern = /^\d+$/;
+    if (!pricePattern.test(price)) {
+        alert("กรุณากรอกเป็นตัวเลขจำนวนเต็มบวกเท่านั้น (รูปแบบเงินบาท)");
+        form.price.focus();
+        return false;
     }
     const priceNum = parseInt(price, 10);
     if (priceNum < 0) {
-      alert("ราคาต้องไม่เป็นลบ (0 หมายถึงเรียนฟรี)");
-      form.price.focus();
-      return false;
+        alert("ราคาต้องไม่เป็นลบ (0 หมายถึงเรียนฟรี)");
+        form.price.focus();
+        return false;
     }
 
-    // ตรวจสอบวันที่สอนแต่ละวันที่เพิ่ม
-    for (let i = 1; i < DateCount; i++) {
-      const classDateInput = document.getElementById('classDate' + i);
-      const startTimeInput = document.getElementById('startTime' + i);
-      const endTimeInput = document.getElementById('endTime' + i);
-      const topicInput = document.getElementById('topicName' + i);
+    // ----- ตรวจสอบวันสอนและหัวข้อสอน -----
+    for (let i = 0; i < DateCount; i++) {
+        const idx = i === 0 ? "" : i; // สัปดาห์แรก id ไม่มีเลข
+        const classDateInput = document.getElementById('classDate' + idx);
+        const startTimeInput = document.getElementById('startTime' + idx);
+        const endTimeInput = document.getElementById('endTime' + idx);
+        const topicInput = document.getElementById('topicName' + idx);
 
-      if (!classDateInput || !startTimeInput || !endTimeInput || !topicInput) continue;
+        if (!classDateInput || !startTimeInput || !endTimeInput || !topicInput) continue;
 
-      if (classDateInput.value.trim() === "") {
-        alert("กรุณาเลือกวันที่สอนของสัปดาห์ที่ " + i);
-        classDateInput.focus();
-        return false;
-      }
-      // ตรวจสอบวันที่ไม่ใช่วันที่ในอดีต
-      const inputDate = new Date(classDateInput.value.trim());
-      const now = new Date();
-      now.setHours(0,0,0,0);
-      if (inputDate < now) {
-        alert("วันที่สอนต้องเป็นวันในอนาคตหรือวันนี้เท่านั้น (สัปดาห์ที่ " + i + ")");
-        classDateInput.focus();
-        return false;
-      }
-
-      if (startTimeInput.value.trim() === "") {
-        alert("กรุณาเลือกเวลาเริ่มเรียนของสัปดาห์ที่ " + i);
-        startTimeInput.focus();
-        return false;
-      }
-      if (endTimeInput.value.trim() === "") {
-        alert("กรุณาเลือกเวลาเลิกเรียนของสัปดาห์ที่ " + i);
-        endTimeInput.focus();
-        return false;
-      }
-      if (startTimeInput.value.trim() >= endTimeInput.value.trim()) {
-        alert("เวลาเริ่มเรียนต้องน้อยกว่าเวลาเลิกเรียน (สัปดาห์ที่ " + i + ")");
-        startTimeInput.focus();
-        return false;
-      }
-
-      // ตรวจสอบหัวข้อหลักของวัน
-      const topicVal = topicInput.value.trim();
-      const topicPattern = /^[ก-๙เ-๛A-Za-z0-9\s]{4,100}$/;
-      if (topicVal === "") {
-        alert("กรุณากรอกเรื่องที่จะสอนของสัปดาห์ที่ " + i);
-        topicInput.focus();
-        return false;
-      }
-      if (!topicPattern.test(topicVal)) {
-        alert("เรื่องที่จะสอนต้องประกอบด้วยภาษาไทย อังกฤษ หรือ ตัวเลข ความยาว 4-100 ตัวอักษร (สัปดาห์ที่ " + i + ")");
-        topicInput.focus();
-        return false;
-      }
-
-      // ตรวจสอบหัวข้อย่อยที่เพิ่มใน container ด้วย
-      const topicContainer = document.getElementById('topicContainer' + i);
-      if (topicContainer) {
-        const topicInputs = topicContainer.querySelectorAll('input[type="text"]');
-        for (let t = 0; t < topicInputs.length; t++) {
-          const val = topicInputs[t].value.trim();
-          if (val === "") {
-            alert("กรุณากรอกหัวข้อย่อยทั้งหมดของสัปดาห์ที่ " + i);
-            topicInputs[t].focus();
+        // ตรวจสอบวันที่สอน
+        if (classDateInput.value.trim() === "") {
+            alert("กรุณาเลือกวันที่สอนของสัปดาห์ที่ " + (i + 1));
+            classDateInput.focus();
             return false;
-          }
-          if (!topicPattern.test(val)) {
-            alert("หัวข้อย่อยต้องประกอบด้วยภาษาไทย อังกฤษ หรือ ตัวเลข ความยาว 4-100 ตัวอักษร (สัปดาห์ที่ " + i + ")");
-            topicInputs[t].focus();
-            return false;
-          }
         }
-      }
+        const inputDate = new Date(classDateInput.value.trim());
+        const now = new Date();
+        now.setHours(0,0,0,0);
+        if (inputDate < now) {
+            alert("วันที่สอนต้องเป็นวันในอนาคตหรือวันนี้เท่านั้น (สัปดาห์ที่ " + (i + 1) + ")");
+            classDateInput.focus();
+            return false;
+        }
+
+        // ตรวจสอบเวลาเริ่มและเลิก
+        if (startTimeInput.value.trim() === "") {
+            alert("กรุณาเลือกเวลาเริ่มเรียนของสัปดาห์ที่ " + (i + 1));
+            startTimeInput.focus();
+            return false;
+        }
+        if (endTimeInput.value.trim() === "") {
+            alert("กรุณาเลือกเวลาเลิกเรียนของสัปดาห์ที่ " + (i + 1));
+            endTimeInput.focus();
+            return false;
+        }
+
+        if (startTimeInput.value.trim() >= endTimeInput.value.trim()) {
+            alert("เวลาเริ่มเรียนต้องน้อยกว่าเวลาเลิกเรียน (สัปดาห์ที่ " + (i + 1) + ")");
+            startTimeInput.focus();
+            return false;
+        }
+
+        const startHour = parseInt(startTimeInput.value.split(":")[0], 10);
+        const endHour = parseInt(endTimeInput.value.split(":")[0], 10);
+        if (startHour < 8 || startHour > 19) {
+            alert("เวลาเริ่มเรียนต้องอยู่ระหว่าง 08:00 - 19:00 (สัปดาห์ที่ " + (i + 1) + ")");
+            startTimeInput.focus();
+            return false;
+        }
+        if (endHour < 8 || endHour > 19) {
+            alert("เวลาเลิกเรียนต้องอยู่ระหว่าง 08:00 - 19:00 (สัปดาห์ที่ " + (i + 1) + ")");
+            endTimeInput.focus();
+            return false;
+        }
+
+        // ตรวจสอบหัวข้อสอน
+        const topicPattern = /^[ก-๙เ-๛A-Za-z0-9\s]/;
+        if (topicInput.value.trim() === "") {
+            alert("กรุณากรอกเรื่องที่จะสอนของสัปดาห์ที่ " + (i + 1));
+            topicInput.focus();
+            return false;
+        }
+        if (!topicPattern.test(topicInput.value.trim())) {
+            alert("กรุณากรอกเรื่องที่จะสอนเป็นภาษาไทยหรือภาษาอังกฤษและตัวเลขเท่านั้น (สัปดาห์ที่ " + (i + 1) + ")");  
+            topicInput.focus();
+            return false;
+        }
+        if (topicInput.value.trim().length < 4 || topicInput.value.trim().length > 100) {
+            alert("กรุณากรอกเรื่องที่จะสอนความยาว 4-100 ตัวอักษร (สัปดาห์ที่ " + (i + 1) + ")");
+            topicInput.focus();
+            return false;
+        }
+
+        // ตรวจสอบหัวข้อย่อย
+        const topicContainer = document.getElementById('topicContainer' + idx);
+        if (topicContainer) {
+            const topicInputs = topicContainer.querySelectorAll('input[type="text"]');
+            for (let t = 0; t < topicInputs.length; t++) {
+                const val = topicInputs[t].value.trim();
+                if (val === "") {
+                    alert("กรุณากรอกหัวข้อย่อยทั้งหมดของสัปดาห์ที่ " + (i + 1));
+                    topicInputs[t].focus();
+                    return false;
+                }
+                if (!topicPattern.test(val)) {
+                    alert("หัวข้อย่อยต้องประกอบด้วยภาษาไทย อังกฤษ หรือ ตัวเลข ความยาว 4-100 ตัวอักษร (สัปดาห์ที่ " + (i + 1) + ")");
+                    topicInputs[t].focus();
+                    return false;
+                }
+            }
+        }
     }
 
     return true;
-  }
+}
+
+
+
+
 </script>
 
 <style>
@@ -484,11 +522,34 @@ function showDay(dateStr, dayNameId) {
     background-color: #1e8449;
   }
   input[type=reset] {
-    background-color: #c0392b;
+    background-color: #e74c3c;
   }
   input[type=reset]:hover {
-    background-color: #922b21;
+    background-color: white;
   }
+
+  
+  button.removeBtn {
+      background-color: #e74c3c; 
+      color: white;
+  }
+
+  button.removeBtn:hover {
+      background-color: #c0392b; 
+  }
+
+  button.removeTopicBtn {
+    background-color: #e74c3c; /* สีแดง */
+    color: white;
+}
+
+button.removeTopicBtn:hover {
+    background-color: #c0392b; /* สีแดงเข้มเมื่อ hover */
+}
+
+
+  
+
 </style>
 
 
@@ -550,7 +611,7 @@ function showDay(dateStr, dayNameId) {
             <input type="text" name="topicName" id="topicName" placeholder="เช่น บทที่ 1-2" >
 
             <button type="button" onclick="addTopic(document.getElementById('addTopic'))">เพิ่มหัวข้อ</button>
-            <button type="button" onclick="removeLastTopic(document.getElementById('addTopic'))">ลบหัวข้อ</button>
+            <button type="button" class="removeTopicBtn" onclick="removeLastTopic(document.getElementById('addTopic'))">ลบหัวข้อ</button>
             	<div id="addTopic"></div>
 			<hr>
             	<div id="addClassDate"></div>

@@ -68,6 +68,14 @@
             padding: 20px;
         }
 
+         .profile-img {
+            border-radius: 50%;  
+            object-fit: cover;   
+            width: 120px;        
+            height: 120px;       
+        }
+
+
         .btn {
             display: inline-block;
             margin: 10px 5px 10px 0;
@@ -117,7 +125,7 @@
         <a href="goHome">
             <img src="resources/images/home_on.png" width="120" height="120" alt="Home" />
         </a>
-        <h2>ช่วยติวในมหาวิทยาลัยแม่โจ้</h2>
+        <h2>ช่วยติวในมหาวิทยาลัยแม่โจ้ </h2>
         
             <form name="searchForm" action="search" method="get" onsubmit="return validateSearchForm();">
                 <input type="text" name="keyword" placeholder="ค้นหาคอร์ส" />
@@ -128,6 +136,15 @@
     <div class="main-content">
         <div class="left-container">
             <c:if test="${not empty sessionScope.User}">
+                <img
+                    class="profile-img"
+                    src="${sessionScope.User.imgProfile}"
+                    width="220"
+                    height="120"
+                    alt="รูปโปรไฟล์"
+                /><br />
+
+                <p style="color: green;">${result_login}</p>
                 <a class="btn" href="goProfile">ดูโปรไฟล์</a><br />
                 <p>ชื่อ: ${sessionScope.User.firstName} ${sessionScope.User.lastName}</p>
                 <p>สถานะของคุณ</p>
