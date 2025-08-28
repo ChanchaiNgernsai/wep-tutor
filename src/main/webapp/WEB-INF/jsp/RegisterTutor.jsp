@@ -8,7 +8,82 @@
 <head>
 <meta charset="UTF-8">
 <title>Register Tutor Page</title>
-</head>
+<style>
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 25px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    a {
+        display: inline-block;
+        margin-bottom: 15px;
+        color: #007bff;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    p {
+        margin: 10px 0;
+        font-weight: bold;
+        color: #444;
+    }
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 6px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    textarea {
+        resize: none;
+    }
+    .btn {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    .btn-add {
+        background-color: #28a745;
+        color: white;
+        margin-left: 10px;
+    }
+    .btn-remove {
+        background-color: #dc3545;
+        color: white;
+        margin-left: 10px;
+    }
+    .btn-reset {
+        background-color: #6c757d;
+        color: white;
+        margin-right: 10px;
+    }
+    .btn-submit {
+        background-color: #007bff;
+        color: white;
+    }
+    .error {
+        color: red;
+        margin: 5px 0;
+    }
+</style>
 <script>
   let skillCount = 1;  
 
@@ -31,6 +106,7 @@
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.innerText = 'ลบ';
+    btn.className = 'btn btn-remove';
     btn.onclick = function() { removeSkill(div.id); };
 
     div.appendChild(input);
@@ -89,26 +165,28 @@
     return true;
   }
 </script>
-
+</head>
 <body>
-  <h1>Register Tutor</h1>
-  <a href="goHome">กลับหน้า Home</a><br>
-  <p style="color:red;">${add_result}</p>
-  <span id="err_password" style="color:red;"></span>
-  <form name="frm1" action="addRegisterTutor" method="post" onsubmit="return validateTutor();">
-    <p>วิชาที่ถนัด(*สามารถมีได้มากกว่า 1 ไม่เกิน 5)</p>
-    <div id="skillCon">
-      <div id="skillDiv1">
-        <input type="text" name="skill" id="skill1">
-        <button type="button" onclick="addSkill()">เพิ่มวิชา</button>
+  <div class="container">
+    <h1>Register Tutor</h1>
+    <a href="goHome">⬅ กลับหน้า Home</a>
+    <p class="error">${err_result}</p>
+
+    <form name="frm1" action="addRegisterTutor" method="post" onsubmit="return validateTutor();">
+      <p>วิชาที่ถนัด (*สามารถมีได้มากกว่า 1 ไม่เกิน 5)</p>
+      <div id="skillCon">
+        <div id="skillDiv1" >
+          <input type="text" name="skill" id="skill1">
+          <button type="button" class="btn btn-add" onclick="addSkill()">+ เพิ่มวิชา</button>
+        </div>
       </div>
-    </div>
-    
-    <p>ประสบการณ์(*จำเป็นต้องระบุ)</p>
-    <textarea name="expertise" id="expertise" rows="4"></textarea><br>
-    
-    <input type="reset" value="ยกเลิก">
-    <input type="submit" value="ลงทะเบียน">
-  </form>
+      
+      <p>ประสบการณ์ (*จำเป็นต้องระบุ)</p>
+      <textarea name="expertise" id="expertise" rows="4"></textarea><br>
+      
+      <input type="reset" class="btn btn-reset" value="ยกเลิก">
+      <input type="submit" class="btn btn-submit" value="ลงทะเบียน">
+    </form>
+  </div>
 </body>
 </html>

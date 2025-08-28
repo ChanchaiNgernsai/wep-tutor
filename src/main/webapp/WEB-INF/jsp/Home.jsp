@@ -27,7 +27,7 @@
     
     <style>
         body {
-            background-color: white;
+            background-color: #EBEBEB;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
@@ -54,7 +54,7 @@
         }
         .left-container {
             flex: 0 0 20%;
-            background-color: #EBEBEB;
+            background-color: white;
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 20px;
@@ -62,7 +62,7 @@
         }
         .right-container {
             flex: 1 ;
-            background-color: #EBEBEB;
+            background-color: white;
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 20px;
@@ -105,7 +105,7 @@
             padding: 8px 18px;
             border: 1px solid #ccc;
             border-radius: 20px 0 0 20px;
-            background-color: #2CC06C;
+            background-color: #009639;
             color: white;
             font-weight: bold;
             border-radius: 0 20px 20px 0;
@@ -114,7 +114,7 @@
         }
         
         .header input[type="submit"]:hover {
-            background-color: #2853B8;
+            background-color: #007a2f;
         }
     </style>
     </style>
@@ -145,6 +145,8 @@
                 /><br />
 
                 <p style="color: green;">${result_login}</p>
+                <p style="color: green;">${result_RegisTutor}</p>
+
                 <a class="btn" href="goProfile">ดูโปรไฟล์</a><br />
                 <p>ชื่อ: ${sessionScope.User.firstName} ${sessionScope.User.lastName}</p>
                 <p>สถานะของคุณ</p>
@@ -164,8 +166,10 @@
 
                 <c:if test="${not empty sessionScope.Tutor}">
                     <a class="btn" href="goAddCourse?email=${sessionScope.email}">เพิ่มคอร์ส</a><br />
-                    <a class="btn" href="listTutorCourses">คอร์สของฉัน</a><br />
+                    <a class="btn" href="listTutorCourses">รายการคอร์ส</a><br />
                 </c:if>
+
+                <a class="btn" href="goListRegisterCourse">คอร์สที่ลงทะเบียน</a><br />
 
                 <form action="logout" method="post" style="margin-top: 10px;">
                     <input type="submit" value="ออกจากระบบ" />

@@ -147,7 +147,7 @@
                 <p><strong>ประเภท:</strong> ${course.category.categoryName}</p>
 
                 <c:if test="${not empty sessionScope.User}">
-                    <a href="goRegisterCourse?id=${course.courseId}" class="register-link">ลงทะเบียนเรียน</a>
+                    <a href="getRegisterCourse?id=${course.courseId}" class="register-link">ลงทะเบียนเรียน</a>
                 </c:if>
             </div>
         </div>

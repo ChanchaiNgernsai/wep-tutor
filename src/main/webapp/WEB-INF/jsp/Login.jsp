@@ -211,11 +211,16 @@
 
       const emailRegex = /^mju\d{10}$/i; // ตรวจสอบแค่ prefix
 
-      if (prefix === "" || password === "") {
-        alert("กรุณากรอกรหัสนักศึกษาและรหัสผ่าน");
+      if (prefix === "") {
+        alert("กรุณากรอกอีเมล");
         return false;
       }
-     
+
+      if (password === "") {
+        alert("กรุณากรอกรหัสผ่าน");
+        return false;
+      }
+
       if (prefix.length !== 13) {
         alert("ความยาวรหัสนักศึกษาต้องมี 13 ตัวพอดี");
         return false;

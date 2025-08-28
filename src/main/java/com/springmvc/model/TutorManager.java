@@ -1,5 +1,6 @@
 package com.springmvc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -330,6 +331,165 @@ public class TutorManager {
 			ex.printStackTrace();
 		}
 		return courses;
+	}
+
+	public boolean insertPayment(Payment payment) {
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			session.save(payment);
+
+			session.getTransaction().commit();
+			session.close();
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean insertRegisterCourse(RegisterCourse registerCourse) {
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			session.save(registerCourse);
+
+			session.getTransaction().commit();
+			session.close();
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	public List<RegisterCourse> getRegisterCoursesByUserEmail(String email) {
+		List<RegisterCourse> list = null;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			String hql = "FROM RegisterCourse rc "
+					+ "LEFT JOIN FETCH rc.course c "
+					+ "LEFT JOIN FETCH rc.payment p "
+					+ "WHERE rc.user.email = :email";
+
+			list = session.createQuery(hql, RegisterCourse.class)
+					.setParameter("email", email)
+					.getResultList();
+
+			session.getTransaction().commit();
+			session.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return list;
+	}
+
+	public Payment getPaymentById(int paymentId) {
+		Payment payment = null;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			payment = session.get(Payment.class, paymentId);
+
+			session.getTransaction().commit();
+			session.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return payment;
+	}
+
+	public List<RegisterCourse> getRegisterCoursesByStudent(Student student) {
+		SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+		Session session = null;
+		List<RegisterCourse> registerCourses = null;
+
+		try {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			registerCourses = session.createQuery(
+					"FROM RegisterCourse rc WHERE rc.student = :stu", RegisterCourse.class)
+					.setParameter("stu", student)
+					.getResultList();
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null)
+				session.getTransaction().rollback();
+		} finally {
+			if (session != null)
+				session.close();
+		}
+
+		return registerCourses;
+	}
+
+	public RegisterCourse getRegisterCourseById(int registerId) {
+		RegisterCourse rc = null;
+		try (Session session = HibernateConnection.doHibernateConnection().openSession()) {
+			session.beginTransaction();
+
+			String hql = "SELECT rc FROM RegisterCourse rc "
+					+ "JOIN FETCH rc.course c "
+					+ "JOIN FETCH c.category "
+					+ "JOIN FETCH c.tutor t "
+					+ "JOIN FETCH t.user "
+					+ "WHERE rc.registerCourseId = :rid";
+
+			rc = session.createQuery(hql, RegisterCourse.class)
+					.setParameter("rid", registerId)
+					.uniqueResult();
+
+			session.getTransaction().commit();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return rc;
+	}
+
+	public boolean deleteRegisterCourse(int registerId) {
+		try (Session session = HibernateConnection.doHibernateConnection().openSession()) {
+			session.beginTransaction();
+			RegisterCourse rc = session.get(RegisterCourse.class, registerId);
+			if (rc != null) {
+				session.delete(rc);
+			}
+			session.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public List<Student> getStudentsByCourseId(int courseId) {
+		List<Student> students = new ArrayList<>();
+		try {
+			Session session = HibernateConnection.doHibernateConnection().openSession();
+
+			String hql = "SELECT rc.student FROM RegisterCourse rc WHERE rc.course.courseId = :courseId";
+			Query<Student> query = session.createQuery(hql, Student.class);
+			query.setParameter("courseId", courseId);
+
+			students = query.getResultList();
+
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return students;
 	}
 
 }

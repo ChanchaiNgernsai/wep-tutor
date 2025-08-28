@@ -204,13 +204,13 @@
 		    document.getElementById('err_stu_id').innerHTML = "";
 		
 		    if (stuId === "") {
-		        document.getElementById('err_stu_id').innerHTML = "* กรุณากรอกรหัสนักศึกษา";
+		        document.getElementById('err_stu_id').innerHTML = "กรุณากรอกรหัสนักศึกษา";
 		        frm1.student_id.focus();
 		        return false;
 		    }
 		   
 		    if (!stuIdPattern.test(stuId)) {
-		        document.getElementById('err_stu_id').innerHTML = "*กรุณากรอกเป็นตัวเลข 10 ตัวเท่านั้น";
+		        document.getElementById('err_stu_id').innerHTML = "กรุณากรอกเป็นตัวเลข 10 ตัวเท่านั้น";
 		        frm1.student_id.focus();
 		        return false;
 		    }
@@ -221,13 +221,13 @@
 		    document.getElementById('err_fname').innerHTML = "";
 		
 		    if (fname === "") {
-		        document.getElementById('err_fname').innerHTML = "*กรุณากรอกชื่อ";
+		        document.getElementById('err_fname').innerHTML = "กรุณากรอกชื่อ";
 		        frm1.fname.focus();
 		        return false;
 		    }
 		
 		    if (!fnamePattern.test(fname)) {
-		        document.getElementById('err_fname').innerHTML = "*ชื่อต้องเป็นภาษาไทยหรืออังกฤษ ความยาว 2-40 ตัวอักษร";
+		        document.getElementById('err_fname').innerHTML = "ชื่อต้องเป็นภาษาไทยหรืออังกฤษ ความยาว 2-40 ตัวอักษร";
 		        frm1.fname.focus();
 		        return false;
 		    }
@@ -237,13 +237,13 @@
 		    document.getElementById('err_lname').innerHTML = "";
 		
 		    if (lname === "") {
-		        document.getElementById('err_lname').innerHTML = "*กรุณากรอกนามสกุล";
+		        document.getElementById('err_lname').innerHTML = "กรุณากรอกนามสกุล";
 		        frm1.lname.focus();
 		        return false;
 		    }
 		
 		    if (!lnamePattern.test(lname)) {
-		        document.getElementById('err_lname').innerHTML = "*นามสกุลต้องเป็นภาษาไทยหรืออังกฤษ ความยาว 2-85 ตัวอักษร";
+		        document.getElementById('err_lname').innerHTML = "นามสกุลต้องเป็นภาษาไทยหรืออังกฤษ ความยาว 2-85 ตัวอักษร";
 		        frm1.lname.focus();
 		        return false;
 		    }
@@ -254,19 +254,19 @@
 		    document.getElementById('err_phone').innerHTML = "";
 		
 		    if (phone === "") {
-		        document.getElementById('err_phone').innerHTML = "* กรุณากรอกเบอร์โทรศัพท์";
+		        document.getElementById('err_phone').innerHTML = "กรุณากรอกเบอร์โทรศัพท์";
 		        frm1.phon_num.focus();
 		        return false;
 		    }
 		
 		    if (/\s/.test(phone)) {
-		        document.getElementById('err_phone').innerHTML = "* เบอร์โทรต้องไม่มีช่องว่าง";
+		        document.getElementById('err_phone').innerHTML = "เบอร์โทรต้องไม่มีช่องว่าง";
 		        frm1.phon_num.focus();
 		        return false;
 		    }
 		
 		    if (!phonePattern.test(phone)) {
-		        document.getElementById('err_phone').innerHTML = "* เบอร์โทรต้องขึ้นต้นด้วย 06, 07, 08 หรือ 09 และมี 10 หลักเท่านั้น";
+		        document.getElementById('err_phone').innerHTML = "เบอร์โทรต้องขึ้นต้นด้วย 06, 07, 08 หรือ 09 และมี 10 หลักเท่านั้น";
 		        frm1.phon_num.focus();
 		        return false;
 		    }
@@ -276,7 +276,7 @@
 			document.getElementById('err_yfs').innerHTML = "";
 
 			if (yfs === "") {
-				document.getElementById('err_yfs').innerHTML = "* กรุณาเลือกชั้นปี";
+				document.getElementById('err_yfs').innerHTML = "กรุณาเลือกชั้นปี";
 				frm1.yfs.focus();
 				return false;
 			}
@@ -292,21 +292,21 @@
 		
 			// เช็คค่าว่าง
 			if (emailPrefix === "") {
-		    	document.getElementById('err_email').innerHTML = "*กรุณากรอกอีเมล";
+		    	document.getElementById('err_email').innerHTML = "กรุณากรอกอีเมล";
 		    	frm1.email_prefix.focus();
 		    	return false;
 			}
 		
 			// ห้ามมีช่องว่าง
 			if (/\s/.test(emailPrefix)) {
-		    	document.getElementById('err_email').innerHTML = "*ห้ามมีช่องว่างในอีเมล";
+		    	document.getElementById('err_email').innerHTML = "ห้ามมีช่องว่างในอีเมล";
 		    	frm1.email_prefix.focus();
 		    	return false;
 			}
 		
 			// เช็คความยาว prefix ต้อง 13 ตัว
 			if (emailPrefix.length !== 13) {
-		    	document.getElementById('err_email').innerHTML = "*อีเมลก่อน @ ต้องมีความยาว 13 ตัว";
+		    	document.getElementById('err_email').innerHTML = "อีเมลก่อน @ ต้องมีความยาว 13 ตัว";
 		    	frm1.email_prefix.focus();
 		    	return false;
 			}
@@ -314,7 +314,7 @@
 			// ตรวจรูปแบบ prefix ว่าขึ้นต้นด้วย MJU + ตัวเลข 10 ตัว
 			var emailPrefixPattern = /^MJU\d{10}$/i;
 			if (!emailPrefixPattern.test(emailPrefix)) {
-		    	document.getElementById('err_email').innerHTML = "*รูปแบบอีเมลไม่ถูกต้อง เช่น MJU65******01";
+		    	document.getElementById('err_email').innerHTML = "รูปแบบอีเมลไม่ถูกต้อง เช่น MJU65******01";
 		    	frm1.email_prefix.focus();
 		    	return false;
 			}
@@ -325,14 +325,14 @@
 			
 			// เช็คไม่ว่าง
 			if (password.trim() === "") {
-			    document.getElementById('err_password').innerHTML = "* กรุณากรอกรหัสผ่าน";
+			    document.getElementById('err_password').innerHTML = "กรุณากรอกรหัสผ่าน";
 			    frm1.password.focus();
 			    return false;
 			}
 			
 			// เช็คความยาว 8-16 ตัวอักษร
 			if (password.length < 8 || password.length > 16) {
-			    document.getElementById('err_password').innerHTML = "* รหัสผ่านต้องมีความยาว 8-16 ตัวอักษร";
+			    document.getElementById('err_password').innerHTML = "รหัสผ่านต้องมีความยาว 8-16 ตัวอักษร";
 			    frm1.password.focus();
 			    return false;
 			}
@@ -340,14 +340,14 @@
 			// เช็คอักขระที่อนุญาต (อังกฤษ ตัวเลข และ ! # _ . เท่านั้น)
 			var allowedChars = /^[A-Za-z0-9!#_.]+$/;
 			if (!allowedChars.test(password)) {
-			    document.getElementById('err_password').innerHTML = "* รหัสผ่านอนุญาตเฉพาะ A-Z, a-z, 0-9 และ ! # _ .";
+			    document.getElementById('err_password').innerHTML = "รหัสผ่านอนุญาตเฉพาะ A-Z, a-z, 0-9 และ ! # _ .";
 			    frm1.password.focus();
 			    return false;
 			}
 			
 			// ห้ามมีช่องว่าง
 			if (/\s/.test(password)) {
-			    document.getElementById('err_password').innerHTML = "* รหัสผ่านห้ามมีช่องว่าง";
+			    document.getElementById('err_password').innerHTML = "รหัสผ่านห้ามมีช่องว่าง";
 			    frm1.password.focus();
 			    return false;
 			}
@@ -358,7 +358,7 @@
 			var hasDigit = /[0-9]/.test(password);
 			
 			if (!hasUpper || !hasLower || !hasDigit) {
-			    document.getElementById('err_password').innerHTML = "* รหัสผ่านต้องมีตัวพิมพ์ใหญ่ พิมพ์เล็ก และตัวเลข อย่างน้อย 1 ตัว";
+			    document.getElementById('err_password').innerHTML = "รหัสผ่านต้องมีตัวพิมพ์ใหญ่ พิมพ์เล็ก และตัวเลข อย่างน้อย 1 ตัว";
 			    frm1.password.focus();
 			    return false;
 			}

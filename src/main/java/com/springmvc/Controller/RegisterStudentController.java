@@ -75,7 +75,7 @@ public class RegisterStudentController {
 		TutorManager tmg = new TutorManager();
 		boolean result = tmg.insertRegister(user, student);
 		if (result) {
-			ModelAndView mav = new ModelAndView("Login"); // forward ไป Login.jsp
+			ModelAndView mav = new ModelAndView("Login");
 			mav.addObject("result_regis", "ลงทะเบียนสำเร็จ! กรุณาเข้าสู่ระบบ");
 			return mav;
 		} else {

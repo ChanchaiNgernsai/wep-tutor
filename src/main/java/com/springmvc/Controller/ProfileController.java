@@ -53,7 +53,6 @@ public class ProfileController {
             us.setLastName(request.getParameter("lname"));
             us.setPhoneNumber(request.getParameter("phon_num"));
             us.setImgProfile(request.getParameter("image"));
-            us.setGender(request.getParameter("gender"));
 
             // แก้ studentId และ yearOfStudy
             stu.setStudentId(request.getParameter("student_id"));
@@ -64,11 +63,11 @@ public class ProfileController {
             tmg.updateStudent(stu); // จะต้องใช้ session ใหม่หรือ merge ก็ได้
 
             ModelAndView mav = new ModelAndView("ViewProfile");
-            mav.addObject("edit", "บันทึกข้อมูลสำเร็จ");
+            mav.addObject("edit", "แก้ไขข้อมูลสำเร็จ");
             return mav;
         } else {
             ModelAndView mav = new ModelAndView("EditProfile");
-            mav.addObject("error_edit", "ไม่สามารถบันทึกข้อมูลได้");
+            mav.addObject("error_edit", "ไม่สามารถแก้ไขข้อมูลได้");
             return mav;
         }
     }
