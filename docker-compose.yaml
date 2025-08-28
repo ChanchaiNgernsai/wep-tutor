@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+  # MySQL Database Service
+  mysql:
+    image: mysql:8.0
+    container_name: wep-tutor-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: project_tutor2
+      MYSQL_USER: tutor_user
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - wep-tutor-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Tomcat Application Server
+  tomcat:
+    image: tomcat:10.1-jdk17
+    container_name: wep-tutor-tomcat
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./target/SpringMVCProject-0.0.1-SNAPSHOT.war:/usr/local/tomcat/webapps/wep-tutor.war
+    environment:
+      CATALINA_OPTS: "-Dspring.profiles.active=docker -Xmx512m -Xms256m"
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: project_tutor2
+      DB_USER: tutor_user
+      DB_PASSWORD: 1234
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - wep-tutor-network
+
+  # phpMyAdmin for Database Management (Optional)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: wep-tutor-phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: tutor_user
+      PMA_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "8082:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - wep-tutor-network
+
+# Named volumes
+volumes:
+  mysql_data:
+    driver: local
+
+# Networks
+networks:
+  wep-tutor-network:
+    driver: bridge
