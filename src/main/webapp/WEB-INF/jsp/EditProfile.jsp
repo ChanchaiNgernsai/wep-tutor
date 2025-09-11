@@ -161,98 +161,125 @@
         font-style: normal;
         font-size: 0.9rem;
     }
+
+    .profile-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 </style>
 
 <script>
-function validate(frm1) {
-    var stuId = frm1.student_id.value.trim();
-    var stuIdPattern = /^\d{10}$/;
-    document.getElementById('err_stu_id').innerHTML = "";
-    if(stuId === ""){
-        document.getElementById('err_stu_id').innerHTML = "กรุณากรอกรหัสนักศึกษา";
-        frm1.student_id.focus();
-        return false;
-    }
-    if(!stuIdPattern.test(stuId)){
-        document.getElementById('err_stu_id').innerHTML = "กรุณากรอกเป็นตัวเลข 10 ตัวเท่านั้น";
-        frm1.student_id.focus();
-        return false;
-    }
+    function validate(frm1) {
+        var stuId = frm1.student_id.value.trim();
+        var stuIdPattern = /^\d{10}$/;
+        document.getElementById('err_stu_id').innerHTML = "";
+        if(stuId === ""){
+            document.getElementById('err_stu_id').innerHTML = "กรุณากรอกรหัสนักศึกษา";
+            frm1.student_id.focus();
+            return false;
+        }
+        if(!stuIdPattern.test(stuId)){
+            document.getElementById('err_stu_id').innerHTML = "กรุณากรอกเป็นตัวเลข 10 ตัวเท่านั้น";
+            frm1.student_id.focus();
+            return false;
+        }
 
-    var fname = frm1.fname.value.trim();
-    var fnamePattern = /^[A-Za-zก-๙ะ-์\s]{2,40}$/;
-    document.getElementById('err_fname').innerHTML = "";
-    if(fname === ""){
-        document.getElementById('err_fname').innerHTML = "กรุณากรอกชื่อ";
-        frm1.fname.focus();
-        return false;
-    }
-    if(!fnamePattern.test(fname)){
-        document.getElementById('err_fname').innerHTML = "ชื่อต้องเป็นภาษาไทยหรืออังกฤษ 2-40 ตัวอักษร";
-        frm1.fname.focus();
-        return false;
-    }
+        var fname = frm1.fname.value.trim();
+        var fnamePattern = /^[A-Za-zก-๙ะ-์\s]{2,40}$/;
+        document.getElementById('err_fname').innerHTML = "";
+        if(fname === ""){
+            document.getElementById('err_fname').innerHTML = "กรุณากรอกชื่อ";
+            frm1.fname.focus();
+            return false;
+        }
+        if(!fnamePattern.test(fname)){
+            document.getElementById('err_fname').innerHTML = "ชื่อต้องเป็นภาษาไทยหรืออังกฤษ 2-40 ตัวอักษร";
+            frm1.fname.focus();
+            return false;
+        }
 
-    var lname = frm1.lname.value.trim();
-    var lnamePattern = /^[A-Za-zก-๙ะ-์\s]{2,85}$/;
-    document.getElementById('err_lname').innerHTML = "";
-    if(lname === ""){
-        document.getElementById('err_lname').innerHTML = "กรุณากรอกนามสกุล";
-        frm1.lname.focus();
-        return false;
-    }
-    if(!lnamePattern.test(lname)){
-        document.getElementById('err_lname').innerHTML = "นามสกุลต้องเป็นภาษาไทยหรืออังกฤษ 2-85 ตัวอักษร";
-        frm1.lname.focus();
-        return false;
-    }
+        var lname = frm1.lname.value.trim();
+        var lnamePattern = /^[A-Za-zก-๙ะ-์\s]{2,85}$/;
+        document.getElementById('err_lname').innerHTML = "";
+        if(lname === ""){
+            document.getElementById('err_lname').innerHTML = "กรุณากรอกนามสกุล";
+            frm1.lname.focus();
+            return false;
+        }
+        if(!lnamePattern.test(lname)){
+            document.getElementById('err_lname').innerHTML = "นามสกุลต้องเป็นภาษาไทยหรืออังกฤษ 2-85 ตัวอักษร";
+            frm1.lname.focus();
+            return false;
+        }
 
-    var phone = frm1.phon_num.value.trim();
-    var phonePattern = /^(06|07|08|09)\d{8}$/;
-    document.getElementById('err_phone').innerHTML = "";
-    if(phone === ""){
-        document.getElementById('err_phone').innerHTML = "กรุณากรอกเบอร์โทรศัพท์";
-        frm1.phon_num.focus();
-        return false;
-    }
-    if(/\s/.test(phone)){
-        document.getElementById('err_phone').innerHTML = "เบอร์โทรต้องไม่มีช่องว่าง";
-        frm1.phon_num.focus();
-        return false;
-    }
-    if(!phonePattern.test(phone)){
-        document.getElementById('err_phone').innerHTML = "เบอร์โทรต้องขึ้นต้น 06-09 และมี 10 หลัก";
-        frm1.phon_num.focus();
-        return false;
-    }
+        var phone = frm1.phon_num.value.trim();
+        var phonePattern = /^(06|07|08|09)\d{8}$/;
+        document.getElementById('err_phone').innerHTML = "";
+        if(phone === ""){
+            document.getElementById('err_phone').innerHTML = "กรุณากรอกเบอร์โทรศัพท์";
+            frm1.phon_num.focus();
+            return false;
+        }
+        if(/\s/.test(phone)){
+            document.getElementById('err_phone').innerHTML = "เบอร์โทรต้องไม่มีช่องว่าง";
+            frm1.phon_num.focus();
+            return false;
+        }
+        if(!phonePattern.test(phone)){
+            document.getElementById('err_phone').innerHTML = "เบอร์โทรต้องขึ้นต้น 06-09 และมี 10 หลัก";
+            frm1.phon_num.focus();
+            return false;
+        }
 
-    var yfs = frm1.yfs.value.trim();
-    document.getElementById('err_yfs').innerHTML = "";
-    if(yfs === ""){
-        document.getElementById('err_yfs').innerHTML = "กรุณาเลือกชั้นปี";
-        frm1.yfs.focus();
-        return false;
-    }
+        var yfs = frm1.yfs.value.trim();
+        document.getElementById('err_yfs').innerHTML = "";
+        if(yfs === ""){
+            document.getElementById('err_yfs').innerHTML = "กรุณาเลือกชั้นปี";
+            frm1.yfs.focus();
+            return false;
+        }
 
-    // var imgInput = frm1.image;
-    // document.getElementById('err_image').innerHTML = "";
-    // if(imgInput.files.length > 0){
-    //     var file = imgInput.files[0];
-    //     var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-    //     if(!allowedExtensions.exec(file.name)){
-    //         document.getElementById('err_image').innerHTML = "*ไฟล์ต้องเป็น .jpg, .jpeg, .png หรือ .gif เท่านั้น";
-    //         imgInput.focus();
-    //         return false;
-    //     }
-    //     var maxSize = 5 * 1024 * 1024;
-    //     if(file.size > maxSize){
-    //         document.getElementById('err_image').innerHTML = "*ขนาดไฟล์ต้องไม่เกิน 5MB";
-    //         imgInput.focus();
-    //         return false;
-    //     }
-    // }
+        var imgInput = frm1.image;
+        document.getElementById('err_image').innerHTML = "";
+        if(imgInput.files.length > 0){
+            var file = imgInput.files[0];
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            if(!allowedExtensions.exec(file.name)){
+                document.getElementById('err_image').innerHTML = "*ไฟล์ต้องเป็น .jpg, .jpeg, .png หรือ .gif เท่านั้น";
+                imgInput.focus();
+                return false;
+            }
+            var maxSize = 5 * 1024 * 1024; // 5MB
+            if(file.size > maxSize){
+                document.getElementById('err_image').innerHTML = "*ขนาดไฟล์ต้องไม่เกิน 5MB";
+                imgInput.focus();
+                return false;
+            }
+        }
 
     return true;
+    }
+
+    function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById("preview");
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;   // แสดงรูปใหม่
+        }
+        reader.readAsDataURL(input.files[0]); // แปลงไฟล์ภาพเป็น Base64
+    }
+    
 }
 </script>
 </head>
@@ -264,9 +291,13 @@ function validate(frm1) {
 
     <div class="right-container">
         <h1>Edit Profile</h1>
-        <form name="frm1" action="editProfile" method="post" onsubmit="return validate(this);">
+        <form name="frm1" action="editProfile" method="post" onsubmit="return validate(this);" enctype="multipart/form-data">
             <input type="hidden" name="email" value="${User.email}">
-            
+
+            <img id="preview" class="profile-img" src="getUserImage?email=${User.email}" />
+        <br>
+
+
             <span class="error" id="err_stu_id"></span>
             <input type="text" name="student_id" id="student_id" placeholder="Student ID" value="${Stu.studentId}">
 
@@ -289,8 +320,7 @@ function validate(frm1) {
             </select>
 
             <span class="error" id="err_image"></span>
-            <input type="file" name="image" id="image">
-
+            <input type="file" name="image" id="image" accept="image/*" onchange="previewImage(event)">
              
             <div style="color:red;">${error_edit}</div>
         

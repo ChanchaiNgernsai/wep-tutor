@@ -30,6 +30,7 @@ public class RegisterTutorController {
 		String expertise = request.getParameter("expertise");
 
 		User user = (User) session.getAttribute("User");
+
 		if (user == null) {
 			ModelAndView mav = new ModelAndView("Login");
 			mav.addObject("error", "กรุณาเข้าสู่ระบบก่อนสมัครเป็นติวเตอร์");
@@ -50,13 +51,29 @@ public class RegisterTutorController {
 				skillList.add(skill);
 			}
 		}
-
 		TutorManager tmg = new TutorManager();
 		boolean result = tmg.insertRegisterTutor(user, tutor, skillList);
 
 		if (result) {
+			// List<String> roleTypes = (List<String>) session.getAttribute("Roles");
+			session.setAttribute("Tutor", tutor);
+			Object getRole = session.getAttribute("Roles");
+			List<String> roleTypes;
+
+			if (getRole instanceof List<?>) {
+				roleTypes = new ArrayList<>();
+				for (Object o : (List<?>) getRole) {
+					if (o instanceof String) {
+						roleTypes.add((String) o);
+					}
+				}
+			} else {
+				roleTypes = new ArrayList<>();
+			}
+
 			ModelAndView mav = new ModelAndView("Home");
 			mav.addObject("result_RegisTutor", "ลงทะเบียนติวเตอร์สำเร็จ");
+			mav.addObject("User", user);
 			return mav;
 		} else {
 			ModelAndView mav = new ModelAndView("RegisterTutor");

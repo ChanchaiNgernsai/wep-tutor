@@ -271,7 +271,7 @@
         <input type="password" name="password" id="password" placeholder="Password"><br>
 
         <div class="btn-group">
-          <input type="reset" value="ยกเลิก">
+          <input type="reset" value="ยกเลิก"  onclick="window.location.href='goHome';">
           <input type="submit" value="เข้าสู่ระบบ">
         </div>
 

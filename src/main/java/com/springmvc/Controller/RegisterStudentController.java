@@ -1,13 +1,17 @@
 package com.springmvc.Controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import com.springmvc.model.*;
@@ -36,7 +40,9 @@ public class RegisterStudentController {
 	}
 
 	@RequestMapping(value = "/addRegisterStu", method = RequestMethod.POST)
-	public ModelAndView addRegisterStudent(HttpServletRequest request, HttpSession session) {
+	public ModelAndView addRegisterStudent(@RequestParam("image") MultipartFile file,
+			HttpServletRequest request, HttpSession session) {
+
 		String studentId = request.getParameter("student_id");
 		String email = request.getParameter("email");
 		String fname = request.getParameter("fname");
@@ -44,7 +50,6 @@ public class RegisterStudentController {
 		String lname = request.getParameter("lname");
 		String gender = request.getParameter("gender");
 		String phoNum = request.getParameter("phon_num");
-		String image = request.getParameter("image");
 		String yearOfStudy = request.getParameter("yfs");
 
 		try {
@@ -62,8 +67,17 @@ public class RegisterStudentController {
 		user.setLastName(lname);
 		user.setGender(gender);
 		user.setPhoneNumber(phoNum);
-		user.setImgProfile(image);
 		user.setBalance(0.0);
+
+		// ถ้ามีรูป ให้เก็บลง User (byte[])
+		try {
+			if (!file.isEmpty()) {
+				user.setImgProfile(file.getBytes()); // User ต้องมีฟิลด์ byte[] image
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		session.setAttribute("User", user);
 
 		Student student = new Student();
@@ -73,7 +87,8 @@ public class RegisterStudentController {
 		session.setAttribute("Stu", student);
 
 		TutorManager tmg = new TutorManager();
-		boolean result = tmg.insertRegister(user, student);
+		boolean result = tmg.insertRegister(user, student); // ต้องปรับให้บันทึก byte[] ด้วย
+
 		if (result) {
 			ModelAndView mav = new ModelAndView("Login");
 			mav.addObject("result_regis", "ลงทะเบียนสำเร็จ! กรุณาเข้าสู่ระบบ");
@@ -83,7 +98,6 @@ public class RegisterStudentController {
 			mav.addObject("err_result", "ไม่สามารถบันทึกได้");
 			return mav;
 		}
-
 	}
 
 	@RequestMapping(value = "/loginUser", method = RequestMethod.POST)
@@ -120,15 +134,6 @@ public class RegisterStudentController {
 				}
 			}
 			session.setAttribute("Roles", roleTypes);
-
-			Student student = tmg.getStudentByEmail(email);
-			session.setAttribute("Stu", student);
-
-			Tutor tutor = tmg.getTutorByEmail(email);
-			if (tutor != null) {
-				session.setAttribute("Tutor", tutor);
-			}
-
 			ModelAndView mav = new ModelAndView("Home");
 			mav.addObject("result_login", "เข้าสู่ระบบเรียบร้อย");
 			return mav;
@@ -143,6 +148,22 @@ public class RegisterStudentController {
 	public ModelAndView logout(HttpSession session) {
 		session.invalidate();
 		return new ModelAndView("redirect:/goLogin");
+	}
+
+	@RequestMapping(value = "/getUserImage", method = RequestMethod.GET)
+	public void getUserImage(@RequestParam("email") String email, HttpServletResponse response) {
+		try {
+			TutorManager tmg = new TutorManager();
+			User user = tmg.getRegisterByEmail(email);
+
+			if (user != null && user.getImgProfile() != null) {
+				response.setContentType("image/png");
+				response.getOutputStream().write(user.getImgProfile());
+				response.getOutputStream().close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

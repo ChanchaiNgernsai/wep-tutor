@@ -365,31 +365,32 @@
 
 		   
 		    
-		    /* รูปภาพ เว้นๆๆๆๆๆ ยากฉิปเอา ไว้ก่อนนนนน
-		    var imgInput = frm1.image;  // สมมุติชื่อ input="image"
-		    document.getElementById('err_image').innerHTML = "";
-		
-		    if (imgInput.files.length === 0) {
-		        document.getElementById('err_image').innerHTML = "* กรุณาเลือกไฟล์รูปภาพ";
-		        imgInput.focus();
-		        return false;
-		    }
-		
-		    var file = imgInput.files[0];
-		    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-		
-		    if (!allowedExtensions.exec(file.name)) {
-		        document.getElementById('err_image').innerHTML = "* ไฟล์ต้องเป็น .jpg, .jpeg, .png หรือ .gif เท่านั้น";
-		        imgInput.focus();
-		        return false;
-		    }
-		
-		    var maxSize = 5 * 1024 * 1024; 
-		    if (file.size > maxSize) {
-		        document.getElementById('err_image').innerHTML = "* ขนาดไฟล์ต้องไม่เกิน 5MB";
-		        imgInput.focus();
-		        return false;
-		    }  */ 
+		    var imgInput = frm1.image;  // input type="file" ชื่อ "image"
+    document.getElementById('err_image').innerHTML = "";
+
+    if (imgInput.files.length === 0) {
+        document.getElementById('err_image').innerHTML = "* กรุณาเลือกไฟล์รูปภาพ";
+        imgInput.focus();
+        return false;
+    }
+
+    var file = imgInput.files[0];
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+    // ตรวจสอบนามสกุลไฟล์
+    if (!allowedExtensions.exec(file.name)) {
+        document.getElementById('err_image').innerHTML = "* ไฟล์ต้องเป็น .jpg, .jpeg, .png หรือ .gif เท่านั้น";
+        imgInput.focus();
+        return false;
+    }
+
+    // ตรวจสอบขนาดไฟล์ <= 5MB
+    var maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+        document.getElementById('err_image').innerHTML = "* ขนาดไฟล์ต้องไม่เกิน 5MB";
+        imgInput.focus();
+        return false;
+    }
 		    
 		   
 		    return true;
@@ -398,7 +399,7 @@
 <body>
 <div class="main-container">
   <div class="left-container">
-    <a href="goHome">&#8592; กลับหน้า Home</a>
+    <a href="goHome">&#8592; กลับหน้า Home </a>
     <a href="goLogin">&#8592; ไปหน้า Login</a>
   </div>
 
@@ -406,7 +407,7 @@
     <h1>Register Student</h1>
     <p class="error" style="color:red;">${err_result}</p>
 
-    <form name="frm1" action="addRegisterStu" method="post" onsubmit="return validate(this);">
+    <form name="frm1" action="addRegisterStu" method="post" enctype="multipart/form-data" onsubmit="return validate(this);">
       <span class="error" id="err_stu_id"></span>
       <input type="text" name="student_id" id="student_id" placeholder="Student ID">
 
@@ -450,8 +451,9 @@
       <input type="file" name="image" id="image">
 
       <div class="btn-group">
-        <input type="reset" value="ยกเลิก">
-        <input type="submit" value="ลงทะเบียน">
+        <input type="reset" value="ยกเลิก" onclick="window.location.href='goHome';">
+		
+        <input type="submit" value="Upload">
       </div>
     </form>
   </div>

@@ -61,7 +61,7 @@
 </head>
 <body>
     <div class="container">
-        <img src="${User.imgProfile}" class="profile-img"/><br>
+        <img src="getUserImage?email=${User.email}" class="profile-img"/><br>
         
         <div class="links">
             <a href="goHome">🏠 กลับหน้า Home</a>

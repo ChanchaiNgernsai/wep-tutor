@@ -8,21 +8,23 @@
     
     <script>
         function validateSearchForm() {
-            const keyword = document.forms["searchForm"]["keyword"].value.trim();
-            const regex = /^[\u0E00-\u0E7Fa-zA-Z\s]{1,20}$/;
-    
-            if (keyword === "") {
-                alert("กรุณากรอกคำค้นหา");
-                return false;
-            }
-    
-            if (!regex.test(keyword)) {
-                alert("กรุณากรอกเฉพาะตัวอักษรภาษาไทยหรืออังกฤษ (ไม่เกิน 20 ตัว)");
-                return false;
-            }
-    
-            return true;
-        }
+    const keyword = document.forms["searchForm"]["keyword"].value.trim();
+    const regex = /^[\u0E00-\u0E7Fa-zA-Z\s]{1,20}$/;
+
+    if (keyword !== "" && !regex.test(keyword)) {
+        alert("กรุณากรอกเฉพาะตัวอักษรภาษาไทยหรืออังกฤษ (ไม่เกิน 20 ตัว)");
+        return false;
+    }
+
+    return true;
+}
+
+    setTimeout(function() {
+        const loginMsg = document.getElementById("resultLogin");
+        const tutorMsg = document.getElementById("resultTutor");
+        if (loginMsg) loginMsg.style.display = "none";
+        if (tutorMsg) tutorMsg.style.display = "none";
+    }, 5000); // 5000 = 5 วินาที
     </script>
     
     <style>
@@ -116,15 +118,31 @@
         .header input[type="submit"]:hover {
             background-color: #007a2f;
         }
-    </style>
+
+        .hover-shadow {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover; 
+            display: block;
+            transition: box-shadow 0.2s ease;
+        }
+        .hover-shadow:hover {
+             box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
     </style>
 </head>
 <body>
 
     <div class="header">
-        <a href="goHome">
-            <img src="resources/images/home_on.png" width="120" height="120" alt="Home" />
-        </a>
+        <div >
+            <a href="goHome">
+                <img src="resources/images/home_on.png" alt="Home"width="120" height="120" alt="Home" />
+            </a>
+        </div>
+    
+        
         <h2>ช่วยติวในมหาวิทยาลัยแม่โจ้ </h2>
         
             <form name="searchForm" action="search" method="get" onsubmit="return validateSearchForm();">
@@ -136,22 +154,16 @@
     <div class="main-content">
         <div class="left-container">
             <c:if test="${not empty sessionScope.User}">
-                <img
-                    class="profile-img"
-                    src="${sessionScope.User.imgProfile}"
-                    width="220"
-                    height="120"
-                    alt="รูปโปรไฟล์"
-                /><br />
+                <img class="profile-img" src="getUserImage?email=${User.email}" width="120" height="120" alt="รูปโปรไฟล์"/><br />
 
-                <p style="color: green;">${result_login}</p>
-                <p style="color: green;">${result_RegisTutor}</p>
+                <p id="resultLogin" style="color: green;">${result_login}</p>
+                <p id="resultTutor" style="color: green;">${result_RegisTutor}</p>
 
                 <a class="btn" href="goProfile">ดูโปรไฟล์</a><br />
                 <p>ชื่อ: ${sessionScope.User.firstName} ${sessionScope.User.lastName}</p>
                 <p>สถานะของคุณ</p>
                 <ul class="role-list">
-                    <c:forEach var="role" items="${sessionScope.Roles}">
+                    <c:forEach var="role" items="${sessionScope.Roles}"> 
                         <li>${role}</li>
                     </c:forEach>
                 </ul>
@@ -178,20 +190,10 @@
 
             <c:if test="${empty sessionScope.User}">
                 <a href="goLogin">
-                    <img
-                        src="resources/images/login_off.png"
-                        width="120"
-                        height="120"
-                        alt="Login"
-                    />
+                   <img class="hover-shadow" src="resources/images/login_off.png" alt="Login" />
                 </a><br />
                 <a href="goRegisterStu">
-                    <img
-                        src="resources/images/Register_off.png"
-                        width="120"
-                        height="120"
-                        alt="Register"
-                    />
+                    <img class="hover-shadow" src="resources/images/Register_off.png" alt="Register" />
                 </a><br />
             </c:if>
         </div>

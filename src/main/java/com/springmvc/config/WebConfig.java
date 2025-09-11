@@ -11,15 +11,15 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import org.springframework.lang.NonNull;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.springmvc")
-public class WebConfig implements WebMvcConfigurer{
-	
+public class WebConfig implements WebMvcConfigurer {
 
 	@Bean
-	public ViewResolver viewResolver(){
+	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/jsp/");
 		viewResolver.setSuffix(".jsp");
@@ -27,13 +27,14 @@ public class WebConfig implements WebMvcConfigurer{
 	}
 
 	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-	    registry.addResourceHandler("/resources/**")
-	            .addResourceLocations("/resources/");
+	public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**")
+				.addResourceLocations("/resources/");
 	}
-	
-	 @Bean
-	 public MultipartResolver multipartResolver() {
-	        return new StandardServletMultipartResolver();
-	    }
+
+	@Bean
+	public MultipartResolver multipartResolver() {
+		return new StandardServletMultipartResolver();
+	}
+
 }

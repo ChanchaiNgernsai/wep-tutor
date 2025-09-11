@@ -101,7 +101,7 @@
         border-radius: 8px;
         font-weight: 700;
         font-size: 18px;
-        box-shadow: 0 6px 12px rgba(44,192,108,0.5);
+        box-shadow: 0 6px 12px rgba(24, 197, 125, 0.5);
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
         text-align: center;
         width: 100%;
@@ -111,7 +111,7 @@
         cursor: pointer;
     }
     .register-link:hover {
-        background-color: #2853B8;
+        background-color: #e9f9ff;
         box-shadow: 0 8px 18px rgba(40,83,184,0.7);
     }
 

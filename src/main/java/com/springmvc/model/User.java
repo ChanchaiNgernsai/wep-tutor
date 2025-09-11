@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -35,8 +36,9 @@ public class User {
 	@Column(name = "phone_number", length = 50)
 	private String phoneNumber;
 
-	@Column(name = "img_profile")
-	private String imgProfile;
+	@Lob
+	@Column(name = "profile_image", columnDefinition = "MEDIUMBLOB")
+	private byte[] imgProfile;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Role> roles;
@@ -54,7 +56,7 @@ public class User {
 	}
 
 	public User(String email, String password, String firstName, String lastName, String gender, double balance,
-			String phoneNumber, String imgProfile) {
+			String phoneNumber, byte[] imgProfile) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -123,11 +125,11 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getImgProfile() {
+	public byte[] getImgProfile() {
 		return imgProfile;
 	}
 
-	public void setImgProfile(String imgProfile) {
+	public void setImgProfile(byte[] imgProfile) {
 		this.imgProfile = imgProfile;
 	}
 
