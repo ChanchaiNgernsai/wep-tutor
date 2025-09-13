@@ -453,7 +453,7 @@
       <div class="btn-group">
         <input type="reset" value="ยกเลิก" onclick="window.location.href='goHome';">
 		
-        <input type="submit" value="Upload">
+        <input type="submit" value="ลงทะเบียน">
       </div>
     </form>
   </div>

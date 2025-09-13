@@ -34,8 +34,19 @@ public class RegisterStudentController {
 		return "Login";
 	}
 
+	// @RequestMapping(value = "/goHome", method = RequestMethod.GET)
+	// public ModelAndView loadHomePage(HttpSession session) {
+	// TutorManager tmg = new TutorManager();
+
+	// List<ReviewCourse> reviews = tmg.getAllReviews();
+
+	// ModelAndView mav = new ModelAndView("Home");
+	// mav.addObject("reviews", reviews);
+	// return mav;
+	// }
+
 	@RequestMapping(value = "/goHome", method = RequestMethod.GET)
-	public String goHomePage() {
+	public String loadgoHomePage() {
 		return "Home";
 	}
 

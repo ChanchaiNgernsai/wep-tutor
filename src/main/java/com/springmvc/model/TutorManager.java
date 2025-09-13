@@ -418,7 +418,11 @@ public class TutorManager {
 			session.beginTransaction();
 
 			registerCourses = session.createQuery(
-					"FROM RegisterCourse rc WHERE rc.student = :stu", RegisterCourse.class)
+					"SELECT DISTINCT rc FROM RegisterCourse rc " +
+							"JOIN FETCH rc.course c " +
+							"LEFT JOIN FETCH c.courseDates " +
+							"WHERE rc.student = :stu",
+					RegisterCourse.class)
 					.setParameter("stu", student)
 					.getResultList();
 
@@ -435,6 +439,33 @@ public class TutorManager {
 		return registerCourses;
 	}
 
+	// public List<RegisterCourse> getRegisterCoursesByStudent(Student student) {
+	// SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+	// Session session = null;
+	// List<RegisterCourse> registerCourses = null;
+
+	// try {
+	// session = sessionFactory.openSession();
+	// session.beginTransaction();
+
+	// registerCourses = session.createQuery(
+	// "FROM RegisterCourse rc WHERE rc.student = :stu", RegisterCourse.class)
+	// .setParameter("stu", student)
+	// .getResultList();
+
+	// session.getTransaction().commit();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// if (session != null)
+	// session.getTransaction().rollback();
+	// } finally {
+	// if (session != null)
+	// session.close();
+	// }
+
+	// return registerCourses;
+	// }
+
 	public RegisterCourse getRegisterCourseById(int registerId) {
 		RegisterCourse rc = null;
 		try (Session session = HibernateConnection.doHibernateConnection().openSession()) {
@@ -445,6 +476,7 @@ public class TutorManager {
 					+ "JOIN FETCH c.category "
 					+ "JOIN FETCH c.tutor t "
 					+ "JOIN FETCH t.user "
+					+ "LEFT JOIN FETCH c.courseDates " // <-- เพิ่มตรงนี้
 					+ "WHERE rc.registerCourseId = :rid";
 
 			rc = session.createQuery(hql, RegisterCourse.class)
@@ -490,6 +522,45 @@ public class TutorManager {
 		}
 
 		return students;
+	}
+
+	public boolean addReviewCourse(ReviewCourse review) {
+		try (Session session = HibernateConnection.doHibernateConnection().openSession()) {
+			session.beginTransaction();
+			session.save(review);
+			session.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public List<ReviewCourse> getAllReviews() {
+		SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+		Session session = sessionFactory.openSession();
+		List<ReviewCourse> reviews = null;
+
+		try {
+			session.beginTransaction();
+
+			String hql = "SELECT r FROM ReviewCourse r "
+					+ "LEFT JOIN FETCH r.user u "
+					+ "LEFT JOIN FETCH r.course c "
+					+ "LEFT JOIN FETCH c.tutor t";
+
+			reviews = session.createQuery(hql, ReviewCourse.class).list();
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session.getTransaction() != null)
+				session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
+
+		return reviews;
 	}
 
 }

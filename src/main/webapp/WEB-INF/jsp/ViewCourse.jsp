@@ -130,7 +130,7 @@
 
         <div class="course-content">
             <div class="tutor-info">
-                <img class="profile-img" src="${course.tutor.user.imgProfile}" alt="รูปโปรไฟล์ผู้สอน">
+                <img class="profile-img" src="getUserImage?email=${course.tutor.user.email}" >
                 <div class="section-title">ผู้เปิดสอนคอร์สนี้</div>
                 <p><strong>ชื่อ-นามสกุล:</strong> ${course.tutor.user.firstName} ${course.tutor.user.lastName}</p>
                 <p><strong>เพศ:</strong> ${course.tutor.user.gender}</p>

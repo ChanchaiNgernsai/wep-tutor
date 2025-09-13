@@ -46,6 +46,7 @@ public class RegisterCourseController {
         ModelAndView mav = new ModelAndView("ViewRegisterCourse");
         mav.addObject("rc", rc);
         mav.addObject("course", rc.getCourse());
+        mav.addObject("courseDates", rc.getCourse().getCourseDates());
         return mav;
     }
 

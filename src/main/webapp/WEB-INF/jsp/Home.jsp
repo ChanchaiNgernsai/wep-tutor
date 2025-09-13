@@ -76,6 +76,14 @@
             width: 120px;        
             height: 120px;       
         }
+        .profile-img-reviewTutor {
+            border-radius: 12px;  /* มุมโค้งเล็ก */
+            object-fit: cover;   
+            width: 120px;        
+            height: 120px;       
+            border: 2px solid #ccc; /* ถ้าต้องการขอบบาง */
+        }
+
 
 
         .btn {
@@ -158,7 +166,7 @@
 
                 <p id="resultLogin" style="color: green;">${result_login}</p>
                 <p id="resultTutor" style="color: green;">${result_RegisTutor}</p>
-
+                <p id="resultReview" style="color: green;">${result_review}</p>
                 <a class="btn" href="goProfile">ดูโปรไฟล์</a><br />
                 <p>ชื่อ: ${sessionScope.User.firstName} ${sessionScope.User.lastName}</p>
                 <p>สถานะของคุณ</p>
@@ -200,11 +208,9 @@
 
         
         <div class="right-container">
-            <p style="font-weight: bold; font-size: 20px; margin-bottom: 15px;">
-                ติวเตอร์ยอดนิยม
-            </p>
-            <p> ***เดียว get ติวเตอร์ที่มีคะแนนรีวิวที่ดีที่สุด(กลับมาทำ)**
-            <!-- ยังไม่มีข้อมูลติวเตอร์แสดง -->
+            <h2>รีวิวล่าสุดจากผู้เรียน</h2>
+
+           
         </div>
     </div>
 </body>
