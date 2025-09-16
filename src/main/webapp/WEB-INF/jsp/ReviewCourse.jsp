@@ -49,6 +49,13 @@
         font-style: italic;
         color: #c21030;
     }
+    
+    .result_message {
+        text-align: center;
+        margin: 10px 0 20px 0;
+        font-style: italic;
+        color: #10c228;
+    }
 
     /* Center container */
     .center-container {
@@ -180,10 +187,51 @@
     .review-link:hover {
         text-decoration: underline;
     }
+    .rating-box {
+    display: flex;
+    flex-direction: row-reverse; /* ไล่จาก 5 ไป 1 ใน HTML แต่แสดง 1 → 5 */
+    justify-content: flex-start;
+}
+
+.rating-box input[type="checkbox"] {
+    display: none;
+}
+
+.rating-box label {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+    margin: 0 2px;
+}
+
+/* เลือกดาวแล้วสีทอง */
+.rating-box input[type="checkbox"]:checked ~ label,
+.rating-box label:hover,
+.rating-box label:hover ~ label {
+    color: #FFD700;
+}
+
 
 </style>
 
 <script>
+    const stars = document.querySelectorAll('.star');
+
+    stars.forEach((star, idx) => {
+        star.addEventListener('change', () => {
+            // ถ้าเลือกดาว idx+1 ให้ดาวก่อนหน้าถูกเลือกทั้งหมด
+            if(star.checked) {
+                for(let i=0; i<=idx; i++) {
+                    stars[i].checked = true;
+                }
+            } else {
+                // ถ้าเอาออก ให้ดาวหลังดาวนี้ถูกเอาออกทั้งหมด
+                for(let i=idx; i<stars.length; i++) {
+                    stars[i].checked = false;
+                }
+            }
+        });
+    });
 function validateComment() {
     let comment = document.getElementById("comment").value.trim();
     
@@ -200,97 +248,95 @@ function validateComment() {
     }
 
     // ตรวจสอบว่าเป็นภาษาไทยหรืออังกฤษ และมีช่องว่างได้
-    let regex = /^[A-Za-zก-ฮ0-9\s]+$/;
+    let regex = /^[A-Za-zก-๙0-9\s.,!?]+$/;
     if(!regex.test(comment)) {
         alert("ข้อความรีวิวต้องเป็นตัวอักษรภาษาไทยหรืออังกฤษเท่านั้น");
         return false;
     }
 
     return true; // ผ่านการตรวจสอบ
-}
+    }
 </script>
 </head>
 <body>
 
-<div class="header">
-    <a href="goHome">
-        <img src="resources/images/home_on.png" alt="Home" />
-    </a>
-    <h2>รีวิวคอร์ส</h2>
-</div>
+    <div class="header">
+        <a href="goHome">
+            <img src="resources/images/home_on.png" alt="Home" />
+        </a>
+        <h2>รีวิวคอร์ส</h2>
+    </div>
 
 
-<c:if test="${not empty resultReview}">
-    <p class="message">${resultReview}</p>
-</c:if>
-<c:if test="${not empty err_result}">
-    <p class="message">${err_result}</p>
-</c:if>
-
-<div class="center-container">
-
+    <c:if test="${not empty resultReview}">
+        <p class="result_message">${resultReview}</p>
+    </c:if>
+    <c:if test="${not empty err_result}">
+        <p class="message">${err_result}</p>
+    </c:if>
     
-    <div class="left-container">
-        <c:if test="${not empty student}">
-            <c:if test="${not empty registerCourses}">
-                <c:forEach var="rc" items="${registerCourses}">
-                    <div class="course-review">
-                        <div class="course-header">
-                            <img class="profile-img" src="getUserImage?email=${rc.course.tutor.user.email}" alt="Profile Image" height="80" width="80"/>
-                            <div class="course-info">
-                                <p><strong>ชื่อคอร์ส:</strong> ${rc.course.courseName}</p>
-                                <p><strong>รายละเอียด:</strong> ${rc.course.courseDescription}</p>
-                                <p><strong>ราคา:</strong> ${rc.course.coursePrice} บาท</p>
+
+    <div class="center-container">
+
+
+        <div class="right-container"> 
+            <h2>รีวิวจากผู้เรียน</h2>
+
+            <c:if test="${not empty reviews}">
+                <c:forEach var="rev" items="${reviews}">
+                    <div class="review-box">
+                        <div class="review-header">
+                            <img class="profile-img-reviewTutor" src="getUserImage?email=${rev.course.tutor.user.email}" alt="Tutor Image" />
+                            <div class="review-info">
+                                <p><strong>คอร์ส:</strong> ${rev.course.courseName}</p>
+                                <p><strong>คะแนน:</strong> ${rev.score} / 5.0</p>
                             </div>
                         </div>
-
-                        <form action="addReviewCourse" method="post" onsubmit="return validateComment()">
-                            <input type="hidden" name="courseId" value="${rc.course.courseId}" />
-                            <input type="hidden" name="student" value="${student.user.email}" />
-                            <div class="rating-box">
-                                <label>ให้คะแนน:</label>
-                                <input type="number" name="score" step="0.5" min="0.5" max="5.0" placeholder="0.5-5.0" />
-                            </div>
-                            <textarea name="comment" id="comment" rows="4" placeholder="เขียนรีวิวที่นี่..."></textarea>
-                            <br>
-                            <button type="submit">ส่งรีวิว</button>
-
-                            <p style="color: #c21030;">*****เอาไว้สำหรับทดสอบ 한국/韓國  ***</p>
-                        </form>
+                        <p class="review-comment"><strong>รีวิว:</strong> ${rev.comment}</p>
+                        <a class="review-link" href="getViewCourse?id=${rev.course.courseId}">ดูคอร์ส</a>
                     </div>
                 </c:forEach>
             </c:if>
-        </c:if>
 
-        <c:if test="${empty student}">
-            <p style="text-align:center; color:#888; margin-top:20px;">เข้าสู่ระบบเพื่อเขียนรีวิว</p>
-        </c:if>
-    </div>
+            <c:if test="${empty reviews}">
+                <p style="text-align:center; color:#666;">ยังไม่มีรีวิว</p>
+            </c:if>
+        </div>
 
-    <div class="right-container">
-        <h2>รีวิวจากผู้เรียน</h2>
-
-        <c:if test="${not empty reviews}">
-            <c:forEach var="rev" items="${reviews}">
-                <div class="review-box">
-                    <div class="review-header">
-                        <img class="profile-img-reviewTutor" src="getUserImage?email=${rev.course.tutor.user.email}" alt="Tutor Image" />
-                        <div class="review-info">
-                            <p><strong>คอร์ส:</strong> ${rev.course.courseName}</p>
-                            <p><strong>คะแนน:</strong> ${rev.score} / 5.0</p>
-                        </div>
+         <!-- ฟอร์มเขียนรีวิว -->
+        <div class="left-container">
+            <div class="course-review">
+                <div class="course-header">
+                    <img class="profile-img" src="getUserImage?email=${course.tutor.user.email}" alt="Profile Image" height="80" width="80"/>
+                    <div class="course-info">
+                        <p><strong>ชื่อคอร์ส:</strong> ${course.courseName}</p>
+                        <p><strong>รายละเอียด:</strong> ${course.courseDescription}</p>
+                        <p><strong>ราคา:</strong> ${course.coursePrice} บาท</p>
                     </div>
-                    <p class="review-comment"><strong>รีวิว:</strong> ${rev.comment}</p>
-                    <a class="review-link" href="getViewCourse?id=${rev.course.courseId}">ดูคอร์ส</a>
                 </div>
-            </c:forEach>
-        </c:if>
-
-        <c:if test="${empty reviews}">
-            <p style="text-align:center; color:#666;">ยังไม่มีรีวิว</p>
-        </c:if>
+                <c:if test="${not empty student}">
+                    <form action="addReviewCourse" method="post" onsubmit="return validateComment()">
+                        <input type="hidden" name="courseId" value="${course.courseId}" />
+                        <input type="hidden" name="student" value="${student.user.email}" />
+                        <div class="rating-box">
+                            <c:forEach var="i" begin="1" end="5">
+                                <input type="checkbox" name="score" value="${i}" id="score${i}" class="star" />
+                                <label for="score${i}">★</label>
+                            </c:forEach>
+                        </div>
+                        <textarea name="comment" id="comment" rows="4" placeholder="เขียนรีวิวที่นี่..."></textarea>
+                        <br>
+                        <button type="submit">ส่งรีวิว</button>
+                    </form>
+                </c:if>
+                <c:if test="${empty student}">
+                    <p style="text-align:center; color:#888; margin-top:20px;">เข้าสู่ระบบเพื่อเขียนรีวิว</p>
+                </c:if>
+            </div>
+        </div>
     </div>
-
-</div>
+    <div style="text-align: center; margin: 20px 0; color: #aaa;">
+        &copy; 2024 ช่วยติวในมหาวิทยาลัยแม่โจ้
+    </div>
 </body>
 </html>

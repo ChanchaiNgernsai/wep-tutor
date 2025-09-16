@@ -563,4 +563,48 @@ public class TutorManager {
 		return reviews;
 	}
 
+	public List<ReviewCourse> getReviewsByCourse(int courseId) {
+		List<ReviewCourse> reviews = new ArrayList<>();
+		Session session = null;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			String hql = "SELECT r FROM ReviewCourse r " +
+					"LEFT JOIN FETCH r.user u " +
+					"LEFT JOIN FETCH r.course c " +
+					"LEFT JOIN FETCH c.tutor t " +
+					"WHERE c.courseId = :courseId";
+
+			Query<ReviewCourse> query = session.createQuery(hql, ReviewCourse.class);
+			query.setParameter("courseId", courseId);
+
+			reviews = query.getResultList();
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+		} finally {
+			if (session != null)
+				session.close();
+		}
+		return reviews;
+	}
+
+	public List<Course> getLatestCourses(int limit) {
+		Session session = HibernateConnection.doHibernateConnection().openSession();
+		try {
+			String hql = "FROM Course c ORDER BY c.courseId DESC";
+			return session.createQuery(hql, Course.class)
+					.setMaxResults(limit)
+					.getResultList();
+		} finally {
+			session.close();
+		}
+	}
+
 }

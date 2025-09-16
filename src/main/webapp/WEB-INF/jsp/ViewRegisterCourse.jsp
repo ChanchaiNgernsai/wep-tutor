@@ -175,8 +175,8 @@
                 <input type="hidden" name="registerId" value="${rc.registerCourseId}" />
                 <button type="button" class="btn_cancel" onclick="confirmCancel()">ยกเลิกคอร์ส</button>
             </form>
-            <a href="goReviewCourse" class="btn_review">รีวิวคอร์ส</a>
-            <a href="goReportTutor" class="btn_report">รายงานผู้สอน</a> 
+            <a href="goReviewCourse?id=${rc.course.courseId}" class="btn_review">รีวิวคอร์ส</a>
+            <a href="goReportTutor" class="btn_report">รายงานผู้สอน</a>
         </div>
     </div>
 </body>

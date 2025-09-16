@@ -121,49 +121,41 @@
       skillCount--;
     }
   }
+
   
   function validateTutor() {
     let isValid = true;
 
-    const skills = document.getElementsByName("skill");
-    const skillPattern = /^[A-Za-zก-๙]{4,100}$/;
+    
+    const skillInputs = document.querySelectorAll('input[name="skill"]');
+    const skillError = document.getElementById("skillError");
+    const skillPattern = /^[A-Za-z\u0E00-\u0E7F\s]{4,100}$/; 
 
-    for (let i = 0; i < skills.length; i++) {
-      const val = skills[i].value.trim();
-      if (val === "") {
-        alert("กรุณากรอกวิชาที่เชี่ยวชาญ (ห้ามเว้นว่าง)");
-        skills[i].focus();
-        isValid = false;
-        break;
-      }
-      if (!skillPattern.test(val)) {
-        alert("วิชาที่เชี่ยวชาญต้องเป็นภาษาไทยหรืออังกฤษ ความยาว 4-100 ตัวอักษร");
-        skills[i].focus();
-        isValid = false;
-        break;
-      }
+    skillError.textContent = "";
+    for (let skillInput of skillInputs) {
+        const skillValue = skillInput.value.trim();
+        if (!skillPattern.test(skillValue)) {
+            skillError.textContent = "กรุณากรอกทักษะอย่างน้อย 4 ตัวอักษร (ภาษาไทยหรืออังกฤษ)";
+            isValid = false;
+            break;
+        }
     }
 
-    if (!isValid) return false;
+    const expertise = document.getElementById("expertise").value.trim();
+    const expertiseError = document.getElementById("expertiseError");
+    const specialCharPattern = /[<>$%^*+=\\|]/; 
 
-    const exp = document.getElementById("expertise").value.trim();
-    if (exp.length > 0) {
-      if (exp.length < 20 || exp.length > 255) {
-        alert("กรุณากรอกข้อมูลเป็นจำนวนไม่น้อยกว่า 20 ตัวอักษร และไม่เกิน 255 ตัวอักษร"); 
-        document.getElementById("expertise").focus();
-        return false;
-      }
-
-      const specialCharPattern = /[!@#$%^&*()_+=\[\]{};:"\\|<>\/?~]/;
-      if (specialCharPattern.test(exp)) {
-        alert("กรุณากรอกข้อมูลโดยห้ามมีอักขระพิเศษ");
-        document.getElementById("expertise").focus();
-        return false;
-      }
+    expertiseError.textContent = "";
+    if (expertise.length < 10) {
+        expertiseError.textContent = "กรุณากรอกประสบการณ์อย่างน้อย 10 ตัวอักษร";
+        isValid = false;
+    } else if (specialCharPattern.test(expertise)) {
+        expertiseError.textContent = "ห้ามใช้อักขระพิเศษ เช่น < > $ % ^ * + = |";
+        isValid = false;
     }
 
-    return true;
-  }
+    return isValid;
+}
 </script>
 </head>
 <body>

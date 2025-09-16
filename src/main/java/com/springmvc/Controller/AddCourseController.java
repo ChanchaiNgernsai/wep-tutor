@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.springmvc.model.Course;
 import com.springmvc.model.CourseDate;
+import com.springmvc.model.ReviewCourse;
 import com.springmvc.model.Tutor;
 import com.springmvc.model.TutorManager;
 import com.springmvc.model.Category;
@@ -90,7 +91,7 @@ public class AddCourseController {
 			return mav;
 		} else {
 			ModelAndView mav = new ModelAndView("AddCourse");
-			mav.addObject("add_result", "ไม่สามารถบันทึกได้");
+			mav.addObject("error_result", "ไม่สามารถบันทึกได้");
 			return mav;
 		}
 
@@ -121,12 +122,16 @@ public class AddCourseController {
 	}
 
 	@RequestMapping(value = "/getViewCourse", method = RequestMethod.GET)
-	public ModelAndView lordViewCourse(HttpServletRequest request) {
-		int id = Integer.parseInt(request.getParameter("id"));
+	public ModelAndView getViewCourse(HttpServletRequest request) {
+		int courseId = Integer.parseInt(request.getParameter("id"));
 		TutorManager tmg = new TutorManager();
-		Course course = tmg.getCourseById(id);
+
+		Course course = tmg.getCourseById(courseId);
+		List<ReviewCourse> reviews = tmg.getReviewsByCourse(courseId);
+
 		ModelAndView mav = new ModelAndView("ViewCourse");
 		mav.addObject("course", course);
+		mav.addObject("reviews", reviews);
 
 		return mav;
 	}

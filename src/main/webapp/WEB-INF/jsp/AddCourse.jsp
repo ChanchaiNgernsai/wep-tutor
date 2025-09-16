@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.springmvc.model.*" %>
 <%@ taglib prefix="c" uri ="jakarta.tags.core" %>
@@ -216,7 +215,7 @@ function validateAddCourse(form) {
         form.courseName.focus();
         return false;
     }
-    const courseNamePattern = /^[ก-๙เ-๛A-Za-z\s]+$/;
+    const courseNamePattern = /^[A-Za-zก-ฮะ-๙\s]{2,100}$/;
     if (!courseNamePattern.test(courseName)) {
         alert("กรุณากรอกเป็นอักขระภาษาไทย หรือ ภาษาอังกฤษเท่านั้น");
         form.courseName.focus();
@@ -230,7 +229,7 @@ function validateAddCourse(form) {
 
     // ----- ตรวจสอบประเภทวิชา -----
     const cateName = form.cateName.value.trim();
-    const catePattern = /^[ก-ฮA-Za-z\s]+$/;
+    const coursePattern = /^[A-Za-z\u0E00-\u0E7F\s]{4,100}$/;
     if (cateName === "") {
         alert("กรุณากรอกประเภทของวิชา");
         form.cateName.focus();
@@ -246,17 +245,17 @@ function validateAddCourse(form) {
         form.cateName.focus();
         return false;
     }
-
-    // ----- ตรวจสอบคำอธิบาย -----
+    // ตรวจสอบคำอธิบายรายวิชา
     const courseDescrip = form.courseDescrip.value.trim();
-    const descripPattern = /^[\u0E00-\u0E7FA-Za-z0-9.,\/#\-\s]+$/;
+    const descripPattern = /^[\u0E00-\u0E7Fa-zA-Z0-9\s.,\/#\-ฯ():"'!?—…\n\r]+$/;
+
     if (courseDescrip === "") {
         alert("กรุณากรอกคำอธิบายรายวิชา");
         form.courseDescrip.focus();
         return false;
     }
     if (!descripPattern.test(courseDescrip)) {
-        alert("กรุณากรอกคำอธิบายรายวิชาเป็นอักขระภาษาไทย [ก-ฮ], ภาษาอังกฤษ [A-Z, a-z], ตัวเลข [0-9] และอักขระพิเศษ [., /#-]");
+        alert("กรุณากรอกคำอธิบายรายวิชาเป็นอักขระภาษาไทย, ภาษาอังกฤษ, ตัวเลข และเครื่องหมายพิเศษบางตัว เช่น – …");
         form.courseDescrip.focus();
         return false;
     }
@@ -265,6 +264,7 @@ function validateAddCourse(form) {
         form.courseDescrip.focus();
         return false;
     }
+
 
     // ----- ตรวจสอบจำนวนรับ -----
     const maxStu = form.maxStu.value.trim();
@@ -558,7 +558,9 @@ button.removeTopicBtn:hover {
   <a href="goHome">กลับหน้า Home</a><br>
   <a href="listTutorCourses">คอร์สของฉัน</a> 
 
-  <form name="frm1" action="addCourse" method="post" onsubmit="return validateAddCourse(this);">
+  <p style="color: #c0392b;" class="error_result">${error_result}</p>
+
+  <form name="frm1" action="addCourse" method="post"  accept-charset="UTF-8" onsubmit="return validateAddCourse(this);">
     <table>
       <thead>
         <tr>

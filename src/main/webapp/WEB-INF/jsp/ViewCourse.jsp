@@ -150,6 +150,18 @@
                     <a href="getRegisterCourse?id=${course.courseId}" class="register-link">ลงทะเบียนเรียน</a>
                 </c:if>
             </div>
+
+            <div class="course-info">
+                <div class="section-title">รีวิวจากผู้เรียน</div>
+                <c:if test="${not empty reviews}">
+                    <c:forEach var="rev" items="${reviews}">
+                        <p><strong>${rev.user.firstName}:</strong> ${rev.comment} (คะแนน: ${rev.score}/5)</p>
+                    </c:forEach>
+                </c:if>
+                <c:if test="${empty reviews}">
+                    <p>ยังไม่มีรีวิว</p>
+                </c:if>
+            </div>
         </div>
     </div>
 </body>

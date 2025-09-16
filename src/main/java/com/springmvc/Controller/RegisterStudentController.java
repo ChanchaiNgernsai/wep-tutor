@@ -20,8 +20,12 @@ import com.springmvc.model.*;
 public class RegisterStudentController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String loadHomePage() {
-		return "Home";
+	public ModelAndView loadHomePage() {
+		TutorManager tmg = new TutorManager();
+		List<Course> latestCourses = tmg.getLatestCourses(5); // ดึงล่าสุด 5 คอร์ส
+		ModelAndView mav = new ModelAndView("Home");
+		mav.addObject("latestCourses", latestCourses); // ส่งไป JSP
+		return mav;
 	}
 
 	@RequestMapping(value = "/goRegisterStu", method = RequestMethod.GET)
@@ -35,19 +39,17 @@ public class RegisterStudentController {
 	}
 
 	// @RequestMapping(value = "/goHome", method = RequestMethod.GET)
-	// public ModelAndView loadHomePage(HttpSession session) {
-	// TutorManager tmg = new TutorManager();
-
-	// List<ReviewCourse> reviews = tmg.getAllReviews();
-
-	// ModelAndView mav = new ModelAndView("Home");
-	// mav.addObject("reviews", reviews);
-	// return mav;
+	// public String loadgoHomePage() {
+	// return "Home";
 	// }
 
 	@RequestMapping(value = "/goHome", method = RequestMethod.GET)
-	public String loadgoHomePage() {
-		return "Home";
+	public ModelAndView loadgoHomePage() {
+		TutorManager tmg = new TutorManager();
+		List<Course> latestCourses = tmg.getLatestCourses(5); // ดึงล่าสุด 5 คอร์ส
+		ModelAndView mav = new ModelAndView("Home");
+		mav.addObject("latestCourses", latestCourses); // ส่งไป JSP
+		return mav;
 	}
 
 	@RequestMapping(value = "/addRegisterStu", method = RequestMethod.POST)
@@ -80,10 +82,9 @@ public class RegisterStudentController {
 		user.setPhoneNumber(phoNum);
 		user.setBalance(0.0);
 
-		// ถ้ามีรูป ให้เก็บลง User (byte[])
 		try {
 			if (!file.isEmpty()) {
-				user.setImgProfile(file.getBytes()); // User ต้องมีฟิลด์ byte[] image
+				user.setImgProfile(file.getBytes());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -98,7 +99,7 @@ public class RegisterStudentController {
 		session.setAttribute("Stu", student);
 
 		TutorManager tmg = new TutorManager();
-		boolean result = tmg.insertRegister(user, student); // ต้องปรับให้บันทึก byte[] ด้วย
+		boolean result = tmg.insertRegister(user, student);
 
 		if (result) {
 			ModelAndView mav = new ModelAndView("Login");
@@ -130,27 +131,24 @@ public class RegisterStudentController {
 			session.setAttribute("User", user);
 
 			List<Role> roles = tmg.getUserRolesByEmail(email);
-
 			List<String> roleTypes = new ArrayList<>();
-
 			for (Role role : roles) {
-				if (role instanceof Student) {
-					session.setAttribute("Stu", (Student) role);
-					roleTypes.add("Student");
-				} else if (role instanceof Tutor) {
-					session.setAttribute("Tutor", (Tutor) role);
-					roleTypes.add("Tutor");
-				} else {
-					roleTypes.add("Unknown");
-				}
+				String roleName = role.getClass().getSimpleName();
+				roleTypes.add(roleName);
+
+				if ("Student".equals(roleName))
+					session.setAttribute("Stu", role);
+				if ("Tutor".equals(roleName))
+					session.setAttribute("Tutor", role);
 			}
+
 			session.setAttribute("Roles", roleTypes);
 			ModelAndView mav = new ModelAndView("Home");
 			mav.addObject("result_login", "เข้าสู่ระบบเรียบร้อย");
 			return mav;
 		} else {
 			ModelAndView mav = new ModelAndView("Login");
-			mav.addObject("err_login", "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+			mav.addObject("err_login", "กรุณากรอกชื่อผู้ใช้หรือรหัสผ่านให้ถูกต้อง");
 			return mav;
 		}
 	}

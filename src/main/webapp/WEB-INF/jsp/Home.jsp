@@ -207,11 +207,24 @@
         </div>
 
         
-        <div class="right-container">
-            <h2>รีวิวล่าสุดจากผู้เรียน</h2>
+       <div class="right-container">
+    <h2>คอร์สเปิดใหม่ล่าสุด</h2>
+    <c:if test="${not empty latestCourses}">
+        <c:forEach var="course" items="${latestCourses}">
+            <div class="course-item" style="margin-bottom:15px; padding:10px; border:1px solid #ccc; border-radius:8px;">
+                <img class="profile-img-reviewTutor" src="getUserImage?email=${course.tutor.user.email}" alt="รูปโปรไฟล์ติวเตอร์" /><br/>
+                ผู้สอน: ${course.tutor.user.firstName} ${course.tutor.user.lastName} <br/>
+                <a href="getViewCourse?id=${course.courseId}" style="font-weight:bold; font-size:16px; color:#2CC06C;" >
+                    ${course.courseName}
+                </a>
+            </div>
+        </c:forEach>
+    </c:if>
+    <c:if test="${empty latestCourses}">
+        <p>ยังไม่มีคอร์สล่าสุดให้แสดง</p>
+    </c:if>
+</div>
 
-           
-        </div>
     </div>
 </body>
 </html>

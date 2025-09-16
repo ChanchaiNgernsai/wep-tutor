@@ -21,19 +21,24 @@ import jakarta.servlet.http.HttpSession;
 public class ReviewCourseController {
 
     @RequestMapping(value = "/goReviewCourse", method = RequestMethod.GET)
-    public ModelAndView loadReviewCoursePage(HttpSession session) {
+    public ModelAndView loadReviewCoursePage(HttpServletRequest request, HttpSession session) {
+        int courseId = Integer.parseInt(request.getParameter("id"));
         Student student = (Student) session.getAttribute("Stu");
-        if (student == null) {
-            return new ModelAndView("Login", "error", "กรุณาเข้าสู่ระบบก่อนรีวิวคอร์ส");
+        TutorManager tmg = new TutorManager();
+
+        Course course = tmg.getCourseById(courseId);
+        List<ReviewCourse> reviews = tmg.getReviewsByCourse(courseId);
+
+        List<RegisterCourse> registerCourses = null;
+        if (student != null) {
+            registerCourses = tmg.getRegisterCoursesByStudent(student);
         }
 
-        TutorManager tmg = new TutorManager();
-        List<RegisterCourse> registerCourses = tmg.getRegisterCoursesByStudent(student);
-
         ModelAndView mav = new ModelAndView("ReviewCourse");
-        mav.addObject("registerCourses", registerCourses);
         mav.addObject("student", student);
-        mav.addObject("reviews", tmg.getAllReviews());
+        mav.addObject("registerCourses", registerCourses);
+        mav.addObject("reviews", reviews);
+        mav.addObject("course", course);
         return mav;
     }
 
@@ -41,44 +46,43 @@ public class ReviewCourseController {
     public ModelAndView addReviewCourse(HttpServletRequest request, HttpSession session) {
         Student student = (Student) session.getAttribute("Stu");
         TutorManager tmg = new TutorManager();
+        ModelAndView mav = new ModelAndView("ReviewCourse");
 
         List<ReviewCourse> reviews = tmg.getAllReviews();
-
-        ModelAndView mav = new ModelAndView("ReviewCourse");
-        mav.addObject("reviews", reviews); // ส่งรีวิวทั้งหมด
+        mav.addObject("reviews", reviews);
 
         if (student == null) {
             mav.addObject("err_result", "กรุณาเข้าสู่ระบบก่อนรีวิวคอร์ส");
             return mav;
         }
 
-        // ส่ง student และ registerCourses กลับไปด้วย
         List<RegisterCourse> registerCourses = tmg.getRegisterCoursesByStudent(student);
         mav.addObject("student", student);
         mav.addObject("registerCourses", registerCourses);
 
-        // เพิ่มรีวิว
-        String comment = request.getParameter("comment");
-        Double score = Double.valueOf(request.getParameter("score"));
-        int courseId = Integer.parseInt(request.getParameter("courseId"));
-        Course course = tmg.getCourseById(courseId);
+        try {
+            String comment = request.getParameter("comment");
+            Double score = Double.valueOf(request.getParameter("score"));
+            int courseId = Integer.parseInt(request.getParameter("courseId"));
+            Course course = tmg.getCourseById(courseId);
 
-        ReviewCourse review = new ReviewCourse();
-        review.setComment(comment);
-        review.setScore(score);
-        review.setReviewDate(new Date());
-        review.setUser(student.getUser());
-        review.setCourse(course);
+            ReviewCourse review = new ReviewCourse();
+            review.setComment(comment);
+            review.setScore(score);
+            review.setReviewDate(new Date());
+            review.setUser(student.getUser());
+            review.setCourse(course);
 
-        boolean result = tmg.addReviewCourse(review);
-
-        if (result) {
-            mav.addObject("resultReview", "บันทึกรีวิวสำเร็จ");
-        } else {
-            mav.addObject("err_result", "ไม่สามารถบันทึกได้");
+            boolean result = tmg.addReviewCourse(review);
+            if (result) {
+                mav.addObject("resultReview", "บันทึกรีวิวสำเร็จ");
+            } else {
+                mav.addObject("err_result", "ไม่สามารถบันทึกได้");
+            }
+        } catch (Exception e) {
+            mav.addObject("err_result", "เกิดข้อผิดพลาด กรุณาลองใหม่");
         }
 
         return mav;
     }
-
 }

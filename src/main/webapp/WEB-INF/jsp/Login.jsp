@@ -209,7 +209,7 @@
       const fullEmail = prefix + "@mju.ac.th";
       document.getElementById("email").value = fullEmail;
 
-      const emailRegex = /^mju\d{10}$/i; // ตรวจสอบแค่ prefix
+      const emailRegex = /^mju\d{10}$/i; 
 
       if (prefix === "") {
         alert("กรุณากรอกอีเมล");
