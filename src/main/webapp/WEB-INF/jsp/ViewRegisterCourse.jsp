@@ -114,6 +114,11 @@
         padding-left: 20px;
         margin-top: 0;
     }
+    .success-msg {
+        color: green;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
 </style>
 <script>
     function confirmCancel() {
@@ -148,6 +153,7 @@
   
         <div class="right-container">
             <p class="error-msg">${err_result_cancel}</p>
+            <p class="success-msg">${result_report}</p>
 
             <h2>ข้อมูลคอร์ส</h2>
             <div class="course-info">
@@ -176,7 +182,7 @@
                 <button type="button" class="btn_cancel" onclick="confirmCancel()">ยกเลิกคอร์ส</button>
             </form>
             <a href="goReviewCourse?id=${rc.course.courseId}" class="btn_review">รีวิวคอร์ส</a>
-            <a href="goReportTutor" class="btn_report">รายงานผู้สอน</a>
+            <a href="goReport?id=${rc.course.courseId}" class="btn_report">รายงานผู้สอน</a>
         </div>
     </div>
 </body>

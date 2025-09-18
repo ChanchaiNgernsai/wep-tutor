@@ -48,6 +48,7 @@ public class HibernateConnection {
 				.setProperties(database)
 				.addPackage("com.springmvc.model")
 				.addAnnotatedClass(User.class)
+				.addAnnotatedClass(Admin.class)
 				.addAnnotatedClass(Student.class)
 				.addAnnotatedClass(Tutor.class)
 				.addAnnotatedClass(Role.class)

@@ -9,14 +9,52 @@ import org.hibernate.query.Query;
 
 public class TutorManager {
 
-	public boolean insertRegister(User m, Student s) {
+	// public boolean insertRegister(User m, Student s) {
+	// try {
+	// SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+	// Session session = sessionFactory.openSession();
+	// session.beginTransaction();
+
+	// session.save(m);
+	// session.save(s);
+
+	// session.getTransaction().commit();
+	// session.close();
+	// return true;
+	// } catch (Exception ex) {
+	// ex.printStackTrace();
+	// }
+	// return false;
+	// }
+	// สำหรับ User + Role ปกติ (Student/Tutor/Admin ทีเดียว)
+	public boolean insertRegisterStu(User user, Role role) {
 		try {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
 
-			session.save(m);
-			session.save(s);
+			session.save(user);
+			session.save(role);
+
+			session.getTransaction().commit();
+			session.close();
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	// สำหรับกรณีคนแรก ที่ต้องเป็น Admin + Student
+	public boolean insertRegisterF(User user, Admin adminRole, Student studentRole) {
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			session.save(user);
+			session.save(adminRole);
+			session.save(studentRole);
 
 			session.getTransaction().commit();
 			session.close();
@@ -605,6 +643,71 @@ public class TutorManager {
 		} finally {
 			session.close();
 		}
+	}
+
+	public List<Report> getReportsByCourse(int courseId) {
+		List<Report> reports = new ArrayList<>();
+		Session session = null;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			String hql = "SELECT r FROM Report r " +
+					"LEFT JOIN FETCH r.course c " +
+					"LEFT JOIN FETCH c.tutor t " +
+					"LEFT JOIN FETCH t.user " +
+					"LEFT JOIN FETCH c.courseDates " +
+					"WHERE c.courseId = :courseId";
+
+			Query<Report> query = session.createQuery(hql, Report.class);
+			query.setParameter("courseId", courseId);
+
+			reports = query.getResultList();
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+		} finally {
+			if (session != null)
+				session.close();
+		}
+		return reports;
+	}
+
+	public long countAllUsers() {
+		SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+		Session session = sessionFactory.openSession();
+		long count = 0;
+		try {
+			String hql = "SELECT COUNT(u) FROM User u";
+			count = (Long) session.createQuery(hql).uniqueResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return count;
+	}
+
+	public boolean insertReport(Report report, Student student, Course course) {
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			session.save(report);
+
+			session.getTransaction().commit();
+			session.close();
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
 	}
 
 }

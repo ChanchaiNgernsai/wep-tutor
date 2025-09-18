@@ -46,9 +46,9 @@ public class RegisterStudentController {
 	@RequestMapping(value = "/goHome", method = RequestMethod.GET)
 	public ModelAndView loadgoHomePage() {
 		TutorManager tmg = new TutorManager();
-		List<Course> latestCourses = tmg.getLatestCourses(5); // ดึงล่าสุด 5 คอร์ส
+		List<Course> latestCourses = tmg.getLatestCourses(5);
 		ModelAndView mav = new ModelAndView("Home");
-		mav.addObject("latestCourses", latestCourses); // ส่งไป JSP
+		mav.addObject("latestCourses", latestCourses);
 		return mav;
 	}
 
@@ -92,14 +92,29 @@ public class RegisterStudentController {
 
 		session.setAttribute("User", user);
 
-		Student student = new Student();
-		student.setUser(user);
-		student.setStudentId(studentId);
-		student.setYearOfStudy(yearOfStudy);
-		session.setAttribute("Stu", student);
-
 		TutorManager tmg = new TutorManager();
-		boolean result = tmg.insertRegister(user, student);
+		long totalUsers = tmg.countAllUsers();
+
+		boolean result = false;
+
+		if (totalUsers == 0) {
+			Admin admin = new Admin();
+			admin.setUser(user);
+
+			Student student = new Student();
+			student.setUser(user);
+			student.setStudentId(studentId);
+			student.setYearOfStudy(yearOfStudy);
+
+			result = tmg.insertRegisterF(user, admin, student);
+		} else {
+			Student student = new Student();
+			student.setUser(user);
+			student.setStudentId(studentId);
+			student.setYearOfStudy(yearOfStudy);
+			session.setAttribute("Stu", student);
+			result = tmg.insertRegisterStu(user, student);
+		}
 
 		if (result) {
 			ModelAndView mav = new ModelAndView("Login");
@@ -140,11 +155,17 @@ public class RegisterStudentController {
 					session.setAttribute("Stu", role);
 				if ("Tutor".equals(roleName))
 					session.setAttribute("Tutor", role);
+				if ("Admin".equals(roleName)) {
+					session.setAttribute("Admin", role);
+				}
 			}
 
 			session.setAttribute("Roles", roleTypes);
+			List<Course> latestCourses = tmg.getLatestCourses(5);
+
 			ModelAndView mav = new ModelAndView("Home");
 			mav.addObject("result_login", "เข้าสู่ระบบเรียบร้อย");
+			mav.addObject("latestCourses", latestCourses);
 			return mav;
 		} else {
 			ModelAndView mav = new ModelAndView("Login");

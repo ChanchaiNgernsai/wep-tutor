@@ -189,11 +189,11 @@
     }
     .rating-box {
     display: flex;
-    flex-direction: row-reverse; /* ไล่จาก 5 ไป 1 ใน HTML แต่แสดง 1 → 5 */
+    flex-direction: row-reverse;
     justify-content: flex-start;
 }
 
-.rating-box input[type="checkbox"] {
+.rating-box input[type="radio"] {
     display: none;
 }
 
@@ -204,12 +204,12 @@
     margin: 0 2px;
 }
 
-/* เลือกดาวแล้วสีทอง */
-.rating-box input[type="checkbox"]:checked ~ label,
+.rating-box input[type="radio"]:checked ~ label,
 .rating-box label:hover,
 .rating-box label:hover ~ label {
     color: #FFD700;
 }
+
 
 
 </style>
@@ -312,6 +312,14 @@ function validateComment() {
                         <p><strong>ชื่อคอร์ส:</strong> ${course.courseName}</p>
                         <p><strong>รายละเอียด:</strong> ${course.courseDescription}</p>
                         <p><strong>ราคา:</strong> ${course.coursePrice} บาท</p>
+                         <p><strong>วันที่สอน:</strong></p>
+                            
+                                <c:forEach var="cd" items="${course.courseDates}">
+                                    <li>
+                                        ${cd.class_date} เวลา ${cd.startTime} - ${cd.endTime} (หัวข้อ: ${cd.topic})
+                                    </li>
+                                </c:forEach>
+                            
                     </div>
                 </div>
                 <c:if test="${not empty student}">
@@ -320,9 +328,10 @@ function validateComment() {
                         <input type="hidden" name="student" value="${student.user.email}" />
                         <div class="rating-box">
                             <c:forEach var="i" begin="1" end="5">
-                                <input type="checkbox" name="score" value="${i}" id="score${i}" class="star" />
-                                <label for="score${i}">★</label>
-                            </c:forEach>
+    <input type="radio" name="score" value="${6-i}" id="score${i}" class="star" />
+    <label for="score${i}">★</label>
+</c:forEach>
+
                         </div>
                         <textarea name="comment" id="comment" rows="4" placeholder="เขียนรีวิวที่นี่..."></textarea>
                         <br>
