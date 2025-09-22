@@ -710,4 +710,69 @@ public class TutorManager {
 		return false;
 	}
 
+	public List<Report> getAllReports() {
+		SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+		Session session = sessionFactory.openSession();
+		List<Report> reports = null;
+
+		try {
+			session.beginTransaction();
+
+			String hql = "SELECT r FROM Report r "
+					+ "LEFT JOIN FETCH r.reporter "
+					+ "LEFT JOIN FETCH r.reported "
+					+ "LEFT JOIN FETCH r.course ";
+
+			reports = session.createQuery(hql, Report.class).list();
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session.getTransaction() != null)
+				session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
+
+		return reports;
+	}
+
+	public Tutor getTutorById(int tutorId) {
+		try (Session session = HibernateConnection.doHibernateConnection().openSession()) {
+			return session.get(Tutor.class, tutorId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public boolean updateBanTutor(Tutor tutor) {
+		try (Session session = HibernateConnection.doHibernateConnection().openSession()) {
+			session.beginTransaction();
+			session.update(tutor);
+			session.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean insertDeposit(Transaction transaction) {
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			session.saveOrUpdate(transaction);
+
+			session.getTransaction().commit();
+			session.close();
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
 }

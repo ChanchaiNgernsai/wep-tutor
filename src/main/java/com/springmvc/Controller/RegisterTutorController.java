@@ -39,6 +39,7 @@ public class RegisterTutorController {
 		Tutor tutor = new Tutor();
 		tutor.setExpertise(expertise);
 		tutor.setUser(user);
+		tutor.setBanStatus(1);
 		session.setAttribute("Tutor", tutor);
 
 		List<Skill> skillList = new ArrayList<>();

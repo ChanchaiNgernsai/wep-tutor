@@ -142,10 +142,23 @@ public class RegisterStudentController {
 		User user = tmg.getRegisterByEmail(email);
 
 		if (user != null && user.getPassword() != null && user.getPassword().equals(password)) {
+
+			List<Role> roles = tmg.getUserRolesByEmail(email);
+			for (Role role : roles) {
+				if (role instanceof Tutor) {
+					Tutor tutor = (Tutor) role;
+					if (tutor.getBanStatus() == 0) { // 0 = แบน
+						ModelAndView mav = new ModelAndView("Login");
+						mav.addObject("err_login",
+								"บัญชีของคุณถูกแบน เพราะว่า: " + tutor.getBanDescription() + " กรุณาติดต่อผู้ดูแลระบบ");
+						return mav;
+					}
+				}
+			}
+
 			session.setAttribute("email", email);
 			session.setAttribute("User", user);
 
-			List<Role> roles = tmg.getUserRolesByEmail(email);
 			List<String> roleTypes = new ArrayList<>();
 			for (Role role : roles) {
 				String roleName = role.getClass().getSimpleName();
@@ -155,9 +168,8 @@ public class RegisterStudentController {
 					session.setAttribute("Stu", role);
 				if ("Tutor".equals(roleName))
 					session.setAttribute("Tutor", role);
-				if ("Admin".equals(roleName)) {
+				if ("Admin".equals(roleName))
 					session.setAttribute("Admin", role);
-				}
 			}
 
 			session.setAttribute("Roles", roleTypes);

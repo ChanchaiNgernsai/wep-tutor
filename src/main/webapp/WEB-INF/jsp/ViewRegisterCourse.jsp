@@ -153,7 +153,6 @@
   
         <div class="right-container">
             <p class="error-msg">${err_result_cancel}</p>
-            <p class="success-msg">${result_report}</p>
 
             <h2>ข้อมูลคอร์ส</h2>
             <div class="course-info">

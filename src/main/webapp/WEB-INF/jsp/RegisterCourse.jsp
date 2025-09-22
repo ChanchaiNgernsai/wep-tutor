@@ -37,7 +37,7 @@
         <input type="hidden" name="courseId" value="${course.courseId}" />
 
         <input type="checkbox" id="agree" name="agree" onclick="toggleSubmit()">
-        <label for="agree">ยอมรับเงื่อนไขการลงทะเบียน</label><br><br>
+        <label for="agree">ยอมรับเงื่อนไขการลงทะเบียน ไม่มีการคืนเงินย้อนหลัง</label><br><br>
         <input type="submit" id="submitBtn" value="ลงทะเบียน" disabled>
     </form>
 </body>

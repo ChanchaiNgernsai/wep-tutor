@@ -265,6 +265,8 @@ function validateAddCourse(form) {
         return false;
     }
 
+    
+
 
     // ----- ตรวจสอบจำนวนรับ -----
     const maxStu = form.maxStu.value.trim();
@@ -578,7 +580,7 @@ button.removeTopicBtn:hover {
             <input type="text" name="cateName" id="cateName" placeholder="ประเภทของวิชา" >
 
             <p>คำอธิบายรายวิชา</p>
-            <textarea name="courseDescrip" rows="4"></textarea>
+            <textarea name="courseDescrip" id="courseDescrip" rows="4"></textarea>
 
             <p>จำนวนที่รับ</p>
             <select name="maxStu">

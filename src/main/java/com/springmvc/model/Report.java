@@ -30,16 +30,26 @@ public class Report {
     @JoinColumn(name = "reported_role_id")
     private Tutor reported;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
-    public Report() {}
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Report() {
+    }
 
     public Report(String reportDescription, Date reportDate, int status) {
         this.reportDescription = reportDescription;
         this.reportDate = reportDate;
         this.status = status;
     }
-
-
 
     public int getReportId() {
         return reportId;
@@ -73,24 +83,20 @@ public class Report {
         this.status = status;
     }
 
-	public User getReporter() {
-		return reporter;
-	}
+    public User getReporter() {
+        return reporter;
+    }
 
-	public void setReporter(User reporter) {
-		this.reporter = reporter;
-	}
+    public void setReporter(User reporter) {
+        this.reporter = reporter;
+    }
 
-	public Tutor getReported() {
-		return reported;
-	}
+    public Tutor getReported() {
+        return reported;
+    }
 
-	public void setReported(Tutor reported) {
-		this.reported = reported;
-	}
+    public void setReported(Tutor reported) {
+        this.reported = reported;
+    }
 
-
-    
-
- 
 }
