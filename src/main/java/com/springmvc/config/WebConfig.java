@@ -30,6 +30,9 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**")
 				.addResourceLocations("/resources/");
+
+		registry.addResourceHandler("/img_deposit/**")
+				.addResourceLocations("file:/C:/img_deposit/");
 	}
 
 	@Bean

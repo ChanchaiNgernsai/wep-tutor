@@ -775,4 +775,148 @@ public class TutorManager {
 		return false;
 	}
 
+	public double getBalance(String email) {
+		double balance = 0.0;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			String hql = "SELECT COALESCE(SUM(t.deposit),0) - COALESCE(SUM(t.withdraw),0) "
+					+ "FROM Transaction t WHERE t.user.email = :email";
+
+			Double result = (Double) session.createQuery(hql)
+					.setParameter("email", email)
+					.uniqueResult();
+
+			if (result != null) {
+				balance = result;
+			}
+
+			session.getTransaction().commit();
+			session.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return balance;
+	}
+
+	public boolean updateWithdraw(Transaction transaction) {
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			double currentBalance = getBalance(transaction.getUser().getEmail());
+			if (transaction.getWithdraw() > currentBalance) {
+				session.getTransaction().rollback();
+				session.close();
+				return false;
+			}
+
+			session.saveOrUpdate(transaction);
+
+			session.getTransaction().commit();
+			session.close();
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+
+	public List<RegisterCourse> getRegisterCoursesByCourse(int courseId) {
+		List<RegisterCourse> registerCourses = null;
+		SessionFactory sessionFactory = null;
+		Session session = null;
+
+		try {
+			sessionFactory = HibernateConnection.doHibernateConnection();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			String hql = "FROM RegisterCourse rc WHERE rc.course.courseId = :courseId";
+			registerCourses = session.createQuery(hql, RegisterCourse.class)
+					.setParameter("courseId", courseId)
+					.getResultList();
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null)
+				session.getTransaction().rollback();
+		} finally {
+			if (session != null)
+				session.close();
+		}
+
+		return registerCourses;
+	}
+
+	public void payCourse(Transaction tran) {
+		SessionFactory sessionFactory = null;
+		Session session = null;
+		try {
+			sessionFactory = HibernateConnection.doHibernateConnection();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			// บันทึก Transaction
+			session.saveOrUpdate(tran);
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null)
+				session.getTransaction().rollback();
+		} finally {
+			if (session != null)
+				session.close();
+		}
+	}
+
+	public boolean depositByTutorCourseId(int courseId, double amount) {
+		SessionFactory sessionFactory = null;
+		Session session = null;
+		try {
+			sessionFactory = HibernateConnection.doHibernateConnection();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			// ดึงข้อมูล Course พร้อม Tutor และ User
+			String hqlCourse = "FROM Course c JOIN FETCH c.tutor t JOIN FETCH t.user WHERE c.courseId = :courseId";
+			Course course = session.createQuery(hqlCourse, Course.class)
+					.setParameter("courseId", courseId)
+					.uniqueResult();
+
+			if (course == null || course.getTutor() == null || course.getTutor().getUser() == null) {
+				return false; // ไม่พบ Course หรือ Tutor หรือ User
+			}
+
+			User tutorUser = course.getTutor().getUser();
+
+			// สร้าง Transaction สำหรับฝากเงิน
+			Transaction transaction = new Transaction();
+			transaction.setDeposit(amount);
+			transaction.setWithdraw(0.0);
+			transaction.setTranType("Course Payment");
+			transaction.setWithdrawDate(new java.util.Date());
+			transaction.setUser(tutorUser);
+
+			// บันทึก Transaction
+			session.saveOrUpdate(transaction);
+
+			session.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null)
+				session.getTransaction().rollback();
+			return false;
+		} finally {
+			if (session != null)
+				session.close();
+		}
+	}
+
 }

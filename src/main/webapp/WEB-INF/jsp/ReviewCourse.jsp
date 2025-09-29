@@ -328,9 +328,9 @@ function validateComment() {
                         <input type="hidden" name="student" value="${student.user.email}" />
                         <div class="rating-box">
                             <c:forEach var="i" begin="1" end="5">
-    <input type="radio" name="score" value="${6-i}" id="score${i}" class="star" />
-    <label for="score${i}">★</label>
-</c:forEach>
+                                <input type="radio" name="score" value="${6-i}" id="score${i}" class="star" />
+                                <label for="score${i}">★</label>
+                            </c:forEach>
 
                         </div>
                         <textarea name="comment" id="comment" rows="4" placeholder="เขียนรีวิวที่นี่..."></textarea>

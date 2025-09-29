@@ -54,10 +54,15 @@ function banTutorPrompt(tutorId) {
                         <input type="hidden" name="banStatus" value="0" /> 
                         <input type="hidden" name="banDescription" id="banDesc${report.reported.roleId}" />
                         <input type="button" value="BanTutor" onclick="banTutorPrompt('${report.reported.roleId}')" />
-                    </form>
+                        
                 </c:when>
                 <c:otherwise>
                     แบนแล้ว
+                    <form id="unbanForm${report.reported.roleId}" action="unBanTutor" method="post">
+                            <input type="hidden" name="tutorId" value="${report.reported.roleId}" />
+                            <input type="hidden" name="banStatus" value="1" /> 
+                            <input type="submit" value="UnBanTutor" />
+                    </form>
                 </c:otherwise>
             </c:choose>
         </td>

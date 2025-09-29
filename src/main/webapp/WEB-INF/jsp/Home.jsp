@@ -175,7 +175,9 @@
                         <li>${role}</li>
                     </c:forEach>
                 </ul>
-                
+
+                <a href="goDeposit">ฝากเงิน</a> <br />
+
                 <c:if test="${empty sessionScope.Tutor}">
                     <a class="btn" href="goRegisterTutor">สมัครเป็นติวเตอร์</a><br />
                 </c:if>

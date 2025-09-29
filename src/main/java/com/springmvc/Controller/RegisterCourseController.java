@@ -37,11 +37,13 @@ public class RegisterCourseController {
     }
 
     @RequestMapping(value = "/getViewRegisterCourse", method = RequestMethod.GET)
-    public ModelAndView loadViewRegisterCoursePage(HttpServletRequest request) {
+    public ModelAndView loadViewRegisterCoursePage(HttpServletRequest request, HttpSession session) {
         int registerId = Integer.parseInt(request.getParameter("registerId"));
 
         TutorManager tmg = new TutorManager();
         RegisterCourse rc = tmg.getRegisterCourseById(registerId);
+
+        session.setAttribute("RegisterCourse", rc);
 
         ModelAndView mav = new ModelAndView("ViewRegisterCourse");
         mav.addObject("rc", rc);
@@ -53,21 +55,26 @@ public class RegisterCourseController {
     @RequestMapping(value = "/getRegisterCourse", method = RequestMethod.GET)
     public ModelAndView goRegisterCourse(HttpServletRequest request, HttpSession session) {
         String idStr = request.getParameter("id");
-        int id = 0;
-        if (idStr != null && !idStr.isEmpty()) {
-            id = Integer.parseInt(idStr);
-        } else {
+        if (idStr == null || idStr.isEmpty()) {
             return new ModelAndView("redirect:/goHome");
         }
+        int id = Integer.parseInt(idStr);
 
         TutorManager tmg = new TutorManager();
         Course course = tmg.getCourseById(id);
 
-        User us = (User) session.getAttribute("us");
+        Student student = (Student) session.getAttribute("Stu");
+        User us = student.getUser();
+        RegisterCourse rc = tmg.getRegisterCourseById(id);
+
+        double balance = tmg.getBalance(us.getEmail());
 
         ModelAndView mav = new ModelAndView("RegisterCourse");
         mav.addObject("course", course);
-        mav.addObject("us", us);
+        mav.addObject("User", us);
+        mav.addObject("balance", balance);
+        mav.addObject("RegisterCourse", rc);
+
         return mav;
     }
 
@@ -86,12 +93,32 @@ public class RegisterCourseController {
 
         TutorManager tmg = new TutorManager();
         Course course = tmg.getCourseById(courseId);
+        if (course == null) {
+            return new ModelAndView("redirect:/goHome");
+        }
+
+        int checkNumStu = tmg.getRegisterCoursesByCourse(courseId).size();
+        if (checkNumStu >= course.getMaxStudents()) {
+            ModelAndView mav = new ModelAndView("RegisterCourse");
+            mav.addObject("err_result", "ไม่สามารถลงทะเบียนได้ คอร์สเต็มแล้ว");
+            mav.addObject("course", course);
+            mav.addObject("balance", tmg.getBalance(student.getUser().getEmail()));
+            return mav;
+        }
 
         Payment payment = new Payment();
         payment.setAmount(course.getCoursePrice());
         payment.setPaymentDate(new Date());
         payment.setPaymentStatus(0);
         tmg.insertPayment(payment);
+
+        boolean depositResult = tmg.depositByTutorCourseId(courseId, course.getCoursePrice());
+        if (!depositResult) {
+            ModelAndView mav = new ModelAndView("RegisterCourse");
+            mav.addObject("err_result", "เกิดข้อผิดพลาดในการโอนเงินให้ติวเตอร์");
+            mav.addObject("course", course);
+            return mav;
+        }
 
         RegisterCourse rc = new RegisterCourse();
         rc.setStudent(student);
@@ -112,6 +139,7 @@ public class RegisterCourseController {
             ModelAndView mav = new ModelAndView("RegisterCourse");
             mav.addObject("err_result", "ไม่สามารถบันทึกการลงทะเบียนได้");
             mav.addObject("course", course);
+            // mav.addObject("balance", balance);
             return mav;
         }
     }

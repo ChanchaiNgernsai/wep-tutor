@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.springmvc.model.Course;
 import com.springmvc.model.Report;
 import com.springmvc.model.Student;
-import com.springmvc.model.Tutor;
 import com.springmvc.model.TutorManager;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -86,49 +85,6 @@ public class ReportTutorController {
         } else {
             mav.setViewName("ReportTutor");
             mav.addObject("err_report", "ไม่สามารถบันทึกได้");
-            return mav;
-        }
-    }
-
-    @RequestMapping(value = "/getReportTutor", method = RequestMethod.GET)
-    public ModelAndView getReportTutor(HttpServletRequest request) {
-        int courseId = Integer.parseInt(request.getParameter("id"));
-        TutorManager tmg = new TutorManager();
-        Course course = tmg.getCourseById(courseId);
-
-        List<Report> reports = tmg.getReportsByCourse(courseId);
-
-        ModelAndView mav = new ModelAndView("ListReportTutor");
-        mav.addObject("course", course);
-        mav.addObject("reports", reports);
-
-        return mav;
-    }
-
-    @RequestMapping(value = "/banTutor", method = RequestMethod.POST)
-    public ModelAndView banTutor(HttpServletRequest request) {
-        int tutorId = Integer.parseInt(request.getParameter("tutorId"));
-        String banDescription = request.getParameter("banDescription");
-
-        TutorManager tmg = new TutorManager();
-        Tutor tutor = tmg.getTutorById(tutorId);
-        if (tutor != null) {
-            tutor.setBanStatus(0); // 0 = แบน
-            tutor.setBanDescription(banDescription);
-            tutor.setBanDate(new java.util.Date());
-
-            boolean result = tmg.updateBanTutor(tutor);
-
-            ModelAndView mav = new ModelAndView("redirect:/goListReport");
-            if (result) {
-                mav.addObject("result_ban", "แบนผู้สอนสำเร็จ");
-            } else {
-                mav.addObject("err_ban", "ไม่สามารถบันทึกได้");
-            }
-            return mav;
-        } else {
-            ModelAndView mav = new ModelAndView("redirect:/goListReport");
-            mav.addObject("err_ban", "ไม่พบผู้สอน");
             return mav;
         }
     }

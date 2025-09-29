@@ -47,9 +47,13 @@
     }
 
     .profile-img {
-        border-radius: 10px;
+        width: 100px;         
+        height: 100px;
+        border-radius: 50%;     
         border: 2px solid #ccc;
+        object-fit: cover;     
     }
+
 
     .profile-details p, .course-details p {
         margin: 5px 0;
@@ -84,7 +88,7 @@
 
         <h2>ผู้สอน</h2>
         <div class="profile">
-            <img class="profile-img" src="${course.tutor.user.imgProfile}" width="220" height="120" alt="รูปโปรไฟล์ผู้สอน">
+            <img class="profile-img" src="getUserImage?email=${course.tutor.user.email}"  alt="รูปโปรไฟล์ผู้สอน">
             <div class="profile-details">
                 <p><strong>ชื่อ-นามสกุล:</strong> ${course.tutor.user.firstName} ${course.tutor.user.lastName}</p>
                 <p><strong>เพศ:</strong> ${course.tutor.user.gender}</p>
@@ -101,7 +105,7 @@
         </div>
 
         <div class="actions">
-            <a href="goReviewCourse">รีวิวคอร์ส</a>
+            <a href="goReviewCourse?id=${course.courseId}" class="btn_review">ดูรีวิวของฉัน</a>***ตอนนี้ยังใช้หน้าReviewเดียวกันอยู่***<br /><br />
             <a href="getListStudentCourse?id=${course.courseId}">รายชื่อทั้งหมด</a>
             <a href="goWithdraw">ถอนเงิน</a>
         </div>

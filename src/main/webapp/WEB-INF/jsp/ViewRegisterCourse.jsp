@@ -143,8 +143,7 @@
         
         <div class="left-container">
             <h2>ผู้สอน</h2>
-            <img class="profile-img" src="getUserImage?email=${rc.course.tutor.user.email}" 
-                 alt="รูปโปรไฟล์ผู้สอน">
+            <img class="profile-img" src="getUserImage?email=${rc.course.tutor.user.email}"alt="รูปโปรไฟล์ผู้สอน">
             <p><strong>ชื่อ-นามสกุล:</strong> ${rc.course.tutor.user.firstName} ${rc.course.tutor.user.lastName}</p>
             <p><strong>เพศ:</strong> ${rc.course.tutor.user.gender}</p>
             <p><strong>เบอร์โทรศัพท์:</strong> ${rc.course.tutor.user.phoneNumber}</p>
