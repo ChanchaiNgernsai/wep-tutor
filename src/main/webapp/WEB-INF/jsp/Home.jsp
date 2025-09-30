@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %> 
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html> 
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <title>Home</title>
@@ -187,8 +188,8 @@
                 </c:if>
 
                 <c:if test="${not empty sessionScope.Tutor}">
-                    <a class="btn" href="goAddCourse?email=${sessionScope.email}">เพิ่มคอร์ส</a><br />
-                    <a class="btn" href="listTutorCourses">รายการคอร์ส</a><br />
+                    <a class="btn" href="goAddCourse?email=${sessionScope.email}"><spring:message code="home.add_course"/></a><br />
+                    <a class="btn" href="listTutorCourses"><spring:message code="home.course_list"/></a><br />
                 </c:if>
 
                 <a class="btn" href="goListRegisterCourse">คอร์สที่ลงทะเบียน</a><br />
