@@ -861,7 +861,6 @@ public class TutorManager {
 			session = sessionFactory.openSession();
 			session.beginTransaction();
 
-			// บันทึก Transaction
 			session.saveOrUpdate(tran);
 
 			session.getTransaction().commit();
@@ -875,48 +874,21 @@ public class TutorManager {
 		}
 	}
 
-	public boolean depositByTutorCourseId(int courseId, double amount) {
-		SessionFactory sessionFactory = null;
-		Session session = null;
+	public boolean insertTransaction(Transaction transaction) {
 		try {
-			sessionFactory = HibernateConnection.doHibernateConnection();
-			session = sessionFactory.openSession();
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
 			session.beginTransaction();
 
-			// ดึงข้อมูล Course พร้อม Tutor และ User
-			String hqlCourse = "FROM Course c JOIN FETCH c.tutor t JOIN FETCH t.user WHERE c.courseId = :courseId";
-			Course course = session.createQuery(hqlCourse, Course.class)
-					.setParameter("courseId", courseId)
-					.uniqueResult();
-
-			if (course == null || course.getTutor() == null || course.getTutor().getUser() == null) {
-				return false; // ไม่พบ Course หรือ Tutor หรือ User
-			}
-
-			User tutorUser = course.getTutor().getUser();
-
-			// สร้าง Transaction สำหรับฝากเงิน
-			Transaction transaction = new Transaction();
-			transaction.setDeposit(amount);
-			transaction.setWithdraw(0.0);
-			transaction.setTranType("Course Payment");
-			transaction.setWithdrawDate(new java.util.Date());
-			transaction.setUser(tutorUser);
-
-			// บันทึก Transaction
 			session.saveOrUpdate(transaction);
 
 			session.getTransaction().commit();
+			session.close();
 			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			if (session != null)
-				session.getTransaction().rollback();
-			return false;
-		} finally {
-			if (session != null)
-				session.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
+		return false;
 	}
 
 }
