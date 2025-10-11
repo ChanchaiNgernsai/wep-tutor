@@ -121,36 +121,27 @@ function validateDeposit() {
     <div class="container">
         <h1>Deposit Page</h1>
 
-        <!-- Container สำหรับลิงก์ -->
         <div class="top-links">
             <a href="goHome">&#8592; กลับสู่หน้าหลัก</a>
         </div>
 
-        <p class="error">${err_result}</p>
+        <p class="error">${error}</p>
         <p class="success">${msg_result}</p>
 
         <p>เงินคงเหลือปัจจุบัน: <strong>${balance}</strong> บาท</p>
 
         <div class="section">
-            <form action="generateQR" method="post" onsubmit="return validateDeposit();">
+            <form action="addDeposit" method="post" onsubmit="return validateDeposit();">
                 <label for="amount">กรุณากรอกจำนวนเงิน:</label>      
-                <input type="number" id="amount" name="amount"  required value="${amount}" /> 
-                <input type="submit" value="Generate QR Code" />
+                <input type="number" id="amount" name="amount" required value="${amount}" /> 
+                <input type="submit" value="ฝากเงิน / สร้าง QR Code" />
             </form>
 
-            <p class="success">${msg_gen}</p>
-
-            <c:if test="${not empty qrCodeFileName}">
-                <img class="qrcode" src="${pageContext.request.contextPath}/img_deposit/${qrCodeFileName}" alt="QR Code" height="180" width="180"/>
+            <c:if test="${not empty qrUrl}">
+                <p class="success">กรุณาสแกน QR เพื่อชำระเงิน:</p>
+                <img class="qrcode" src="${qrUrl}" alt="QR Code" height="180" width="180"/>
             </c:if>
 
-            <c:if test="${not empty amount}">
-                <p>จำนวนเงินที่ต้องการฝาก: <strong>${amount}</strong></p>
-                <form action="addDeposit" method="post">
-                    <input type="hidden" name="amount" value="${amount}" />
-                    <input type="submit" value="Confirm Deposit" />
-                </form>
-            </c:if>
         </div>
     </div>
 </body>

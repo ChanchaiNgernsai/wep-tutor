@@ -60,31 +60,11 @@ public class ReviewCourseController {
         String comment = request.getParameter("comment");
         Double score = Double.valueOf(request.getParameter("score"));
 
-        ReviewCourse review = new ReviewCourse();
-        review.setComment(comment);
-        review.setScore(score);
-        review.setReviewDate(new Date());
-        review.setUser(student.getUser());
-        review.setCourse(course);
+        ReviewCourse existingReview = tmg.getReviewByUserAndCourse(student.getUser(), course);
 
-        boolean result = tmg.addReviewCourse(review);
-
-        if (result) {
+        if (existingReview != null) {
             ModelAndView mav = new ModelAndView("ReviewCourse");
-            mav.addObject("resultReview", "บันทึกรีวิวสำเร็จ");
-
-            List<ReviewCourse> reviews = tmg.getReviewsByCourse(courseId);
-            List<RegisterCourse> registerCourses = tmg.getRegisterCoursesByStudent(student);
-
-            mav.addObject("student", student);
-            mav.addObject("course", course);
-            mav.addObject("registerCourses", registerCourses);
-            mav.addObject("reviews", reviews);
-
-            return mav;
-        } else {
-            ModelAndView mav = new ModelAndView("ReviewCourse");
-            mav.addObject("err_result", "ไม่สามารถบันทึกได้");
+            mav.addObject("err_result", "คุณได้รีวิวคอร์สนี้ไปแล้ว ไม่สามารถรีวิวซ้ำได้");
 
             List<ReviewCourse> reviews = tmg.getReviewsByCourse(courseId);
             List<RegisterCourse> registerCourses = tmg.getRegisterCoursesByStudent(student);
@@ -96,6 +76,31 @@ public class ReviewCourseController {
 
             return mav;
         }
-    }
 
+        ReviewCourse review = new ReviewCourse();
+        review.setComment(comment);
+        review.setScore(score);
+        review.setReviewDate(new Date());
+        review.setUser(student.getUser());
+        review.setCourse(course);
+
+        boolean result = tmg.addReviewCourse(review);
+
+        ModelAndView mav = new ModelAndView("ReviewCourse");
+        List<ReviewCourse> reviews = tmg.getReviewsByCourse(courseId);
+        List<RegisterCourse> registerCourses = tmg.getRegisterCoursesByStudent(student);
+
+        mav.addObject("student", student);
+        mav.addObject("course", course);
+        mav.addObject("registerCourses", registerCourses);
+        mav.addObject("reviews", reviews);
+
+        if (result) {
+            mav.addObject("resultReview", "บันทึกรีวิวสำเร็จ");
+        } else {
+            mav.addObject("err_result", "ไม่สามารถบันทึกได้");
+        }
+
+        return mav;
+    }
 }

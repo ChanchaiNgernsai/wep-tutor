@@ -146,8 +146,15 @@
             <p><strong>จำนวนนักศึกษา:</strong> ${course.maxStudents} คน</p>
             <p><strong>ประเภท:</strong> ${course.category.categoryName}</p>
 
-            <c:if test="${not empty sessionScope.User}">
-                <a href="getRegisterCourse?id=${course.courseId}" class="register-btn">ลงทะเบียนเรียน</a>
+            <c:if test="${not empty sessionScope.Stu and sessionScope.Stu.user.email ne course.tutor.user.email}">
+                <c:choose>
+                    <c:when test="${alreadyRegistered}">
+                        <p style="color: gray; text-align: center; font-weight: bold;">คุณได้ลงทะเบียนคอร์สนี้แล้ว</p>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="getRegisterCourse?id=${course.courseId}" class="register-btn">ลงทะเบียนเรียน</a>
+                    </c:otherwise>
+                </c:choose>
             </c:if>
 
             <!-- รีวิว -->

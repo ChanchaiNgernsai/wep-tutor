@@ -45,26 +45,6 @@ public class TutorManager {
 		return false;
 	}
 
-	// สำหรับกรณีคนแรก ที่ต้องเป็น Admin + Student
-	public boolean insertRegisterF(User user, Admin adminRole, Student studentRole) {
-		try {
-			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
-			Session session = sessionFactory.openSession();
-			session.beginTransaction();
-
-			session.save(user);
-			session.save(adminRole);
-			session.save(studentRole);
-
-			session.getTransaction().commit();
-			session.close();
-			return true;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return false;
-	}
-
 	public User getRegisterByEmail(String email) {
 		User reg = new User();
 		try {
@@ -889,6 +869,52 @@ public class TutorManager {
 			ex.printStackTrace();
 		}
 		return false;
+	}
+
+	public ReviewCourse getReviewByUserAndCourse(User user, Course course) {
+		ReviewCourse review = null;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			String hql = "FROM ReviewCourse rc WHERE rc.user = :user AND rc.course = :course";
+			review = session.createQuery(hql, ReviewCourse.class)
+					.setParameter("user", user)
+					.setParameter("course", course)
+					.uniqueResult();
+
+			session.getTransaction().commit();
+			session.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return review;
+	}
+
+	public boolean checkStuRegisterCourse(Student student, Course course) {
+		boolean isRegistered = false;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			String hql = "FROM RegisterCourse rc WHERE rc.student = :student AND rc.course = :course";
+			RegisterCourse rc = session.createQuery(hql, RegisterCourse.class)
+					.setParameter("student", student)
+					.setParameter("course", course)
+					.uniqueResult();
+
+			if (rc != null) {
+				isRegistered = true;
+			}
+
+			session.getTransaction().commit();
+			session.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return isRegistered;
 	}
 
 }

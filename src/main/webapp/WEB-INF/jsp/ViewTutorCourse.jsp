@@ -105,7 +105,6 @@
         </div>
 
         <div class="actions">
-            <a href="goReviewCourse?id=${course.courseId}" class="btn_review">ดูรีวิวของฉัน</a>***ตอนนี้ยังใช้หน้าReviewเดียวกันอยู่***<br /><br />
             <a href="getListStudentCourse?id=${course.courseId}">รายชื่อทั้งหมด</a>
             <a href="goWithdraw">ถอนเงิน</a>
         </div>

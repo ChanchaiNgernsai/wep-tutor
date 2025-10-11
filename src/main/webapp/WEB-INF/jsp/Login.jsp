@@ -202,51 +202,62 @@
 </style>
 
 <script>
-    function validateLogin() {
-      const prefix = document.getElementById("email_prefix").value.trim();
-      const password = document.getElementById("password").value;
+   function validateLogin() {
+  const prefix = document.getElementById("email_prefix").value.trim();
+  const password = document.getElementById("password").value;
 
-      const fullEmail = prefix + "@mju.ac.th";
-      document.getElementById("email").value = fullEmail;
+  const fullEmail = prefix + "@mju.ac.th";
+  document.getElementById("email").value = fullEmail;
 
-      const emailRegex = /^mju\d{10}$/i; 
+  const emailRegex = /^mju\d{10}$/i; // รูปแบบนักศึกษา เช่น mju65012345601
 
-      if (prefix === "") {
-        alert("กรุณากรอกอีเมล");
-        return false;
-      }
-
-      if (password === "") {
-        alert("กรุณากรอกรหัสผ่าน");
-        return false;
-      }
-
-      if (prefix.length !== 13) {
-        alert("ความยาวรหัสนักศึกษาต้องมี 13 ตัวพอดี");
-        return false;
-      }
-
-      if (/\s/.test(prefix) || /\s/.test(password)) {
-        alert("กรุณากรอกข้อมูลอีเมล์และรหัสผ่านโดยห้ามมีช่องว่าง");
-        return false;
-      }
-
-      if (!emailRegex.test(prefix)) {
-        alert("กรุณากรอกรหัสนักศึกษาให้อยู่ในรูปแบบของ MJU เช่น mju65******01");
-        return false;
-      }
-
-       if (password.length < 8 || password.length > 16) {
-        alert("รหัสผ่านต้องมีความยาวระหว่าง 8 - 16 ตัวอักษร");
-        return false;
-      }
-
-       if (/\s/.test(password)) {
-        alert("กรุณากรอกข้อมูลรหัสผ่านโดยห้ามมีช่องว่างระหว่างตัวอักษร");
-        return false;
-      }
-      return true;
+  // ✅ เพิ่มเงื่อนไขพิเศษสำหรับ admin
+  if (prefix.toLowerCase() === "admin") {
+    if (password === "") {
+      alert("กรุณากรอกรหัสผ่าน");
+      return false;
+    }
+    return true; // ผ่านการตรวจสอบ
   }
+
+  if (prefix === "") {
+    alert("กรุณากรอกอีเมล");
+    return false;
+  }
+
+  if (password === "") {
+    alert("กรุณากรอกรหัสผ่าน");
+    return false;
+  }
+
+  if (prefix.length !== 13) {
+    alert("ความยาวรหัสนักศึกษาต้องมี 13 ตัวพอดี");
+    return false;
+  }
+
+  if (/\s/.test(prefix) || /\s/.test(password)) {
+    alert("กรุณากรอกข้อมูลอีเมล์และรหัสผ่านโดยห้ามมีช่องว่าง");
+    return false;
+  }
+
+  if (!emailRegex.test(prefix)) {
+    alert("กรุณากรอกอีเมล์นักศึกษาให้อยู่ในรูปแบบของ MJU เช่น mju65******01");
+    return false;
+  }
+  
+  if (password.length < 8 || password.length > 16) {
+    alert("รหัสผ่านต้องมีความยาวระหว่าง 8 - 16 ตัวอักษร");
+    return false;
+  }
+
+  if (/\s/.test(password)) {
+    alert("กรุณากรอกข้อมูลรหัสผ่านโดยห้ามมีช่องว่างระหว่างตัวอักษร");
+    return false;
+  }
+
+  return true;
+}
+
 
 </script>
 
@@ -259,7 +270,7 @@
 
     <div class="right-container">
       <h1>Sign in</h1>
-      <p class="error">${err_login}</p>
+       <p class="error">${err_login}</p>
       <p style="color:green;">${result_regis}</p>
       <form name="frm2" action="loginUser" method="post" onsubmit="return validateLogin();">
         <div class="email-wrapper">

@@ -229,22 +229,12 @@ function validateAddCourse(form) {
 
     // ----- ตรวจสอบประเภทวิชา -----
     const cateName = form.cateName.value.trim();
-    const coursePattern = /^[A-Za-z\u0E00-\u0E7F\s]{4,100}$/;
     if (cateName === "") {
-        alert("กรุณากรอกประเภทของวิชา");
+        alert("กรุณาเลือกประเภทของวิชา");
         form.cateName.focus();
         return false;
     }
-    if (!catePattern.test(cateName)) {
-        alert("กรุณากรอกประเภทรายวิชาเป็นอักขระภาษาไทยหรือภาษาอังกฤษเท่านั้น");
-        form.cateName.focus();
-        return false;
-    }
-    if (cateName.length < 2 || cateName.length > 50) {
-        alert("กรุณากรอกประเภทรายวิชาได้ตั้งแต่ระหว่าง 2 ถึง 50 ตัวอักษร");
-        form.cateName.focus();
-        return false;
-    }
+
     // ตรวจสอบคำอธิบายรายวิชา
     const courseDescrip = form.courseDescrip.value.trim();
     const descripPattern = /^[\u0E00-\u0E7Fa-zA-Z0-9\s.,\/#\-ฯ():"'!?—…\n\r]+$/;
@@ -392,9 +382,6 @@ function validateAddCourse(form) {
 
     return true;
 }
-
-
-
 
 </script>
 
@@ -577,7 +564,14 @@ button.removeTopicBtn:hover {
             <input type="text" name="courseName" id="courseName" placeholder="ชื่อวิชารายวิชาไทย-อังกฤษ เท่านั้น" >
 
             <p>ประเภท</p>
-            <input type="text" name="cateName" id="cateName" placeholder="ประเภทของวิชา" >
+            <select name="cateName" id="cateName">
+              <option value="">-- เลือกประเภทของวิชา --</option>
+              <option value="general">หมวดวิชาศึกษาทั่วไป</option>
+              <option value="specific">หมวดวิชาเฉพาะ</option>
+              <option value="elective">หมวดวิชาเลือกเสรี</option>
+            </select>
+
+
 
             <p>คำอธิบายรายวิชา</p>
             <textarea name="courseDescrip" id="courseDescrip" rows="4"></textarea>
@@ -613,10 +607,10 @@ button.removeTopicBtn:hover {
 				
             <p>เรื่องที่จะสอน</p>
             <input type="text" name="topicName" id="topicName" placeholder="เช่น บทที่ 1-2" >
-
+            	<div id="addTopic"></div>
             <button type="button" onclick="addTopic(document.getElementById('addTopic'))">เพิ่มหัวข้อ</button>
             <button type="button" class="removeTopicBtn" onclick="removeLastTopic(document.getElementById('addTopic'))">ลบหัวข้อ</button>
-            	<div id="addTopic"></div>
+            
 			<hr>
             	<div id="addClassDate"></div>
               

@@ -3,6 +3,7 @@ package com.springmvc.Controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,6 +43,10 @@ public class RegisterStudentController {
 	// public String loadgoHomePage() {
 	// return "Home";
 	// }
+	@RequestMapping(value = "/goAdminHome", method = RequestMethod.GET)
+	public String loadAdminHomePage() {
+		return "AdminHome";
+	}
 
 	@RequestMapping(value = "/goHome", method = RequestMethod.GET)
 	public ModelAndView loadgoHomePage() {
@@ -93,28 +98,14 @@ public class RegisterStudentController {
 		session.setAttribute("User", user);
 
 		TutorManager tmg = new TutorManager();
-		long totalUsers = tmg.countAllUsers();
-
 		boolean result = false;
 
-		if (totalUsers == 0) {
-			Admin admin = new Admin();
-			admin.setUser(user);
-
-			Student student = new Student();
-			student.setUser(user);
-			student.setStudentId(studentId);
-			student.setYearOfStudy(yearOfStudy);
-
-			result = tmg.insertRegisterF(user, admin, student);
-		} else {
-			Student student = new Student();
-			student.setUser(user);
-			student.setStudentId(studentId);
-			student.setYearOfStudy(yearOfStudy);
-			session.setAttribute("Stu", student);
-			result = tmg.insertRegisterStu(user, student);
-		}
+		Student student = new Student();
+		student.setUser(user);
+		student.setStudentId(studentId);
+		student.setYearOfStudy(yearOfStudy);
+		session.setAttribute("Stu", student);
+		result = tmg.insertRegisterStu(user, student);
 
 		if (result) {
 			ModelAndView mav = new ModelAndView("Login");
@@ -147,7 +138,7 @@ public class RegisterStudentController {
 			for (Role role : roles) {
 				if (role instanceof Tutor) {
 					Tutor tutor = (Tutor) role;
-					if (tutor.getBanStatus() == 0) { // 0 = แบน
+					if (tutor.getBanStatus() == 0) {
 						ModelAndView mav = new ModelAndView("Login");
 						mav.addObject("err_login",
 								"บัญชีของคุณถูกแบน เพราะว่า: " + tutor.getBanDescription() + " กรุณาติดต่อผู้ดูแลระบบ");
@@ -160,6 +151,7 @@ public class RegisterStudentController {
 			session.setAttribute("User", user);
 
 			List<String> roleTypes = new ArrayList<>();
+			boolean isAdmin = false;
 			for (Role role : roles) {
 				String roleName = role.getClass().getSimpleName();
 				roleTypes.add(roleName);
@@ -169,16 +161,24 @@ public class RegisterStudentController {
 				if ("Tutor".equals(roleName))
 					session.setAttribute("Tutor", role);
 				if ("Admin".equals(roleName))
-					session.setAttribute("Admin", role);
+					isAdmin = true;
 			}
 
 			session.setAttribute("Roles", roleTypes);
 			List<Course> latestCourses = tmg.getLatestCourses(5);
 
-			ModelAndView mav = new ModelAndView("Home");
-			mav.addObject("result_login", "เข้าสู่ระบบเรียบร้อย");
-			mav.addObject("latestCourses", latestCourses);
-			return mav;
+			if (isAdmin) {
+				// ถ้าเป็น Admin ให้ไปหน้า AdminHome
+				ModelAndView mav = new ModelAndView("AdminHome");
+				mav.addObject("result_login", "เข้าสู่ระบบเรียบร้อย (Admin)");
+				return mav;
+			} else {
+				ModelAndView mav = new ModelAndView("Home");
+				mav.addObject("result_login", "เข้าสู่ระบบเรียบร้อย");
+				mav.addObject("latestCourses", latestCourses);
+				return mav;
+			}
+
 		} else {
 			ModelAndView mav = new ModelAndView("Login");
 			mav.addObject("err_login", "กรุณากรอกชื่อผู้ใช้หรือรหัสผ่านให้ถูกต้อง");

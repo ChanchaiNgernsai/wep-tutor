@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springmvc.model.User;
+import com.springmvc.model.Course;
 import com.springmvc.model.Skill;
 import com.springmvc.model.Tutor;
 import com.springmvc.model.TutorManager;
@@ -54,10 +55,17 @@ public class RegisterTutorController {
 
 		TutorManager tmg = new TutorManager();
 		boolean result = tmg.insertRegisterTutor(user, tutor, skillList);
+		List<Course> latestCourses = tmg.getLatestCourses(5);
 
 		if (result) {
+
+			List<String> roleTypes = new ArrayList<>();
+			roleTypes.add("Student");
+			roleTypes.add("Tutor");
+			session.setAttribute("Roles", roleTypes);
 			ModelAndView mav = new ModelAndView("Home");
 			mav.addObject("result_RegisTutor", "ลงทะเบียนติวเตอร์สำเร็จ");
+			mav.addObject("latestCourses", latestCourses);
 			return mav;
 		} else {
 			ModelAndView mav = new ModelAndView("RegisterTutor");

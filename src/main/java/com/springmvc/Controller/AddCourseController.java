@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.springmvc.model.Course;
 import com.springmvc.model.CourseDate;
 import com.springmvc.model.ReviewCourse;
+import com.springmvc.model.Student;
 import com.springmvc.model.Tutor;
 import com.springmvc.model.TutorManager;
 import com.springmvc.model.Category;
@@ -122,7 +123,7 @@ public class AddCourseController {
 	}
 
 	@RequestMapping(value = "/getViewCourse", method = RequestMethod.GET)
-	public ModelAndView getViewCourse(HttpServletRequest request) {
+	public ModelAndView getViewCourse(HttpServletRequest request, HttpSession session) {
 		int courseId = Integer.parseInt(request.getParameter("id"));
 		TutorManager tmg = new TutorManager();
 
@@ -132,6 +133,12 @@ public class AddCourseController {
 		ModelAndView mav = new ModelAndView("ViewCourse");
 		mav.addObject("course", course);
 		mav.addObject("reviews", reviews);
+
+		Student student = (Student) session.getAttribute("Stu");
+		if (student != null) {
+			boolean alreadyRegistered = tmg.checkStuRegisterCourse(student, course);
+			mav.addObject("alreadyRegistered", alreadyRegistered);
+		}
 
 		return mav;
 	}

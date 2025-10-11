@@ -182,10 +182,6 @@
                 <c:if test="${empty sessionScope.Tutor}">
                     <a class="btn" href="goRegisterTutor">สมัครเป็นติวเตอร์</a><br />
                 </c:if>
-            
-                <c:if test="${not empty sessionScope.Admin}">
-                    <a class="btn" href="goListReport">--หน้ารายงาน--</a><br />
-                </c:if>
 
                 <c:if test="${not empty sessionScope.Tutor}">
                     <a class="btn" href="goAddCourse?email=${sessionScope.email}"><spring:message code="home.add_course"/></a><br />
