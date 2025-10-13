@@ -219,43 +219,56 @@
 
     stars.forEach((star, idx) => {
         star.addEventListener('change', () => {
-            // ถ้าเลือกดาว idx+1 ให้ดาวก่อนหน้าถูกเลือกทั้งหมด
             if(star.checked) {
                 for(let i=0; i<=idx; i++) {
                     stars[i].checked = true;
                 }
             } else {
-                // ถ้าเอาออก ให้ดาวหลังดาวนี้ถูกเอาออกทั้งหมด
                 for(let i=idx; i<stars.length; i++) {
                     stars[i].checked = false;
                 }
             }
         });
     });
-function validateComment() {
+
+   function validateComment() {
     let comment = document.getElementById("comment").value.trim();
-    
-    // ตรวจสอบค่าว่าง
-    if(comment === "") {
+
+    const ratings = document.getElementsByName("score");
+    let selected = false;
+
+    for (let i = 0; i < ratings.length; i++) {
+        if (ratings[i].checked) {
+            selected = true;
+            break;
+        }
+    }
+
+    if (!selected) {
+        alert("กรุณาเลือกจำนวนดาวก่อนส่ง ⭐");
+        return false;
+    }
+
+    if (comment === "") {
         alert("กรุณากรอกข้อความรีวิว");
         return false;
     }
 
-    // จำกัดความยาวไม่เกิน 255 ตัวอักษร
-    if(comment.length > 255) {
+    
+    if (comment.length > 255) {
         alert("ข้อความรีวิวต้องไม่เกิน 255 ตัวอักษร");
         return false;
     }
 
-    // ตรวจสอบว่าเป็นภาษาไทยหรืออังกฤษ และมีช่องว่างได้
+    
     let regex = /^[A-Za-zก-๙0-9\s.,!?]+$/;
-    if(!regex.test(comment)) {
+    if (!regex.test(comment)) {
         alert("ข้อความรีวิวต้องเป็นตัวอักษรภาษาไทยหรืออังกฤษเท่านั้น");
         return false;
     }
 
-    return true; // ผ่านการตรวจสอบ
-    }
+    return true;
+}
 </script>
 </head>
 <body>
@@ -303,7 +316,6 @@ function validateComment() {
             </c:if>
         </div>
 
-         <!-- ฟอร์มเขียนรีวิว -->
         <div class="left-container">
             <div class="course-review">
                 <div class="course-header">
