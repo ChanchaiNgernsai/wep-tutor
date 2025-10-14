@@ -39,7 +39,8 @@ public class SpringMVCDispatcherServletInitializer extends
 	@Override
 	protected void customizeRegistration(@NonNull ServletRegistration.Dynamic registration) {
 		MultipartConfigElement multipartConfig = new MultipartConfigElement(
-				"C:/img_tutor", // temp folder ต้องมีอยู่จริง
+				// "C:/img_tutor", // temp folder ต้องมีอยู่จริง
+				"",
 				5242880, // max file size = 5MB
 				10485760, // max request size = 10MB
 				0 // fileSizeThreshold

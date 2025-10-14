@@ -17,8 +17,15 @@ import jakarta.servlet.http.HttpSession;
 
 import com.springmvc.model.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import java.util.Locale;
+
 @Controller
 public class RegisterStudentController {
+
+	@Autowired
+	private MessageSource messageSource;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView loadHomePage() {
@@ -141,7 +148,8 @@ public class RegisterStudentController {
 					if (tutor.getBanStatus() == 0) {
 						ModelAndView mav = new ModelAndView("Login");
 						mav.addObject("err_login",
-								"บัญชีของคุณถูกแบน เพราะว่า: " + tutor.getBanDescription() + " กรุณาติดต่อผู้ดูแลระบบ");
+								messageSource.getMessage("err_banned", new Object[] { tutor.getBanDescription() },
+										Locale.forLanguageTag("th-TH")));
 						return mav;
 					}
 				}
@@ -181,7 +189,9 @@ public class RegisterStudentController {
 
 		} else {
 			ModelAndView mav = new ModelAndView("Login");
-			mav.addObject("err_login", "กรุณากรอกชื่อผู้ใช้หรือรหัสผ่านให้ถูกต้อง");
+
+			// use existing err_login key from messages.properties and hard-code Thai locale
+			mav.addObject("err_login", messageSource.getMessage("err_login", null, Locale.forLanguageTag("th-TH")));
 			return mav;
 		}
 	}

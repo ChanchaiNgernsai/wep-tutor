@@ -26,15 +26,24 @@ services:
     restart: always
     ports:
       - "8080:8080"
+      - "8000:8000"
     volumes:
       - ./target/SpringMVCProject-0.0.1-SNAPSHOT.war:/usr/local/tomcat/webapps/wep-tutor.war
     environment:
+      # bind JPDA to all interfaces so host debugger can attach
+      JPDA_ADDRESS: "0.0.0.0:8000"
+      JPDA_TRANSPORT: "dt_socket"
+      # suspend JVM until debugger attaches (useful for diagnosing attach issues)
+      #JPDA_SUSPEND: "y"
       CATALINA_OPTS: "-Dspring.profiles.active=docker -Xmx512m -Xms256m"
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: project_tutor2
-      DB_USER: tutor_user
+      DB_USER: root
       DB_PASSWORD: 1234
+      OMISE_PUBLIC_KEY: pkey_test_xxxxxxxxxxxxxxxxxxx
+      OMISE_SECRET_KEY: skey_test_xxxxxxxxxxxxxxxxxxx
+    entrypoint: ["catalina.sh", "jpda", "run"]
     depends_on:
       mysql:
         condition: service_healthy

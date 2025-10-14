@@ -23,8 +23,15 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class DepositController {
 
-    private static final String OMISE_SECRET_KEY = "skey_test_65bj01bb1dw57i15792";
-    private static final String OMISE_PUBLIC_KEY = "pkey_test_65bj01awim1ab9eq267";
+    private static String getOmiseSecretKey() {
+        String secretKey = System.getenv("OMISE_SECRET_KEY");
+        return secretKey != null ? secretKey : "skey_test_65bj01bb1dw57i15792";
+    }
+
+    private static String getOmisePublicKey() {
+        String publicKey = System.getenv("OMISE_PUBLIC_KEY");
+        return publicKey != null ? publicKey : "pkey_test_65bj01awim1ab9eq267";
+    }
 
     @RequestMapping(value = "/goDeposit", method = RequestMethod.GET)
     public ModelAndView loadDepositPage(HttpSession session) {
@@ -40,7 +47,7 @@ public class DepositController {
 
         ModelAndView mav = new ModelAndView("Deposit");
         mav.addObject("balance", balance);
-        mav.addObject("publicKey", OMISE_PUBLIC_KEY);
+        mav.addObject("publicKey", getOmisePublicKey());
         return mav;
     }
 
@@ -58,14 +65,14 @@ public class DepositController {
         String qrUrl = null;
         try {
             Client client = new Client.Builder()
-                    .publicKey(OMISE_PUBLIC_KEY)
-                    .secretKey(OMISE_SECRET_KEY)
+                    .publicKey(getOmisePublicKey())
+                    .secretKey(getOmiseSecretKey())
                     .build();
 
             Source source = client.sendRequest(
                     new Source.CreateRequestBuilder()
                             // .type("promptpay") // SDK รุ่น 4.x ใช้ String "promptpay"
-                            .type(SourceType.valueOf("PROMPTPAY"))
+                            .type(SourceType.PromptPay)
                             .amount(amount.longValue() * 100L) // บาท → สตางค์
                             .currency("thb")
                             .build());

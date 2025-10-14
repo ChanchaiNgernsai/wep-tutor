@@ -1,4 +1,5 @@
 package com.springmvc.Controller;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -58,6 +59,18 @@ public class PasswordUtil implements Serializable {
             hexString.append(hex);
         }
         return hexString.toString();
+    }
+
+    public static void main(String[] args) {
+        try {
+            PasswordUtil pu = PasswordUtil.getInstance();
+            String salt = pu.createSalt();
+            System.out.println("Salt: " + salt);
+            String password = pu.createPassword("abc12345", salt);
+            System.out.println("Password: " + password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
