@@ -1,5 +1,7 @@
 package com.springmvc.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,12 +15,16 @@ import com.springmvc.model.TutorManager;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ReviewCourseController {
+
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(value = "/goReviewCourse", method = RequestMethod.GET)
     public ModelAndView loadReviewCoursePage(HttpServletRequest request, HttpSession session) {
@@ -64,7 +70,8 @@ public class ReviewCourseController {
 
         if (existingReview != null) {
             ModelAndView mav = new ModelAndView("ReviewCourse");
-            mav.addObject("err_result", "คุณได้รีวิวคอร์สนี้ไปแล้ว ไม่สามารถรีวิวซ้ำได้");
+            mav.addObject("err_Reviewcom",
+                    messageSource.getMessage("err_Reviewcom", null, Locale.forLanguageTag("th-TH")));
 
             List<ReviewCourse> reviews = tmg.getReviewsByCourse(courseId);
             List<RegisterCourse> registerCourses = tmg.getRegisterCoursesByStudent(student);
@@ -96,9 +103,11 @@ public class ReviewCourseController {
         mav.addObject("reviews", reviews);
 
         if (result) {
-            mav.addObject("resultReview", "บันทึกรีวิวสำเร็จ");
+            mav.addObject("resultReview",
+                    messageSource.getMessage("resultReview", null, Locale.forLanguageTag("th-TH")));
         } else {
-            mav.addObject("err_result", "ไม่สามารถบันทึกได้");
+            mav.addObject("err_result",
+                    messageSource.getMessage("err_result", null, Locale.forLanguageTag("th-TH")));
         }
 
         return mav;

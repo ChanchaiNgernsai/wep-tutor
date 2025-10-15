@@ -76,7 +76,7 @@
         <div class="back-home">
             <a href="goHome">กลับหน้า Home</a>
         </div>
-        <p style="color: green; text-align: center;">${msg}</p>
+        <p style="color: green; text-align: center;">${result_registerCourse}</p>
         <p><strong>ผู้ลงทะเบียน:</strong> ${User.firstName} ${User.lastName}</p>
         <p><strong>อีเมล:</strong> ${User.email}</p>
         <table>

@@ -127,6 +127,15 @@
     <c:if test="${not empty err_result}">
         <p class="err-message">${err_result}</p>
     </c:if>
+    <c:if test="${not empty err_money}">
+        <p class="err-message">${err_money}</p>
+    </c:if>
+    <c:if test="${not empty err_maxstu}">
+        <p class="err-message">${err_maxstu}</p>
+    </c:if>
+    <c:if test="${not empty err_registerCourse}">
+        <p class="err-message">${err_registerCourse}</p>
+    </c:if>
 
     <hr>
     <div class="info">

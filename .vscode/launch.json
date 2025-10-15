@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "UnicodeConverter",
+      "request": "launch",
+      "mainClass": "com.springmvc.utils.UnicodeConverter",
+      "projectName": "SpringMVCProject"
+    },
+    {
+      "type": "java",
       "name": "Attach to Tomcat (no prelaunch)",
       "request": "attach",
       "hostName": "localhost",

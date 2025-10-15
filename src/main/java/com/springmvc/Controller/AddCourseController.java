@@ -2,7 +2,10 @@ package com.springmvc.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +24,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AddCourseController {
+	@Autowired
+	private MessageSource messageSource;
 
 	@RequestMapping(value = "/goAddCourse", method = RequestMethod.GET)
 	public ModelAndView loadAddCoursePage(HttpSession session) {
@@ -88,11 +93,13 @@ public class AddCourseController {
 			List<Course> courses = tmg.getCoursesByTutorEmail(tutor_email);
 			ModelAndView mav = new ModelAndView("ListTutorCourse");
 			mav.addObject("courses", courses);
-			mav.addObject("result_addCourse", "เพิ่มคอร์สเรียบร้อย");
+			mav.addObject("result_addCourse",
+					messageSource.getMessage("result_addCourse", null, Locale.forLanguageTag("th-TH")));
 			return mav;
 		} else {
 			ModelAndView mav = new ModelAndView("AddCourse");
-			mav.addObject("error_result", "ไม่สามารถบันทึกได้");
+			mav.addObject("error_result",
+					messageSource.getMessage("error_result", null, Locale.forLanguageTag("th-TH")));
 			return mav;
 		}
 

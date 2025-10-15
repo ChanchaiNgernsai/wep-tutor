@@ -140,6 +140,8 @@ function banTutorPrompt(tutorId) {
 
             <p class="message message-success">${result_ban}</p>
             <p class="message message-error">${err_ban}</p>
+            <p class="message message-error">${err_noban}</p>
+            <p class="message message-error">${err_no_unban}</p>
 
             <table>
                 <tr>

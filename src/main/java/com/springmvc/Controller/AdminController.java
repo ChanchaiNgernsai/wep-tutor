@@ -1,7 +1,10 @@
 package com.springmvc.Controller;
 
 import java.util.List;
+import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +19,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class AdminController {
+
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(value = "/getReportTutor", method = RequestMethod.GET)
     public ModelAndView getReportTutor(HttpServletRequest request) {
@@ -48,14 +54,15 @@ public class AdminController {
 
             ModelAndView mav = new ModelAndView("redirect:/goListReport");
             if (result) {
-                mav.addObject("result_ban", "แบนผู้สอนสำเร็จ");
+                mav.addObject("result_ban",
+                        messageSource.getMessage("result_ban", null, Locale.forLanguageTag("th-TH")));
             } else {
-                mav.addObject("err_ban", "ไม่สามารถบันทึกได้");
+                mav.addObject("err_ban", messageSource.getMessage("err_ban", null, Locale.forLanguageTag("th-TH")));
             }
             return mav;
         } else {
             ModelAndView mav = new ModelAndView("redirect:/goListReport");
-            mav.addObject("err_ban", "ไม่พบผู้สอน");
+            mav.addObject("err_noban", messageSource.getMessage("err_noban", null, Locale.forLanguageTag("th-TH")));
             return mav;
         }
     }
@@ -72,14 +79,16 @@ public class AdminController {
 
             ModelAndView mav = new ModelAndView("redirect:/goListReport");
             if (result) {
-                mav.addObject("result_unban", "ปลดแบนผู้สอนสำเร็จ");
+                mav.addObject("result_unban",
+                        messageSource.getMessage("result_unban", null, Locale.forLanguageTag("th-TH")));
             } else {
-                mav.addObject("err_unban", "ไม่สามารถบันทึกได้");
+                mav.addObject("err_unban", messageSource.getMessage("err_unban", null, Locale.forLanguageTag("th-TH")));
             }
             return mav;
         } else {
             ModelAndView mav = new ModelAndView("redirect:/goListReport");
-            mav.addObject("err_unban", "ไม่พบผู้สอน");
+            mav.addObject("err_no_unban",
+                    messageSource.getMessage("err_no_unban", null, Locale.forLanguageTag("th-TH")));
             return mav;
         }
     }

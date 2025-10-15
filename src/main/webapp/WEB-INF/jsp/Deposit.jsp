@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %> 
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,34 +87,51 @@
     </style>
 
     <script>
-function validateDeposit() {
-    const amountInput = document.getElementById("amount");
-    const amount = amountInput.value.trim();
+        function validateDeposit() {
+            const amountInput = document.getElementById("amount");
+            const amount = amountInput.value.trim();
 
-    // 1. ต้องไม่เป็นค่าว่าง
-    if (amount === "") {
-        alert("กรุณากรอกจำนวนเงิน");
-        amountInput.focus();
-        return false;
-    }
+            if (amount === "") {
+                alert("กรุณากรอกจำนวนเงิน");
+                amountInput.focus();
+                return false;
+            }
 
-    // 2. ต้องเป็นตัวเลขจำนวนเต็ม
-    if (!/^\d+$/.test(amount)) {
-        alert("จำนวนเงินต้องเป็นตัวเลขจำนวนเต็ม");
-        amountInput.focus();
-        return false;
-    }
+            if (!/^\d+$/.test(amount)) {
+                alert("จำนวนเงินต้องเป็นตัวเลขจำนวนเต็ม");
+                amountInput.focus();
+                return false;
+            }
 
-    // 3. ยอดเงินขั้นต่ำ 100 บาท
-    if (parseInt(amount) < 100) {
-        alert("จำนวนเงินขั้นต่ำคือ 100 บาท");
-        amountInput.focus();
-        return false;
-    }
+            if (parseInt(amount) < 100) {
+                alert("จำนวนเงินขั้นต่ำคือ 100 บาท");
+                amountInput.focus();
+                return false;
+            }
 
-    return true; // ผ่านทุกเงื่อนไข
-}
-</script>
+            return true;
+        }
+
+        // Polling ตรวจสอบสถานะ deposit ทุก 5 วินาที
+        function checkDepositStatus() {
+            fetch('checkDepositStatus?email=${user.email}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'successful') {
+                        alert('ชำระเงินสำเร็จ ยอดเงินถูกบันทึกเรียบร้อย');
+                        location.reload();
+                    } else if (data.status === 'failed') {
+                        alert('ชำระเงินไม่สำเร็จ กรุณาลองอีกครั้ง');
+                    }
+                })
+                .catch(err => console.error('Error fetching deposit status:', err));
+        }
+
+        // เริ่ม Polling หลังจากสร้าง QR แล้ว
+        <c:if test="${not empty qrUrl}">
+            setInterval(checkDepositStatus, 5000);
+        </c:if>
+    </script>
 
 </head>
 <body>
@@ -125,16 +142,16 @@ function validateDeposit() {
             <a href="goHome">&#8592; กลับสู่หน้าหลัก</a>
         </div>
 
-        <p class="error">${error}</p>
-        <p class="success">${msg_result}</p>
+        <p class="error_qr"><c:out value="${error_qr}"/></p>
+        <p class="success"><c:out value="${msg_result}"/></p>
 
         <p>เงินคงเหลือปัจจุบัน: <strong>${balance}</strong> บาท</p>
 
         <div class="section">
-            <form action="addDeposit" method="post" onsubmit="return validateDeposit();">
-                <label for="amount">กรุณากรอกจำนวนเงิน:</label>      
-                <input type="number" id="amount" name="amount" required value="${amount}" /> 
-                <input type="submit" value="ฝากเงิน / สร้าง QR Code" />
+            <form action="getQrCode" method="post" onsubmit="return validateDeposit();">
+                <label for="amount">กรุณากรอกจำนวนเงิน:</label>
+                <input type="number" id="amount" name="amount" value="${amount}" /> 
+                <input type="submit" value="สร้าง QR Code" />
             </form>
 
             <c:if test="${not empty qrUrl}">

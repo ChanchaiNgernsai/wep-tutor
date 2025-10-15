@@ -80,13 +80,12 @@
         <a href="goAdminHome"><img src="resources/images/home_on.png" alt="Home"></a>
         <h2>ช่วยติวในมหาวิทยาลัยแม่โจ้</h2>
     </div>
-    
-
+ 
     <div class="main-content">
         <div class="card">
-                <a class="btn" href="goListReport">-- หน้ารายงาน --</a>
+            <p id="resultReview" style="color: green;">${result_loginAdmin}</p>
+            <a class="btn" href="goListReport">-- หน้ารายงาน --</a>
             
-
             <form action="logout" method="post" style="margin-top: 20px;">
                 <input class="btn logout-btn" type="submit" value="ออกจากระบบ" />
             </form>

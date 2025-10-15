@@ -1,5 +1,9 @@
 package com.springmvc.Controller;
 
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +19,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ProfileController {
+
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(value = "/goProfile", method = RequestMethod.GET)
     public String loadProfilePage() {
@@ -74,13 +81,13 @@ public class ProfileController {
             tmg.updateStudent(stu);
 
             ModelAndView mav = new ModelAndView("ViewProfile");
-            mav.addObject("edit", "แก้ไขข้อมูลสำเร็จ");
+            mav.addObject("edit", messageSource.getMessage("edit", null, Locale.forLanguageTag("th-TH")));
             mav.addObject("User", us);
             mav.addObject("Stu", stu);
             return mav;
         } else {
             ModelAndView mav = new ModelAndView("EditProfile");
-            mav.addObject("error_edit", "ไม่สามารถแก้ไขข้อมูลได้");
+            mav.addObject("error_edit", messageSource.getMessage("err_edit", null, Locale.forLanguageTag("th-TH")));
             return mav;
         }
     }

@@ -9,27 +9,33 @@ import org.hibernate.cfg.Configuration;
 public class HibernateConnection {
 	public static SessionFactory sessionFactory;
 
-	static String url;
-	static String uname;
-	static String pwd;
+	// static String url;
+	// static String uname;
+	// static String pwd;
 
-	static {
-		// Check if running in Docker environment
-		String dockerProfile = System.getProperty("spring.profiles.active");
-		String dbName = System.getenv("DB_NAME");
-		uname = System.getenv("DB_USER");
-		pwd = System.getenv("DB_PASSWORD");
+	// static {
+	// // Check if running in Docker environment
+	// String dockerProfile = System.getProperty("spring.profiles.active");
+	// String dbName = System.getenv("DB_NAME");
+	// uname = System.getenv("DB_USER");
+	// pwd = System.getenv("DB_PASSWORD");
 
-		if ("docker".equals(dockerProfile)) {
-			// Docker environment - connect to mysql container
-			url = "jdbc:mysql://mysql:3306/" + dbName
-					+ "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8";
-		} else {
-			// Local development environment
-			url = "jdbc:mysql://localhost:3306/" + dbName
-					+ "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8";
-		}
-	}
+	// if ("docker".equals(dockerProfile)) {
+	// // Docker environment - connect to mysql container
+	// url = "jdbc:mysql://mysql:3306/" + dbName
+	// +
+	// "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8";
+	// } else {
+	// // Local development environment
+	// url = "jdbc:mysql://localhost:3306/" + dbName
+	// +
+	// "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8";
+	// }
+	// }
+
+	static String url = "jdbc:mysql://localhost:3306/project_tutor2?characterEncoding=UTF-8";
+	static String uname = "root";
+	static String pwd = "1234";
 
 	public static SessionFactory doHibernateConnection() {
 		if (sessionFactory != null) {

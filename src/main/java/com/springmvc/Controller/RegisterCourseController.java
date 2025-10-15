@@ -1,5 +1,7 @@
 package com.springmvc.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +22,9 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class RegisterCourseController {
+
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(value = "/goListRegisterCourse", method = RequestMethod.GET)
     public ModelAndView loadListRegisterCoursePage(HttpSession session) {
@@ -100,7 +105,7 @@ public class RegisterCourseController {
         double balance = tmg.getBalance(student.getUser().getEmail());
         if (balance < course.getCoursePrice()) {
             ModelAndView mav = new ModelAndView("RegisterCourse");
-            mav.addObject("err_result", "ยอดเงินไม่เพียงพอ กรุณาเติมเงินก่อนลงทะเบียน");
+            mav.addObject("err_money", messageSource.getMessage("err_money", null, Locale.forLanguageTag("th-TH")));
             mav.addObject("course", course);
             mav.addObject("balance", balance);
             return mav;
@@ -109,7 +114,7 @@ public class RegisterCourseController {
         int checkNumStu = tmg.getRegisterCoursesByCourse(courseId).size();
         if (checkNumStu >= course.getMaxStudents()) {
             ModelAndView mav = new ModelAndView("RegisterCourse");
-            mav.addObject("err_result", "ไม่สามารถลงทะเบียนได้ คอร์สเต็มแล้ว");
+            mav.addObject("err_maxstu", messageSource.getMessage("err_maxstu", null, Locale.forLanguageTag("th-TH")));
             mav.addObject("course", course);
             mav.addObject("balance", tmg.getBalance(student.getUser().getEmail()));
             return mav;
@@ -158,14 +163,16 @@ public class RegisterCourseController {
 
         if (result) {
             ModelAndView mav = new ModelAndView("Payment");
-            mav.addObject("msg", "ลงทะเบียนคอร์สเรียบร้อยแล้ว");
+            mav.addObject("result_payment",
+                    messageSource.getMessage("result_registerCourse", null, Locale.forLanguageTag("th-TH")));
             mav.addObject("student", student);
             mav.addObject("course", course);
             mav.addObject("payment", payment);
             return mav;
         } else {
             ModelAndView mav = new ModelAndView("RegisterCourse");
-            mav.addObject("err_result", "ไม่สามารถบันทึกการลงทะเบียนได้");
+            mav.addObject("err_registerCourse",
+                    messageSource.getMessage("err_registerCourse", null, Locale.forLanguageTag("th-TH")));
             mav.addObject("course", course);
             mav.addObject("balance", balance);
             return mav;
@@ -185,10 +192,12 @@ public class RegisterCourseController {
         boolean result = tmg.deleteRegisterCourse(registerId);
 
         if (result) {
-            session.setAttribute("err_result_cancel", "ยกเลิกคอร์สเรียบร้อยแล้ว");
+            session.setAttribute("err_result_cancel",
+                    messageSource.getMessage("err_result_cancel", null, Locale.forLanguageTag("th-TH")));
             return new ModelAndView("redirect:/goListRegisterCourse");
         } else {
-            return new ModelAndView("ViewRegisterCourse", "err_result", "ไม่สามารถยกเลิกคอร์สได้");
+            return new ModelAndView("ViewRegisterCourse", "err_result",
+                    messageSource.getMessage("err_result", null, Locale.forLanguageTag("th-TH")));
         }
     }
 

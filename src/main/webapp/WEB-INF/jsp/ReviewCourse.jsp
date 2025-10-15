@@ -287,7 +287,9 @@
     <c:if test="${not empty err_result}">
         <p class="message">${err_result}</p>
     </c:if>
-    
+    <c:if test="${not empty err_Reviewcom}">
+        <p class="message">${err_Reviewcom}</p>
+    </c:if>
 
     <div class="center-container">
 

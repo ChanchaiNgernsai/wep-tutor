@@ -32,7 +32,7 @@ public class RegisterStudentController {
 		TutorManager tmg = new TutorManager();
 		List<Course> latestCourses = tmg.getLatestCourses(5); // ดึงล่าสุด 5 คอร์ส
 		ModelAndView mav = new ModelAndView("Home");
-		mav.addObject("latestCourses", latestCourses); // ส่งไป JSP
+		mav.addObject("latestCourses", latestCourses);
 		return mav;
 	}
 
@@ -116,11 +116,12 @@ public class RegisterStudentController {
 
 		if (result) {
 			ModelAndView mav = new ModelAndView("Login");
-			mav.addObject("result_regis", "ลงทะเบียนสำเร็จ! กรุณาเข้าสู่ระบบ");
+			mav.addObject("result_regis",
+					messageSource.getMessage("result_regis", null, Locale.forLanguageTag("th-TH")));
 			return mav;
 		} else {
 			ModelAndView mav = new ModelAndView("RegisterStudent");
-			mav.addObject("err_result", "ไม่สามารถบันทึกได้");
+			mav.addObject("err_result", messageSource.getMessage("err_result", null, Locale.forLanguageTag("th-TH")));
 			return mav;
 		}
 	}
@@ -176,21 +177,21 @@ public class RegisterStudentController {
 			List<Course> latestCourses = tmg.getLatestCourses(5);
 
 			if (isAdmin) {
-				// ถ้าเป็น Admin ให้ไปหน้า AdminHome
+
 				ModelAndView mav = new ModelAndView("AdminHome");
-				mav.addObject("result_login", "เข้าสู่ระบบเรียบร้อย (Admin)");
+				mav.addObject("result_loginAdmin",
+						messageSource.getMessage("result_loginAdmin", null, Locale.forLanguageTag("th-TH")));
 				return mav;
 			} else {
 				ModelAndView mav = new ModelAndView("Home");
-				mav.addObject("result_login", "เข้าสู่ระบบเรียบร้อย");
+				mav.addObject("result_login",
+						messageSource.getMessage("result_login", null, Locale.forLanguageTag("th-TH")));
 				mav.addObject("latestCourses", latestCourses);
 				return mav;
 			}
 
 		} else {
 			ModelAndView mav = new ModelAndView("Login");
-
-			// use existing err_login key from messages.properties and hard-code Thai locale
 			mav.addObject("err_login", messageSource.getMessage("err_login", null, Locale.forLanguageTag("th-TH")));
 			return mav;
 		}
