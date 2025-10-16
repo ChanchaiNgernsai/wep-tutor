@@ -7,10 +7,14 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import co.omise.Client;
 import co.omise.models.Charge;
@@ -87,7 +91,7 @@ public class DepositController {
                     new Charge.CreateRequestBuilder()
                             .amount(amount.longValue() * 100L)
                             .currency("thb")
-                            .description("Deposit for " + user.getEmail())
+                            .customer(user.getEmail())
                             .source(source.getId())
                             .build());
 
@@ -118,31 +122,42 @@ public class DepositController {
         return mav;
     }
 
+    @ResponseBody
     @RequestMapping(value = "/addDeposit", method = RequestMethod.POST)
-    public ModelAndView addDeposit(HttpServletRequest request, HttpSession session) {
-        Double amount = Double.parseDouble(request.getParameter("amount"));
-        User user = (User) session.getAttribute("User");
+    public Map<String, Object> addDeposit(@RequestBody Map<String, Object> payload, HttpSession session) {
+        Map<String, Object> resp = new HashMap<>();
 
-        if (user == null) {
-            ModelAndView mav = new ModelAndView("Login");
-            mav.addObject("error", "กรุณาเข้าสู่ระบบก่อนทำรายการฝากเงิน");
-            return mav;
+        // Test mode: display all key and value
+        for (Map.Entry<String, Object> entry : payload.entrySet()) {
+            Object key = entry.getKey();
+            Object value = entry.getValue();
+            if (value != null && value instanceof Map) {
+                for (Map.Entry<String, Object> subEntry : ((Map<String, Object>) value).entrySet()) {
+                    Object subKey = subEntry.getKey();
+                    Object subValue = subEntry.getValue();
+                    System.out.println("  " + subKey + ": " + subValue);
+                }
+            } else {
+                System.out.println(key + ": " + value);
+            }
         }
 
-        Transaction tran = new Transaction();
-        tran.setDeposit(amount);
-        tran.setDepositDate(new Date());
-        tran.setUser(user);
+        if (payload == null || payload.get("key") == null) {
+            String status = (String) payload.get("key");
+            // check key value for "create" or "completed"
+            if ("create".equals(status) || "completed".equals(status)) {
+                resp.put("success", true);
+                resp.put("message", "Deposit " + status);
+            } else {
+                resp.put("success", false);
+                resp.put("message", status);
+            }
+            return resp;
+        }
 
-        TutorManager tmg = new TutorManager();
-        tmg.insertDeposit(tran);
-        double balance = tmg.getBalance(user.getEmail());
+        resp.put("success", false);
 
-        ModelAndView mav = new ModelAndView("Deposit");
-        mav.addObject("amount", amount);
-        mav.addObject("balance", balance);
-        mav.addObject("msg_result", messageSource.getMessage("msg_result", null, Locale.forLanguageTag("th-TH")));
-        return mav;
+        return resp;
     }
 
 }
