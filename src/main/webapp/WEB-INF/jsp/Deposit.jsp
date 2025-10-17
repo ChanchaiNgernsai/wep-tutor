@@ -111,26 +111,6 @@
 
             return true;
         }
-
-        // Polling ตรวจสอบสถานะ deposit ทุก 5 วินาที
-        function checkDepositStatus() {
-            fetch('checkDepositStatus?email=${user.email}')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'successful') {
-                        alert('ชำระเงินสำเร็จ ยอดเงินถูกบันทึกเรียบร้อย');
-                        location.reload();
-                    } else if (data.status === 'failed') {
-                        alert('ชำระเงินไม่สำเร็จ กรุณาลองอีกครั้ง');
-                    }
-                })
-                .catch(err => console.error('Error fetching deposit status:', err));
-        }
-
-        // เริ่ม Polling หลังจากสร้าง QR แล้ว
-        <c:if test="${not empty qrUrl}">
-            setInterval(checkDepositStatus, 5000);
-        </c:if>
     </script>
 
 </head>
@@ -144,6 +124,9 @@
 
         <p class="error_qr"><c:out value="${error_qr}"/></p>
         <p class="success"><c:out value="${msg_result}"/></p>
+        <p class="success"><c:out value="${msg_deposit}"/></p>
+        
+
 
         <p>เงินคงเหลือปัจจุบัน: <strong>${balance}</strong> บาท</p>
 

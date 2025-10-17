@@ -29,7 +29,8 @@ public class WithdrawController {
 
         if (user == null) {
             ModelAndView mav = new ModelAndView("Login");
-            String errorMessage = messageSource.getMessage("general.error.login_first_withdraw", null, Locale.getDefault());
+            String errorMessage = messageSource.getMessage("general.error.login_first_withdraw", null,
+                    Locale.getDefault());
             mav.addObject("err_login", errorMessage);
             return mav;
         }
@@ -50,7 +51,8 @@ public class WithdrawController {
         User user = (User) session.getAttribute("User");
         if (user == null) {
             ModelAndView mav = new ModelAndView("Login");
-            String errorMessage = messageSource.getMessage("general.error.login_first_withdraw", null, Locale.getDefault());
+            String errorMessage = messageSource.getMessage("general.error.login_first_withdraw", null,
+                    Locale.getDefault());
             mav.addObject("err_login", errorMessage);
             return mav;
         }

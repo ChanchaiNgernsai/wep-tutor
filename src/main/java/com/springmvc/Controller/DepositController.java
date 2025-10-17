@@ -21,6 +21,7 @@ import co.omise.models.Charge;
 import co.omise.models.Source;
 import co.omise.models.SourceType;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springmvc.model.Transaction;
 import com.springmvc.model.TutorManager;
 import com.springmvc.model.User;
@@ -36,12 +37,12 @@ public class DepositController {
 
     private static String getOmiseSecretKey() {
         String secretKey = System.getenv("OMISE_SECRET_KEY");
-        return secretKey != null ? secretKey : "skey_test_xxxxxxxxxxxxxxxxxxxx";
+        return secretKey != null ? secretKey : "skey_test_xxxxxxxxxxxxxxxxxxx";
     }
 
     private static String getOmisePublicKey() {
         String publicKey = System.getenv("OMISE_PUBLIC_KEY");
-        return publicKey != null ? publicKey : "pkey_test_xxxxxxxxxxxxxxxxxxxx";
+        return publicKey != null ? publicKey : "pkey_test_xxxxxxxxxxxxxxxxxxx";
     }
 
     @RequestMapping(value = "/goDeposit", method = RequestMethod.GET)
@@ -91,7 +92,7 @@ public class DepositController {
                     new Charge.CreateRequestBuilder()
                             .amount(amount.longValue() * 100L)
                             .currency("thb")
-                            .customer(user.getEmail())
+                            .description(user.getEmail())
                             .source(source.getId())
                             .build());
 
@@ -118,44 +119,45 @@ public class DepositController {
         mav.addObject("amount", amount);
         mav.addObject("balance", balance);
         mav.addObject("qrUrl", qrUrl);
-        mav.addObject("msg_result", messageSource.getMessage("msg_result", null, Locale.forLanguageTag("th-TH")));
+        mav.addObject("msg_deposit", messageSource.getMessage("msg_deposit", null, Locale.forLanguageTag("th-TH")));
         return mav;
     }
 
     @ResponseBody
     @RequestMapping(value = "/addDeposit", method = RequestMethod.POST)
-    public Map<String, Object> addDeposit(@RequestBody Map<String, Object> payload, HttpSession session) {
+    public Map<String, Object> addDeposit(@RequestBody String payloadStr) {
         Map<String, Object> resp = new HashMap<>();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> payload = mapper.readValue(payloadStr, Map.class);
 
-        // Test mode: display all key and value
-        for (Map.Entry<String, Object> entry : payload.entrySet()) {
-            Object key = entry.getKey();
-            Object value = entry.getValue();
-            if (value != null && value instanceof Map) {
-                for (Map.Entry<String, Object> subEntry : ((Map<String, Object>) value).entrySet()) {
-                    Object subKey = subEntry.getKey();
-                    Object subValue = subEntry.getValue();
-                    System.out.println("  " + subKey + ": " + subValue);
-                }
-            } else {
-                System.out.println(key + ": " + value);
-            }
-        }
+            String description = payload.get("description") != null ? payload.get("description").toString() : "";
+            String status = payload.get("status") != null ? payload.get("status").toString() : "";
+            Double amount = payload.get("amount") != null ? Double.parseDouble(payload.get("amount").toString()) : 0.0;
 
-        if (payload == null || payload.get("key") == null) {
-            String status = (String) payload.get("key");
-            // check key value for "create" or "completed"
-            if ("create".equals(status) || "completed".equals(status)) {
+            if ("successful".equalsIgnoreCase(status)) {
+                User user = new User();
+                user.setEmail(description);
+                Transaction tran = new Transaction();
+                tran.setUser(user);
+                tran.setDeposit(amount);
+                tran.setDepositDate(new Date());
+
+                TutorManager tmg = new TutorManager();
+                tmg.insertTransaction(tran);
+
                 resp.put("success", true);
-                resp.put("message", "Deposit " + status);
+                resp.put("message", "Deposit recorded successfully.");
             } else {
                 resp.put("success", false);
-                resp.put("message", status);
+                resp.put("message", "Payment not completed: " + status);
             }
-            return resp;
-        }
 
-        resp.put("success", false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.put("success", false);
+            resp.put("message", "Error: " + e.getMessage());
+        }
 
         return resp;
     }
