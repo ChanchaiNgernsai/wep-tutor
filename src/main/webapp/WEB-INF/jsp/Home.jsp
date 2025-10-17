@@ -168,6 +168,7 @@
                 <p id="resultLogin" style="color: green;">${result_login}</p>
                 <p id="resultTutor" style="color: green;">${result_RegisTutor}</p>
                 <p id="resultReview" style="color: green;">${result_review}</p>
+                <p id="resultReview" style="color: green;">${message_completed}</p>
                 <a class="btn" href="goProfile">ดูโปรไฟล์</a><br />
                 <p>ชื่อ: ${sessionScope.User.firstName} ${sessionScope.User.lastName}</p>
                 <p>สถานะของคุณ</p>

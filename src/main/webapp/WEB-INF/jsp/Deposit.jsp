@@ -124,9 +124,8 @@
 
         <p class="error_qr"><c:out value="${error_qr}"/></p>
         <p class="success"><c:out value="${msg_result}"/></p>
-        <p class="success"><c:out value="${msg_deposit}"/></p>
-        
-
+        <p class="success"><c:out value="${message}"/></p>
+        <c:if test="${not empty message_completed}"></c:if>
 
         <p>เงินคงเหลือปัจจุบัน: <strong>${balance}</strong> บาท</p>
 

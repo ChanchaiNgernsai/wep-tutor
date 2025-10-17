@@ -37,12 +37,12 @@ public class DepositController {
 
     private static String getOmiseSecretKey() {
         String secretKey = System.getenv("OMISE_SECRET_KEY");
-        return secretKey != null ? secretKey : "skey_test_xxxxxxxxxxxxxxxxxxx";
+        return secretKey != null ? secretKey : "skey_test_xxxxxxxxxxxxx";
     }
 
     private static String getOmisePublicKey() {
         String publicKey = System.getenv("OMISE_PUBLIC_KEY");
-        return publicKey != null ? publicKey : "pkey_test_xxxxxxxxxxxxxxxxxxx";
+        return publicKey != null ? publicKey : "pkey_test_xxxxxxxxxxxxxxx";
     }
 
     @RequestMapping(value = "/goDeposit", method = RequestMethod.GET)
@@ -130,29 +130,38 @@ public class DepositController {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> payload = mapper.readValue(payloadStr, Map.class);
+            Map<String, Object> data = (Map<String, Object>) payload.get("data");
 
-            String description = payload.get("description") != null ? payload.get("description").toString() : "";
-            String status = payload.get("status") != null ? payload.get("status").toString() : "";
-            Double amount = payload.get("amount") != null ? Double.parseDouble(payload.get("amount").toString()) : 0.0;
+            String description = data.get("description") != null ? data.get("description").toString() : "";
+            String status = payload.get("key") != null ? payload.get("key").toString() : "";
+            Long amountLong = data.get("amount") != null ? ((Number) data.get("amount")).longValue() : 0L;
+            Double amountBaht = amountLong / 100.0;
 
-            if ("successful".equalsIgnoreCase(status)) {
+            System.out.println("Status = " + status + ", Amount = " + amountBaht + ", Description = " + description);
+
+            if ("charge.complete".equalsIgnoreCase(status)) {
                 User user = new User();
                 user.setEmail(description);
+
                 Transaction tran = new Transaction();
                 tran.setUser(user);
-                tran.setDeposit(amount);
+                tran.setDeposit(amountBaht);
                 tran.setDepositDate(new Date());
 
                 TutorManager tmg = new TutorManager();
-                tmg.insertTransaction(tran);
+                boolean inserted = tmg.insertTransaction(tran);
 
-                resp.put("success", true);
-                resp.put("message", "Deposit recorded successfully.");
+                if (inserted) {
+                    resp.put("success", true);
+                    resp.put("message", "Deposit recorded successfully.");
+                } else {
+                    resp.put("success", false);
+                    resp.put("message", "Failed to insert transaction.");
+                }
             } else {
                 resp.put("success", false);
                 resp.put("message", "Payment not completed: " + status);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             resp.put("success", false);
