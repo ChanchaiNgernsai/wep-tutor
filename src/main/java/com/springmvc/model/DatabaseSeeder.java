@@ -165,7 +165,6 @@ public class DatabaseSeeder {
         Tutor tutor = new Tutor();
         tutor.setUser(user);
         tutor.setExpertise(expertiseAreas[i % expertiseAreas.length]);
-        tutor.setRating(4.0 + (i % 6) * 0.1); // Rating between 4.0-4.5
         tutor.setBanStatus(0); // Not banned
         // Note: Removed setExperience, setEducation, setBio as they don't exist in
         // Tutor entity

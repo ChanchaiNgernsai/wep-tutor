@@ -9,119 +9,142 @@
 <meta charset="UTF-8">
 <title>List Tutor Course</title>
 <style>
+    /* 🌐 โทนสีหลัก */
+    :root {
+        --primary: #1e70d5;
+        --primary-dark: #1559ad;
+        --success: #2e7d32;
+        --background: #f4f8ff;
+        --text-main: #333;
+        --text-secondary: #555;
+        --card-bg: #fff;
+    }
+
     /* พื้นหลังและโครงสร้างโดยรวม */
     body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #e3f2fd, #ffffff);
+        background: linear-gradient(135deg, var(--background), #ffffff);
         margin: 0;
         padding: 40px;
-        color: #333;
+        color: var(--text-main);
     }
 
     /* หัวข้อหลัก */
     h1 {
         text-align: center;
-        color: #1565c0;
-        font-size: 2.2rem;
-        margin-bottom: 10px;
+        color: var(--primary);
+        font-size: 2.3rem;
+        margin-bottom: 15px;
+        letter-spacing: 0.5px;
     }
 
-    /* ลิงก์กลับ */
+    /* แถบด้านบน */
     .top-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 25px;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
+    /* ลิงก์กลับหน้า */
     a.back-link {
-        color: #1e88e5;
+        color: var(--primary);
         text-decoration: none;
-        font-weight: bold;
+        font-weight: 600;
         font-size: 1rem;
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        transition: 0.3s;
+        gap: 6px;
+        transition: all 0.3s ease;
     }
 
     a.back-link:hover {
-        color: #0d47a1;
+        color: var(--primary-dark);
         transform: translateX(-3px);
     }
 
     /* ปุ่มถอนเงิน */
     .withdraw-btn {
-        background-color: #43a047;
+        background-color: var(--primary);
         color: white;
         text-decoration: none;
-        padding: 8px 18px;
-        border-radius: 8px;
-        font-weight: bold;
-        transition: background-color 0.3s, transform 0.2s;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        box-shadow: 0 3px 6px rgba(30,112,213,0.2);
+        transition: all 0.3s ease;
     }
 
     .withdraw-btn:hover {
-        background-color: #2e7d32;
+        background-color: var(--primary-dark);
         transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(30,112,213,0.25);
     }
 
-    /* ข้อความสำเร็จ */
+    /* กล่องข้อความสำเร็จ */
     .success-msg {
-        color: #2e7d32;
-        text-align: center;
-        margin: 20px 0;
-        font-weight: bold;
+        color: var(--success);
         background-color: #e8f5e9;
-        padding: 10px;
-        border-radius: 8px;
+        border-left: 6px solid var(--success);
+        padding: 12px 16px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: 600;
         font-size: 1rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        margin: 20px auto;
+        width: 80%;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    /* พื้นที่รายการคอร์ส */
+    .courses-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+        gap: 25px;
+        margin-top: 25px;
     }
 
     /* กล่องคอร์ส */
-    .courses-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 25px;
-    }
-
     .course-card {
-        background-color: #ffffff;
-        border-radius: 15px;
+        background-color: var(--card-bg);
+        border-radius: 14px;
         box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-        padding: 20px 25px;
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-        border-top: 5px solid #1e88e5;
+        padding: 22px 25px;
+        border-top: 5px solid var(--primary);
+        transition: all 0.25s ease;
     }
 
     .course-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 22px rgba(0,0,0,0.15);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
 
     .course-title {
         font-size: 1.4rem;
         font-weight: 600;
-        color: #1e88e5;
+        color: var(--primary);
         margin-bottom: 10px;
     }
 
     .course-category {
         font-size: 1rem;
-        color: #555;
+        color: var(--text-secondary);
         margin-bottom: 10px;
         font-style: italic;
     }
 
     .course-dates {
-        background-color: #f9f9f9;
-        border-left: 4px solid #1e88e5;
-        padding: 8px 10px;
-        border-radius: 5px;
+        background-color: #f9fbff;
+        border-left: 4px solid var(--primary);
+        padding: 10px 12px;
+        border-radius: 6px;
         font-size: 0.95rem;
         color: #444;
         margin-bottom: 6px;
+        line-height: 1.4;
     }
 
     .course-actions {
@@ -131,17 +154,18 @@
 
     .course-actions a {
         text-decoration: none;
-        background-color: #1e88e5;
+        background-color: var(--primary);
         color: white;
-        padding: 8px 14px;
+        padding: 9px 16px;
         border-radius: 8px;
-        font-weight: bold;
+        font-weight: 600;
         font-size: 0.95rem;
-        transition: background-color 0.3s, transform 0.2s;
+        box-shadow: 0 3px 6px rgba(30,112,213,0.2);
+        transition: all 0.3s ease;
     }
 
     .course-actions a:hover {
-        background-color: #1565c0;
+        background-color: var(--primary-dark);
         transform: translateY(-2px);
     }
 
@@ -153,10 +177,9 @@
         .top-bar {
             flex-direction: column;
             align-items: flex-start;
-            gap: 10px;
         }
-        .course-card {
-            padding: 15px;
+        .success-msg {
+            width: 100%;
         }
     }
 </style>

@@ -9,7 +9,7 @@
 <title>คอร์สที่ลงทะเบียน</title>
 <style>
     body {
-        background-color: #f7f9fc;
+        background-color: #f4f7ff;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
@@ -29,7 +29,7 @@
     }
     .header h2 {
         margin: 0;
-        color: #009639;
+        color: #1e70d5;
         font-weight: 700;
         letter-spacing: 0.5px;
     }
@@ -53,7 +53,7 @@
 
     .left-container a {
         display: block;
-        background-color: #009639;
+        background-color: #1e70d5;
         color: white;
         text-decoration: none;
         border-radius: 25px;
@@ -63,7 +63,7 @@
     }
 
     .left-container a:hover {
-        background-color: #007a2f;
+        background-color: #155bb0;
         transform: scale(1.03);
     }
 
@@ -96,7 +96,7 @@
     }
 
     th {
-        background-color: #009639;
+        background-color: #1e70d5;
         color: #fff;
         font-size: 15px;
         text-transform: uppercase;
@@ -108,7 +108,7 @@
     }
 
     tr:hover {
-        background-color: #eafbea;
+        background-color: #e8f1ff;
     }
 
     td {
@@ -119,7 +119,7 @@
     /* ปุ่มดูรายละเอียด */
     .btn_view {
         display: inline-block;
-        background-color: #009639;
+        background-color: #1e70d5;
         color: white;
         padding: 8px 16px;
         border-radius: 25px;
@@ -131,7 +131,7 @@
     }
 
     .btn_view:hover {
-        background-color: #007a2f;
+        background-color: #155bb0;
         transform: translateY(-2px);
     }
 

@@ -27,6 +27,7 @@
     }
     .header h2 {
         margin: 0;
+        color: #1e70d5;
     }
 
     .main-content {
@@ -59,19 +60,19 @@
         height: 120px;       
     }
 
-    .btn_cancel, .btn_review, .btn_report {
+    .btn_cancel, .btn_review, .btn_report, .btn_confirm {
         display: inline-block;
-        width: 120px;       
+        width: 150px;       
         text-align: center;  
         margin: 10px 5px 10px 0;
-        padding: 8px 0;      
+        padding: 10px 0;      
         border: none;
-        border-radius: 20px;
+        border-radius: 25px;
         font-weight: bold;
         cursor: pointer;
         color: white;
         text-decoration: none;
-        transition: background-color 0.3s;
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
     }
 
     .btn_cancel {
@@ -79,24 +80,46 @@
     }
     .btn_cancel:hover {
         background-color: #b10a15;
+        transform: translateY(-2px);
     }
 
     .btn_review {
         background-color: #f1e023;
+        color: #333;
     }
     .btn_review:hover {
         background-color: #c7b91b;
+        transform: translateY(-2px);
     }
 
     .btn_report {
         background-color: #9025dd;
     }
-    .btn_confirm{
-        background-color: #47dd25;
-    }
     .btn_report:hover {
         background-color: #5d079b;
+        transform: translateY(-2px);
     }
+
+    .btn_confirm {
+    background-color: #1e70d5;
+    color: white;
+    width: 120px;            /* ✅ ความยาวปุ่มเท่ากับปุ่มอื่น */
+    text-align: center;
+    padding: 8px 0;          /* สูงกำลังดี */
+    border-radius: 20px;     /* มุมโค้งสวย */
+    font-size: 12.5px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn_confirm:hover {
+    background-color: #1558a8;
+    transform: translateY(-2px);
+}
+
+
 
     .error-msg {
         color: red;
@@ -104,25 +127,26 @@
         margin-bottom: 10px;
     }
 
-    /* สำหรับข้อมูลคอร์ส */
-    .course-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start; /* ชิดด้านบน */
-    }
-    .left-info, .right-info {
-        width: 48%; /* ขนาดเท่ากัน */
-    }
-    .right-info ul {
-        padding-left: 20px;
-        margin-top: 0;
-    }
     .success-msg {
         color: green;
         font-weight: bold;
         margin-bottom: 10px;
     }
+
+    .course-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; 
+    }
+    .left-info, .right-info {
+        width: 48%; 
+    }
+    .right-info ul {
+        padding-left: 20px;
+        margin-top: 0;
+    }
 </style>
+
 <script>
     function confirmCancel() {
         if (confirm("ระบบไม่มีการคืนเงินใด ๆ คุณต้องการยกเลิกคอร์สนี้หรือไม่?")) {
@@ -135,18 +159,16 @@
 
     <div class="header">
         <a href="goHome">
-            <img src="resources/images/home_on.png" alt="Home" width="90" height="90" />
+            <img src="resources/images/home_off.png" alt="Home" width="90" height="90" />
         </a>
         <h2>รายละเอียดการลงทะเบียนคอร์ส</h2>
     </div>
 
-    
     <div class="main-content">
 
-        
         <div class="left-container">
             <h2>ผู้สอน</h2>
-            <img class="profile-img" src="getUserImage?email=${rc.course.tutor.user.email}"alt="รูปโปรไฟล์ผู้สอน">
+            <img class="profile-img" src="getUserImage?email=${rc.course.tutor.user.email}" alt="รูปโปรไฟล์ผู้สอน">
             <p><strong>ชื่อ-นามสกุล:</strong> ${rc.course.tutor.user.firstName} ${rc.course.tutor.user.lastName}</p>
             <p><strong>เพศ:</strong> ${rc.course.tutor.user.gender}</p>
             <p><strong>เบอร์โทรศัพท์:</strong> ${rc.course.tutor.user.phoneNumber}</p>
@@ -184,15 +206,15 @@
                 <button type="button" class="btn_cancel" onclick="confirmCancel()">ยกเลิกคอร์ส</button>
             </form>
             <a href="goReviewCourse?id=${rc.course.courseId}" class="btn_review">รีวิวคอร์ส</a>
-            <a href="goReport?id=${rc.course.courseId}" class="btn_report">รายงานผู้สอน</a>
+            <a href="goReport?id=${rc.course.courseId}" class="btn_report">รายงานผู้สอน</a><br>
 
-            <form action="confirmLesson" method="post">
+            <form action="confirmLesson" method="post" style="display:inline;">
                 <input type="hidden" name="registerCourseId" value="${rc.registerCourseId}" />
                 <c:if test="${rc.regisStatus != 1}">
-                    <button  class="btn_confirm"type="submit">ยืนยันการสอนแล้ว</button>
+                    <button class="btn_confirm" type="submit">✅ ยืนยันสอนแล้ว</button>
                 </c:if>
                 <c:if test="${rc.regisStatus == 1}">
-                    <span style="color:green; font-weight:bold;">ยืนยันแล้ว</span>
+                    <span style="color:green; font-weight:bold;">✔ ยืนยันแล้ว</span>
                 </c:if>
             </form>
 

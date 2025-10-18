@@ -150,7 +150,7 @@ function banTutorPrompt(tutorId) {
 <body>
 
     <div class="header">
-        <a href="goAdminHome"><img src="resources/images/home_on.png" alt="Home"></a>
+        <a href="goAdminHome"><img src="resources/images/home_off.png" alt="Home"></a>
         <h2>ช่วยติวในมหาวิทยาลัยแม่โจ้</h2>
     </div>
 

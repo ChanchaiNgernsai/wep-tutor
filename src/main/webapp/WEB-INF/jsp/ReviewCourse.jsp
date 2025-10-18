@@ -144,7 +144,7 @@
         background: #45a049;
     }
 
-    /* รีวิวทั้งหมด */
+
     .review-box {
         border: 1px solid #ddd;
         padding: 15px;
@@ -275,7 +275,7 @@
 
     <div class="header">
         <a href="goHome">
-            <img src="resources/images/home_on.png" alt="Home" />
+            <img src="resources/images/home_off.png" alt="Home" />
         </a>
         <h2>รีวิวคอร์ส</h2>
     </div>

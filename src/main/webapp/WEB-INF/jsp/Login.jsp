@@ -209,15 +209,14 @@
   const fullEmail = prefix + "@mju.ac.th";
   document.getElementById("email").value = fullEmail;
 
-  const emailRegex = /^mju\d{10}$/i; // รูปแบบนักศึกษา เช่น mju65012345601
+  const emailRegex = /^mju\d{10}$/i; // mju65012345601
 
-  // ✅ เพิ่มเงื่อนไขพิเศษสำหรับ admin
   if (prefix.toLowerCase() === "admin") {
     if (password === "") {
       alert("กรุณากรอกรหัสผ่าน");
       return false;
     }
-    return true; // ผ่านการตรวจสอบ
+    return true; 
   }
 
   if (prefix === "") {

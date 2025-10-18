@@ -160,17 +160,17 @@
         .btn-profile { background-color: #28a745; } /* เขียว */
         .btn-profile:hover { background-color: #1e7e34; }
 
-        .btn-deposit { background-color: #fd7e14; } /* ส้ม */
-        .btn-deposit:hover { background-color: #e06a00; }
+        .btn-deposit { background-color: #1E54D1; } /* ส้ม */
+        .btn-deposit:hover { background-color: #2d14d0; }
 
-        .btn-tutor { background-color: #007bff; } /* น้ำเงิน */
-        .btn-tutor:hover { background-color: #0056b3; }
+        .btn-tutor { background-color: #1e70d5; } /* น้ำเงิน */
+        .btn-tutor:hover { background-color: #2d14d0; }
 
-        .btn-course { background-color: #6f42c1; } /* ม่วง */
-        .btn-course:hover { background-color: #4b2e91; }
+        .btn-course { background-color: #1e70d5; } /* ม่วง */
+        .btn-course:hover { background-color: #2d14d0; }
 
-        .btn-registered { background-color: #2d82ea; } /* ฟ้า */
-        .btn-registered:hover { background-color: #117a8b; }
+        .btn-registered { background-color: #1e70d5; } /* ฟ้า */
+        .btn-registered:hover { background-color: #2d14d0; }
 
         .btn-logout { background-color: #dc3545; } /* แดง */
         .btn-logout:hover { background-color: #a71d2a; }
@@ -187,6 +187,26 @@
             border: none;
             cursor: pointer;
         }
+        .btn-profile {
+    display: block;       /* ให้เป็น block */
+    width: 120px;         /* ความกว้างปุ่มตามต้องการ */
+    margin: 0 auto 8px;   /* กึ่งกลางแนวนอน และเว้นระยะด้านล่าง 8px */
+    text-align: center;   /* ตัวอักษรอยู่กลาง */
+    background-color: #28a745; 
+    color: white;
+    text-decoration: none;
+    padding: 6px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-profile:hover {
+    background-color: #1e7e34;
+}
+
     </style>
 </head>
 <body>
@@ -206,10 +226,11 @@
     <div class="left-container">
         <c:if test="${not empty sessionScope.User}">
             <img class="profile-img" src="getUserImage?email=${User.email}" alt="รูปโปรไฟล์"/>
-            <p id="resultLogin" style="color: green;">${result_login}</p>
-            <p id="resultTutor" style="color: green;">${result_RegisTutor}</p>
-            <p id="resultReview" style="color: green;">${result_review}</p>
-            <p id="resultReview" style="color: green;">${message_completed}</p>
+            <p id="resultLogin" style="color: green; text-align: center;">${result_login}</p>
+            <p id="resultTutor" style="color: green; text-align: center;">${result_RegisTutor}</p>
+            <p id="resultReview" style="color: green; text-align: center;">${result_review}</p>
+            <p id="resultReview" style="color: green; text-align: center;">${message_completed}</p>
+
 
             <a class="btn-profile" href="goProfile">ดูโปรไฟล์</a><br/>
             <p>ชื่อ: ${sessionScope.User.firstName} ${sessionScope.User.lastName}</p>

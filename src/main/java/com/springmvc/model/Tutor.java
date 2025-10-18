@@ -11,56 +11,45 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
-
 @Entity
-@Table(name= "tutors")
+@Table(name = "tutors")
 public class Tutor extends Role {
 
-	@Column(name="expertise",length = 50)
+	@Column(name = "expertise", length = 50)
 	private String expertise;
-	
-	@Column(name="rating")
-	private double rating;
-	
-	@Column(name="ban_status")
+
+	@Column(name = "ban_status")
 	private int banStatus;
-	
-	@Column(name="ban_description",length =200)
+
+	@Column(name = "ban_description", length = 200)
 	private String banDescription;
-	
-	@Column(name="ban_date") 
-	@Temporal(value=TemporalType.DATE)/*TIMESTAMP = เอาเวลา Date = วันที่ */
+
+	@Column(name = "ban_date")
+	@Temporal(value = TemporalType.DATE) /* TIMESTAMP = เอาเวลา Date = วันที่ */
 	private Date banDate;
 
-
-	@OneToMany(mappedBy = "tutor",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
 	private List<Skill> skills;
 
 	public List<Skill> getSkills() {
-	    return skills;
+		return skills;
 	}
 
 	public void setSkills(List<Skill> skills) {
-	    this.skills = skills;
+		this.skills = skills;
 	}
-
-
 
 	public Tutor() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Tutor(User user,String expertise,double rating,int banStatus,String banDescription,Date banDate) {
-		super(user,"Tutor");
+	public Tutor(User user, String expertise, int banStatus, String banDescription, Date banDate) {
+		super(user, "Tutor");
 		this.expertise = expertise;
-		this.rating = rating;
 		this.banStatus = banStatus;
 		this.banDescription = banDescription;
 		this.banDate = banDate;
 	}
-
-
 
 	public String getExpertise() {
 		return expertise;
@@ -68,15 +57,6 @@ public class Tutor extends Role {
 
 	public void setExpertise(String expertise) {
 		this.expertise = expertise;
-	}
-
-
-	public double getRating() {
-		return rating;
-	}
-
-	public void setRating(double rating) {
-		this.rating = rating;
 	}
 
 	public int getBanStatus() {

@@ -67,14 +67,14 @@
     align-items: center;
 }
 
-/* ปรับ h1 ให้ชิดกับ p ด้านล่าง */
+
 .right-container h1 {
     margin-bottom: 6px;  /* ลดระยะด้านล่าง */
     line-height: 1.1;    /* ลดความสูงบรรทัด */
     text-align: center;
 }
 
-/* ปรับ p ให้ชิด h1 */
+
 .right-container p {
     margin-top: 0;        /* ลบระยะด้านบน */
     margin-bottom: 15px;  /* ระยะด้านล่างยังคงพอเหมาะ */

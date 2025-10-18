@@ -123,10 +123,8 @@ function showDay(dateStr, dayNameId) {
 	    removeLastTopic(topicContainer);
 	  };
 
-	  // สร้างเส้นคั่น
 	  const hr = document.createElement('hr');
 
-	  // === เพิ่มทั้งหมดเข้าไป ===
 	  flexDiv.appendChild(classDateLabel);
 	  flexDiv.appendChild(dateInput);
 	  flexDiv.appendChild(dayNameP);
@@ -255,9 +253,6 @@ function validateAddCourse(form) {
         return false;
     }
 
-    
-
-
     // ----- ตรวจสอบจำนวนรับ -----
     const maxStu = form.maxStu.value.trim();
     if (maxStu === "") {
@@ -332,12 +327,12 @@ function validateAddCourse(form) {
         const startHour = parseInt(startTimeInput.value.split(":")[0], 10);
         const endHour = parseInt(endTimeInput.value.split(":")[0], 10);
         if (startHour < 8 || startHour > 19) {
-            alert("เวลาเริ่มเรียนต้องอยู่ระหว่าง 08:00 - 19:00 (สัปดาห์ที่ " + (i + 1) + ")");
+            alert("เวลาเริ่มเรียนต้องอยู่ระหว่าง 08:00 AM - 19:00 PM (สัปดาห์ที่ " + (i + 1) + ")");
             startTimeInput.focus();
             return false;
         }
         if (endHour < 8 || endHour > 19) {
-            alert("เวลาเลิกเรียนต้องอยู่ระหว่าง 08:00 - 19:00 (สัปดาห์ที่ " + (i + 1) + ")");
+            alert("เวลาเลิกเรียนต้องอยู่ระหว่าง 08:00 AM - 19:00 PM (สัปดาห์ที่ " + (i + 1) + ")");
             endTimeInput.focus();
             return false;
         }
@@ -465,11 +460,11 @@ function validateAddCourse(form) {
   button:hover {
     background-color: #1c5980;
   }
-  /* วันที่สอน + หัวข้อ */
+ 
   #addClassDate > div, #addClassDate > hr, #addClassDate > div + div {
     margin-bottom: 15px;
   }
-  /* Flex container for each class date */
+  
   .classDateRow {
     display: flex;
     flex-wrap: wrap;
@@ -490,7 +485,7 @@ function validateAddCourse(form) {
     font-size: 16px;
     color: #2c3e50;
   }
-  /* หัวข้อสอน */
+ 
   .topicSection {
     background: #f0f8ff;
     padding: 10px 12px;
@@ -510,7 +505,7 @@ function validateAddCourse(form) {
     padding: 5px 10px;
     font-size: 12px;
   }
-  /* ปุ่ม submit/reset */
+
   input[type=submit], input[type=reset] {
     background-color: #27ae60;
     border: none;
@@ -543,12 +538,12 @@ function validateAddCourse(form) {
   }
 
   button.removeTopicBtn {
-    background-color: #e74c3c; /* สีแดง */
+    background-color: #e74c3c; 
     color: white;
 }
 
 button.removeTopicBtn:hover {
-    background-color: #c0392b; /* สีแดงเข้มเมื่อ hover */
+    background-color: #c0392b; 
 }
 
 
