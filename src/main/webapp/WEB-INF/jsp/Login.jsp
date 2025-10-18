@@ -270,7 +270,9 @@
     <div class="right-container">
       <h1>Sign in</h1>
        <p class="error">${err_login}</p>
+       <p class="error">${result_loginAdmin}</p>
       <p style="color:green;">${result_regis}</p>
+      
       <form name="frm2" action="loginUser" method="post" onsubmit="return validateLogin();">
         <div class="email-wrapper">
           <input type="text" id="email_prefix" name="email_prefix" placeholder="email เช่น mju65******01">

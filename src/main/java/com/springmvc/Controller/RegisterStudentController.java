@@ -148,8 +148,7 @@ public class RegisterStudentController {
 					if (tutor.getBanStatus() == 0) {
 						ModelAndView mav = new ModelAndView("Login");
 						mav.addObject("err_login",
-								messageSource.getMessage("err_banned", new Object[] { tutor.getBanDescription() },
-										Locale.forLanguageTag("th-TH")));
+								"บัญชีของคุณถูกแบน เพราะว่า: " + tutor.getBanDescription() + " กรุณาติดต่อผู้ดูแลระบบ");
 						return mav;
 					}
 				}
@@ -176,7 +175,6 @@ public class RegisterStudentController {
 			List<Course> latestCourses = tmg.getLatestCourses(5);
 
 			if (isAdmin) {
-
 				ModelAndView mav = new ModelAndView("AdminHome");
 				mav.addObject("result_loginAdmin",
 						messageSource.getMessage("result_loginAdmin", null, Locale.forLanguageTag("th-TH")));

@@ -80,10 +80,10 @@
     }
 
     .btn_submit {
-        background-color: #9025dd;
+        background-color: #24ea42;
     }
     .btn_submit:hover {
-        background-color: #5d079b;
+        background-color: #3cb508;
     }
 
     .error-msg {
@@ -116,6 +116,19 @@
         resize: vertical;
     }
 </style>
+
+<script>
+function validateForm() {
+    const details = document.getElementById("details").value.trim();
+    const regex = /^[\u0E00-\u0E7Fa-zA-Z0-9\s.,/#-]{20,255}$/;
+    if (!regex.test(details)) {
+        alert("กรุณากรอกรายละเอียดให้ถูกต้อง (อย่างน้อย 20 ตัวอักษร และไม่เกิน 255 ตัว)");
+        return false;
+    }
+    return true;
+}
+</script>
+
 </head>
 <body>
 
@@ -159,7 +172,7 @@
         </div>
 
         <h3>รายงานผู้สอน</h3>
-        <form action="addReportTutor" method="post">
+        <form action="addReportTutor" method="post" onsubmit="return validateForm();">
             <input type="hidden" name="courseId" value="${course.courseId}" />
             <input type="hidden" name="registerId" value="${rc.registerId}" />
             <label for="details">รายละเอียดรายงาน:</label><br>

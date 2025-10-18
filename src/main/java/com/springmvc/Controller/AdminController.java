@@ -48,7 +48,7 @@ public class AdminController {
         TutorManager tmg = new TutorManager();
         Tutor tutor = tmg.getTutorById(tutorId);
         if (tutor != null) {
-            tutor.setBanStatus(0); // 0 = แบน
+            tutor.setBanStatus(0); // 1 = แบน
             tutor.setBanDescription(banDescription);
             tutor.setBanDate(new java.util.Date());
 

@@ -76,7 +76,6 @@ public class ReportTutorController {
         Report report = new Report();
         report.setReportDescription(details);
         report.setReportDate(new java.util.Date());
-        report.setStatus(0); // 0 = pending
         report.setReporter(student.getUser());
         report.setReported(course.getTutor());
         report.setCourse(course);

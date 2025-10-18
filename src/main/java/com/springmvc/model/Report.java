@@ -19,9 +19,6 @@ public class Report {
     @Column(name = "report_date")
     private Date reportDate;
 
-    @Column(name = "status")
-    private int status;
-
     @ManyToOne
     @JoinColumn(name = "reporter_email")
     private User reporter;
@@ -48,7 +45,6 @@ public class Report {
     public Report(String reportDescription, Date reportDate, int status) {
         this.reportDescription = reportDescription;
         this.reportDate = reportDate;
-        this.status = status;
     }
 
     public int getReportId() {
@@ -73,14 +69,6 @@ public class Report {
 
     public void setReportDate(Date reportDate) {
         this.reportDate = reportDate;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public User getReporter() {

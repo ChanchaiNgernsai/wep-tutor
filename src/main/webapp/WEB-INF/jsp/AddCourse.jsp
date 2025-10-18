@@ -213,9 +213,10 @@ function validateAddCourse(form) {
         form.courseName.focus();
         return false;
     }
-    const courseNamePattern = /^[A-Za-zก-ฮะ-๙\s]{2,100}$/;
+    const courseNamePattern = /^[A-Za-zก-๙0-9\s.-]{4,100}$/;  
+
     if (!courseNamePattern.test(courseName)) {
-        alert("กรุณากรอกเป็นอักขระภาษาไทย หรือ ภาษาอังกฤษเท่านั้น");
+        alert("กรุณากรอกชื่อรายวิชาเป็นอักขระภาษาไทย หรือ ภาษาอังกฤษเท่านั้น");
         form.courseName.focus();
         return false;
     }
