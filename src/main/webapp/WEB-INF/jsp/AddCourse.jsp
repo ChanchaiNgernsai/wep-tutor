@@ -419,7 +419,7 @@ function validateAddCourse(form) {
     color: white;
     text-align: left;
   }
-  input[type=text], input[type=date], input[type=time], select, textarea {
+  input[type=text],select, textarea {
     width: 100%;
     padding: 8px 10px;
     margin: 6px 0 15px 0;
@@ -429,10 +429,25 @@ function validateAddCourse(form) {
     font-size: 14px;
     transition: 0.3s;
   }
-  input[type=text]:focus, input[type=date]:focus, input[type=time]:focus, select:focus, textarea:focus {
+  input[type=text]:focus, select:focus, textarea:focus {
     border-color: #2980b9;
     outline: none;
   }
+
+
+  input[type=date], input[type=time]{
+    width: 180%;
+
+
+  }
+  input[type=date]:focus, input[type=time]:focus{
+    border-color: #2980b9;
+    outline: none;
+
+  }
+
+  
+
   textarea {
     resize: vertical;
   }
@@ -566,9 +581,9 @@ button.removeTopicBtn:hover {
             <p>ประเภท</p>
             <select name="cateName" id="cateName">
               <option value="">-- เลือกประเภทของวิชา --</option>
-              <option value="general">หมวดวิชาศึกษาทั่วไป</option>
-              <option value="specific">หมวดวิชาเฉพาะ</option>
-              <option value="elective">หมวดวิชาเลือกเสรี</option>
+              <option value="หมวดวิชาศึกษาทั่วไป">หมวดวิชาศึกษาทั่วไป</option>
+              <option value="หมวดวิชาเฉพาะ">หมวดวิชาเฉพาะ</option>
+              <option value="หมวดวิชาเลือกเสรี">หมวดวิชาเลือกเสรี</option>
             </select>
 
 
@@ -591,19 +606,19 @@ button.removeTopicBtn:hover {
             
             
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-				  <label for="classDate">วันที่สอน</label>
-				  <input type="date" name="classDate" id="classDate" onchange="showDay(this.value, 'dayName')" style="width: 150px;">
-				  
-				  <p id="dayName"></p>
-				  
-				  <label for="startTime">เริ่ม</label>
-				  <input type="time" name="startTime" id="startTime" style="width: 100px;">
-				  
-				  <label for="endTime">ถึง</label>
-				  <input type="time" name="endTime" id="endTime" style="width: 100px;">
-				  
-				  <button type="button" onclick="addClassDate()">เพิ่มวัน</button>
-		 </div>
+            <label for="classDate">วันที่สอน</label>
+            <input type="date" name="classDate" id="classDate" onchange="showDay(this.value, 'dayName')" style="width: 150px;">
+            
+            <p id="dayName"></p>
+            
+            <label for="startTime">เริ่ม</label>
+            <input type="time" name="startTime" id="startTime" style="width: 100px;">
+            
+            <label for="endTime">ถึง</label>
+            <input type="time" name="endTime" id="endTime" style="width: 100px;">
+            
+            <button type="button" onclick="addClassDate()">เพิ่มวัน</button>
+		      </div>
 				
             <p>เรื่องที่จะสอน</p>
             <input type="text" name="topicName" id="topicName" placeholder="เช่น บทที่ 1-2" >

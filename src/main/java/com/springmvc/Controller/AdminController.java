@@ -12,10 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.springmvc.model.Course;
 import com.springmvc.model.Report;
+import com.springmvc.model.Transaction;
 import com.springmvc.model.Tutor;
 import com.springmvc.model.TutorManager;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AdminController {
@@ -93,4 +95,28 @@ public class AdminController {
         }
     }
 
+    @RequestMapping(value = "/goListRequesWithdraw", method = RequestMethod.GET)
+    public ModelAndView loadListRequestWithdrawPage(HttpServletRequest request, HttpSession session) {
+        TutorManager tmg = new TutorManager();
+        List<Transaction> withdrawRequests = tmg.getAllWithdrawRequests();
+
+        ModelAndView mav = new ModelAndView("ListRequesWithdraw");
+        mav.addObject("withdrawRequests", withdrawRequests);
+        return mav;
+    }
+
+    @RequestMapping(value = "/approveWithdraw", method = RequestMethod.POST)
+    public ModelAndView approveWithdraw(HttpServletRequest request) {
+        int tranId = Integer.parseInt(request.getParameter("tranId"));
+
+        TutorManager tmg = new TutorManager();
+        Transaction transaction = tmg.getTransactionById(tranId);
+
+        if (transaction != null && transaction.getWithdrawStatus() == 1) { // 1 = รอดำเนินกาย
+            transaction.setWithdrawStatus(2); // 2 = อนุมัติแล้ว
+            tmg.updateWithdraw(transaction);
+        }
+
+        return new ModelAndView("redirect:/goListRequesWithdraw");
+    }
 }

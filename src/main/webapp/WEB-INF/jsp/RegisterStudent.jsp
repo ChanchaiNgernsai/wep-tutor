@@ -424,10 +424,10 @@
 		<span class="error" id="err_yfs"></span>
 	<select name="yfs" id="yfs">
 		<option value="">-- เลือกชั้นปี --</option>
-		<option value="Y1">ชั้นปีที่ 1</option>
-		<option value="Y2">ชั้นปีที่ 2</option>
-		<option value="Y3">ชั้นปีที่ 3</option>
-		<option value="Y4">ชั้นปีที่ 4</option>
+		<option value="ชั้นปีที่ 1">ชั้นปีที่ 1</option>
+		<option value="ชั้นปีที่ 2">ชั้นปีที่ 2</option>
+		<option value="ชั้นปีที่ 3">ชั้นปีที่ 3</option>
+		<option value="ชั้นปีที่ 4">ชั้นปีที่ 4</option>
 	</select>
 	
 

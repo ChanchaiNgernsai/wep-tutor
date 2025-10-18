@@ -123,7 +123,6 @@ public class RegisterCourseController {
         Payment payment = new Payment();
         payment.setAmount(course.getCoursePrice());
         payment.setPaymentDate(new Date());
-        payment.setPaymentStatus(0);
         tmg.insertPayment(payment);
 
         User tutorUser = course.getTutor().getUser();
@@ -131,18 +130,19 @@ public class RegisterCourseController {
         Transaction transaction = new Transaction();
         transaction.setDeposit(course.getCoursePrice());
         transaction.setWithdraw(0.0);
-        transaction.setTranType("Course Payment");
         transaction.setDepositDate(new java.util.Date());
         transaction.setUser(tutorUser);
+        tmg.insertTransaction(transaction);
 
         User studentUser = student.getUser();
 
         Transaction studentTransaction = new Transaction();
         studentTransaction.setDeposit(0.0);
         studentTransaction.setWithdraw(course.getCoursePrice());
-        studentTransaction.setTranType("Course Registration");
         studentTransaction.setWithdrawDate(new java.util.Date());
         studentTransaction.setUser(studentUser);
+
+        studentTransaction.setWithdrawStatus(2); // หัก
         tmg.insertTransaction(studentTransaction);
 
         boolean transactionResult = tmg.insertTransaction(transaction);
@@ -156,7 +156,7 @@ public class RegisterCourseController {
         RegisterCourse rc = new RegisterCourse();
         rc.setStudent(student);
         rc.setCourse(course);
-        rc.setRegisStatus(1);
+        rc.setRegisStatus(0);
         rc.setPayment(payment);
 
         boolean result = tmg.insertRegisterCourse(rc);
@@ -238,6 +238,27 @@ public class RegisterCourseController {
         mav.addObject("course", course);
         mav.addObject("students", students);
 
+        return mav;
+    }
+
+    @RequestMapping(value = "/confirmLesson", method = RequestMethod.POST)
+    public ModelAndView confirmLesson(HttpServletRequest request, HttpSession session) {
+        int registerCourseId = Integer.parseInt(request.getParameter("registerCourseId"));
+        Student student = (Student) session.getAttribute("Stu");
+        if (student == null) {
+            return new ModelAndView("Login", "error", "กรุณาเข้าสู่ระบบก่อนดูรายการคอร์ส");
+        }
+        TutorManager tmg = new TutorManager();
+        RegisterCourse rc = tmg.getRegisterCourseById(registerCourseId);
+
+        tmg.updateRegisterStatus(rc.getRegisterCourseId(), 1);
+
+        rc = tmg.getRegisterCourseById(registerCourseId);
+
+        ModelAndView mav = new ModelAndView("ViewRegisterCourse");
+        mav.addObject("rc", rc);
+        mav.addObject("courseDates", rc.getCourse().getCourseDates());
+        mav.addObject("success_msg", "ยืนยันการสอนเรียบร้อยแล้ว");
         return mav;
     }
 

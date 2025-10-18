@@ -30,9 +30,6 @@ public class User {
 	@Column(name = "gender", length = 30)
 	private String gender;
 
-	@Column(name = "balance")
-	private double balance;
-
 	@Column(name = "phone_number", length = 50)
 	private String phoneNumber;
 
@@ -55,7 +52,7 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String email, String password, String firstName, String lastName, String gender, double balance,
+	public User(String email, String password, String firstName, String lastName, String gender,
 			String phoneNumber, byte[] imgProfile) {
 		super();
 		this.email = email;
@@ -63,7 +60,6 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
-		this.balance = balance;
 		this.phoneNumber = phoneNumber;
 		this.imgProfile = imgProfile;
 
@@ -107,14 +103,6 @@ public class User {
 
 	public void setGender(String gender) {
 		this.gender = gender;
-	}
-
-	public double getBalance() {
-		return balance;
-	}
-
-	public void setBalance(double balance) {
-		this.balance = balance;
 	}
 
 	public String getPhoneNumber() {

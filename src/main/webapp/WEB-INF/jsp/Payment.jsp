@@ -93,16 +93,6 @@
                 <td>${payment.amount}</td>
             </tr>
             <tr>
-                <th>สถานะการชำระเงิน</th>
-                <td>
-                    <c:choose>
-                        <c:when test="${payment.paymentStatus == 0}">ชำระแล้ว</c:when>
-                        <c:when test="${payment.paymentStatus == 1}">ยังไม่ชำระ</c:when>
-                        <c:otherwise>ไม่ทราบสถานะ</c:otherwise>
-                    </c:choose>
-                </td>
-            </tr>
-            <tr>
                 <th>วันที่ลงทะเบียน</th>
                 <td><fmt:formatDate value="${payment.paymentDate}" pattern="dd/MM/yyyy"/></td>
             </tr>

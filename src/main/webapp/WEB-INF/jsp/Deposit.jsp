@@ -111,6 +111,20 @@
 
             return true;
         }
+
+        function checkDeposit() {
+            fetch('checkDeposit')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("balanceDisplay").innerText = data.balance;
+                    if (data.newDeposit) {
+                        alert("เงินฝากสำเร็จแล้ว จำนวน: " + data.amount + " บาท");
+                    }
+                });
+        }
+
+        setInterval(checkDeposit, 10000);
+        
     </script>
 
 </head>
@@ -127,7 +141,11 @@
         <p class="success"><c:out value="${message}"/></p>
         <c:if test="${not empty message_completed}"></c:if>
 
-        <p>เงินคงเหลือปัจจุบัน: <strong>${balance}</strong> บาท</p>
+
+        <p>เงินคงเหลือ: <strong id="balanceDisplay">${balance}</strong> บาท</p>
+
+
+
 
         <div class="section">
             <form action="getQrCode" method="post" onsubmit="return validateDeposit();">

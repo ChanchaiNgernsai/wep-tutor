@@ -92,7 +92,6 @@ public class RegisterStudentController {
 		user.setLastName(lname);
 		user.setGender(gender);
 		user.setPhoneNumber(phoNum);
-		user.setBalance(0.0);
 
 		try {
 			if (!file.isEmpty()) {

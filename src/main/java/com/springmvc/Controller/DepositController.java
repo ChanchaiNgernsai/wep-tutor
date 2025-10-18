@@ -37,12 +37,12 @@ public class DepositController {
 
     private static String getOmiseSecretKey() {
         String secretKey = System.getenv("OMISE_SECRET_KEY");
-        return secretKey != null ? secretKey : "skey_test_xxxxxxxxxxxxx";
+        return secretKey != null ? secretKey : "skey_test_65bj01bb1dw57i15792";
     }
 
     private static String getOmisePublicKey() {
         String publicKey = System.getenv("OMISE_PUBLIC_KEY");
-        return publicKey != null ? publicKey : "pkey_test_xxxxxxxxxxxxxxx";
+        return publicKey != null ? publicKey : "pkey_test_65bj01awim1ab9eq267";
     }
 
     @RequestMapping(value = "/goDeposit", method = RequestMethod.GET)
@@ -168,6 +168,31 @@ public class DepositController {
             resp.put("message", "Error: " + e.getMessage());
         }
 
+        return resp;
+    }
+
+    @ResponseBody
+    @RequestMapping("/checkDeposit")
+    public Map<String, Object> checkDeposit(HttpSession session) {
+        Map<String, Object> resp = new HashMap<>();
+        User user = (User) session.getAttribute("User");
+        if (user != null) {
+            TutorManager tmg = new TutorManager();
+            double balance = tmg.getBalance(user.getEmail());
+            resp.put("balance", balance);
+
+            Transaction lastTran = tmg.getLastDeposit(user.getEmail());
+            if (lastTran != null &&
+                    !Boolean.TRUE.equals(session.getAttribute("notified_" + lastTran.getTranId()))) {
+                resp.put("newDeposit", true);
+                resp.put("amount", lastTran.getDeposit());
+                session.setAttribute("notified_" + lastTran.getTranId(), true); // บันทึกว่าแจ้งแล้ว
+            } else {
+                resp.put("newDeposit", false);
+            }
+        } else {
+            resp.put("newDeposit", false);
+        }
         return resp;
     }
 

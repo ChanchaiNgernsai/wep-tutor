@@ -146,7 +146,6 @@ public class AddCourseController {
 			boolean alreadyRegistered = tmg.checkStuRegisterCourse(student, course);
 			mav.addObject("alreadyRegistered", alreadyRegistered);
 		}
-
 		return mav;
 	}
 

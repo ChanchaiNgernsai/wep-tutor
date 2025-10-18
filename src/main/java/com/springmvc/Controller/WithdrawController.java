@@ -49,6 +49,8 @@ public class WithdrawController {
         String bankAccount = request.getParameter("bankAccount");
 
         User user = (User) session.getAttribute("User");
+        TutorManager tmg = new TutorManager();
+
         if (user == null) {
             ModelAndView mav = new ModelAndView("Login");
             String errorMessage = messageSource.getMessage("general.error.login_first_withdraw", null,
@@ -57,20 +59,26 @@ public class WithdrawController {
             return mav;
         }
 
-        double amount = Double.parseDouble(request.getParameter("amount"));
-        TutorManager tmg = new TutorManager();
+        boolean canWithdraw = tmg.hasConfirmedRegisterCourse(user.getEmail());
         double balance = tmg.getBalance(user.getEmail());
 
         ModelAndView mav = new ModelAndView("RequesWithdraw");
         mav.addObject("balance", balance);
+        mav.addObject("bankAccount", bankAccount);
+        mav.addObject("bankType", bankType);
+
+        if (!canWithdraw) {
+            mav.addObject("err_result", "นักเรียนทุกคนจะต้องยืนยันการสอน จึงไม่สามารถถอนเงินได้");
+            return mav;
+        }
+
+        double amount = Double.parseDouble(request.getParameter("amount"));
         mav.addObject("amount", amount);
 
         if (amount <= 0) {
-            mav.addObject("err_result",
-                    "\u0E01\u0E23\u0E38\u0E13\u0E32\u0E01\u0E23\u0E2D\u0E01\u0E08\u0E33\u0E19\u0E27\u0E19\u0E40\u0E07\u0E34\u0E19\u0E17\u0E35\u0E48\u0E16\u0E39\u0E01\u0E15\u0E49\u0E2D\u0E07");
+            mav.addObject("err_result", "กรุณากรอกจำนวนเงินที่ถูกต้อง");
         } else if (amount > balance) {
-            mav.addObject("err_result",
-                    "\u0E22\u0E2D\u0E14\u0E40\u0E07\u0E34\u0E19\u0E44\u0E21\u0E48\u0E1E\u0E25\u0E07\u0E1E\u0E2D");
+            mav.addObject("err_result", "จำนวนเงินเกินยอดคงเหลือ");
         } else {
 
             Transaction transaction = new Transaction();
@@ -78,26 +86,18 @@ public class WithdrawController {
             transaction.setWithdrawDate(new Date());
             transaction.setUser(user);
             transaction.setAccountNumber(bankAccount);
-            transaction.setTranType(
-                    "\u0E16\u0E2D\u0E19\u0E40\u0E07\u0E34\u0E19\u0E1C\u0E48\u0E32\u0E19\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23 "
-                            + bankType);
+            transaction.setTranType("คำขอถอนเงิน " + bankType);
+            transaction.setWithdrawStatus(1); // 1 = รออนุมัติ
 
             boolean result = tmg.updateWithdraw(transaction);
 
             if (result) {
-
-                balance = tmg.getBalance(user.getEmail());
-                mav.addObject("balance", balance);
-                mav.addObject("msg_result",
-                        "\u0E16\u0E2D\u0E19\u0E40\u0E07\u0E34\u0E19\u0E2A\u0E33\u0E40\u0E23\u0E47\u0E08");
+                mav.addObject("msg_result", "ส่งคำขอถอนเงินเรียบร้อยแล้ว ระบบจะดำเนินการตรวจสอบ");
             } else {
-                mav.addObject("err_result",
-                        "\u0E16\u0E2D\u0E19\u0E40\u0E07\u0E34\u0E19\u0E44\u0E21\u0E48\u0E2A\u0E33\u0E40\u0E23\u0E47\u0E08 \u0E01\u0E23\u0E38\u0E13\u0E32\u0E25\u0E2D\u0E07\u0E2D\u0E35\u0E01\u0E04\u0E23\u0E31\u0E49\u0E07");
+                mav.addObject("err_result", "เกิดข้อผิดพลาดในการส่งคำขอถอน กรุณาลองใหม่");
             }
         }
-
         return mav;
-
     }
 
 }

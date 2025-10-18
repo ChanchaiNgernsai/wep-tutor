@@ -13,41 +13,42 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
 @Entity
-@Table(name= "transactions")
+@Table(name = "transactions")
 public class Transaction {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="tran_id")
+	@Column(name = "tran_id")
 	private int tranId;
-	
-	@Column(name="deposit")
-    private Double deposit;
-	
-	@Column(name="deposit_date")
-	@Temporal(value=TemporalType.DATE)
-    private Date depositDate;
-	
-	@Column(name="withdraw")
-    private Double withdraw;
-	
-	@Column(name="withdraw_date")
-	@Temporal(value=TemporalType.DATE)
-    private Date withdrawDate;
-	
-	
-    @Column(name="account_number",length = 20)
-    private String accountNumber;
-    
-    @Column(name="tran_type",length = 50)
-    private String tranType;
-    
-    @ManyToOne
-    @JoinColumn(name = "email")
-    private User user;
-    
+
+	@Column(name = "deposit")
+	private Double deposit;
+
+	@Column(name = "deposit_date")
+	@Temporal(value = TemporalType.DATE)
+	private Date depositDate;
+
+	@Column(name = "withdraw")
+	private Double withdraw;
+
+	@Column(name = "withdraw_date")
+	@Temporal(value = TemporalType.DATE)
+	private Date withdrawDate;
+
+	@Column(name = "account_number", length = 20)
+	private String accountNumber;
+
+	@Column(name = "tran_type", length = 50)
+	private String tranType;
+
+	@Column(name = "withdraw_status")
+	private int withdrawStatus;
+
+	@ManyToOne
+	@JoinColumn(name = "email")
+	private User user;
+
 	public User getUser() {
 		return user;
 	}
@@ -55,17 +56,13 @@ public class Transaction {
 	public void setUser(User user) {
 		this.user = user;
 	}
-    
-   
 
 	public Transaction() {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
 	public Transaction(Double deposit, Date depositDate, Double withdraw, Date withdrawDate,
-			String accountNumber, String tranType) {
+			String accountNumber, String tranType, int withdrawStatus) {
 		super();
 		this.deposit = deposit;
 		this.depositDate = depositDate;
@@ -73,9 +70,8 @@ public class Transaction {
 		this.withdrawDate = withdrawDate;
 		this.accountNumber = accountNumber;
 		this.tranType = tranType;
+		this.withdrawStatus = withdrawStatus;
 	}
-
-	
 
 	public int getTranId() {
 		return tranId;
@@ -133,10 +129,12 @@ public class Transaction {
 		this.tranType = tranType;
 	}
 
-	
-	
-	
-	
+	public int getWithdrawStatus() {
+		return withdrawStatus;
+	}
 
+	public void setWithdrawStatus(int withdrawStatus) {
+		this.withdrawStatus = withdrawStatus;
+	}
 
 }

@@ -182,18 +182,16 @@
 
 <script>
 function validateWithdraw() {
-    const bank = document.getElementById("bank").value.trim();
+    const bank = document.getElementById("bankType").value.trim();
     const account = document.getElementById("bankAccount").value.trim();
     const amountInput = document.getElementById("amount").value.trim();
-    const balance = parseInt("${balance}"); // ดึง balance ปัจจุบันจาก JSP
+    const balance = parseInt("${balance}"); 
 
-    // 1. ตรวจสอบเลือกธนาคาร
     if (bank === "") {
         alert("กรุณาเลือกธนาคาร");
         return false;
     }
 
-    // 2. ตรวจสอบเลขบัญชี
     if (account === "") {
         alert("กรุณากรอกเลขบัญชีธนาคาร");
         document.getElementById("bankAccount").focus();
@@ -205,7 +203,6 @@ function validateWithdraw() {
         return false;
     }
 
-    // 3. ตรวจสอบจำนวนเงินที่ต้องการถอน
     if (amountInput === "") {
         alert("กรุณากรอกจำนวนเงินที่ต้องการถอน");
         document.getElementById("amount").focus();
@@ -216,6 +213,7 @@ function validateWithdraw() {
         document.getElementById("amount").focus();
         return false;
     }
+
     const amount = parseInt(amountInput);
     if (amount < 100) {
         alert("จำนวนเงินขั้นต่ำคือ 100 บาท");
@@ -228,7 +226,7 @@ function validateWithdraw() {
         return false;
     }
 
-    return true; 
+    return confirm("ข้อมูลถูกต้อง!\nคุณต้องการถอนเงินจำนวน " + amount + " บาท ไปยังบัญชี " + account + " ธนาคาร " + bank + " หรือไม่?");  
 }
 </script>
 
@@ -249,18 +247,18 @@ function validateWithdraw() {
 
       <form action="requesWithdraw" method="post" onsubmit="return validateWithdraw();">
         <label for="bank">ประเภทธนาคาร:</label><br />
-        <select id="bankType" name="bankType" required>
+        <select id="bankType" name="bankType" value="${bankType}">
             <option value="">-- กรุณาเลือกธนาคาร --</option>
-            <option value="BBL">ธนาคารกรุงเทพ (BBL)</option>
-            <option value="KBANK">ธนาคารกสิกรไทย (KBANK)</option>
-            <option value="SCB">ธนาคารไทยพาณิชย์ (SCB)</option>
-            <option value="KTB">ธนาคารกรุงไทย (KTB)</option>
+            <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ (BBL)</option>
+            <option value="ธนาคารกสิกรไทย">ธนาคารกสิกรไทย (KBANK)</option>
+            <option value="ธนาคารไทยพาณิชย์">ธนาคารไทยพาณิชย์ (SCB)</option>
+            <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย (KTB)</option>
         </select><br />
 
         <label for="bankAccount">เลขบัญชีธนาคาร:</label><br />
-        <input type="number" id="bankAccount" name="bankAccount" placeholder="กรุณากรอกเลขบัญชีธนาคาร" /><br />
+        <input type="number" id="bankAccount" name="bankAccount" placeholder="กรุณากรอกเลขบัญชีธนาคาร" value="${bankAccount}" /><br />
         <label for="amount">กรุณากรอกจำนวนเงินที่ต้องการถอน:</label><br />
-        <input type="number" id="amount" name="amount" min="0" step="50" required value="${amount}" />
+        <input type="number" id="amount" name="amount" min="0" step="50" value="${amount}" />
         <input type="submit" value="Confirm Withdraw" /><br />
         <br />
         <button type="button" class="cancel-button" onclick="history.back();">ยกเลิก</button>

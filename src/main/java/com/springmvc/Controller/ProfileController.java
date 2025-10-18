@@ -16,6 +16,7 @@ import com.springmvc.model.TutorManager;
 import com.springmvc.model.User;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ProfileController {
@@ -23,9 +24,28 @@ public class ProfileController {
     @Autowired
     private MessageSource messageSource;
 
+    // @RequestMapping(value = "/goProfile", method = RequestMethod.GET)
+    // public String loadProfilePage() {
+
+    // return "ViewProfile";
+    // }
+
     @RequestMapping(value = "/goProfile", method = RequestMethod.GET)
-    public String loadProfilePage() {
-        return "ViewProfile";
+    public ModelAndView loadDepositPage(HttpSession session) {
+        User user = (User) session.getAttribute("User");
+        if (user == null) {
+            ModelAndView mav = new ModelAndView("Login");
+            mav.addObject("error", "กรุณาเข้าสู่ระบบก่อนเข้าหน้าฝากเงิน");
+            return mav;
+        }
+
+        TutorManager tmg = new TutorManager();
+        double balance = tmg.getBalance(user.getEmail());
+        session.setAttribute("balance", balance);
+
+        ModelAndView mav = new ModelAndView("ViewProfile");
+        mav.addObject("balance", balance);
+        return mav;
     }
 
     @RequestMapping(value = "/getRegister", method = RequestMethod.GET)
@@ -50,11 +70,10 @@ public class ProfileController {
 
     @RequestMapping(value = "/editProfile", method = RequestMethod.POST)
     public ModelAndView loadeditProfilePage(@RequestParam("image") MultipartFile imageFile,
-            HttpServletRequest request) {
+            HttpServletRequest request, HttpSession session) { // เพิ่ม HttpSession เข้ามา
         TutorManager tmg = new TutorManager();
         String email = request.getParameter("email");
 
-        // ดึง entity
         User us = tmg.getRegisterByEmail(email);
         Student stu = tmg.getStudentByEmail(email);
 
@@ -63,7 +82,6 @@ public class ProfileController {
             us.setLastName(request.getParameter("lname"));
             us.setPhoneNumber(request.getParameter("phon_num"));
 
-            // แก้ตรงนี้เก็บ byte[]
             try {
                 if (!imageFile.isEmpty()) {
                     us.setImgProfile(imageFile.getBytes());
@@ -72,18 +90,20 @@ public class ProfileController {
                 e.printStackTrace();
             }
 
-            // แก้ studentId และ yearOfStudy
             stu.setStudentId(request.getParameter("student_id"));
             stu.setYearOfStudy(request.getParameter("yfs"));
 
-            // เรียก update
             tmg.updateRegister(us);
             tmg.updateStudent(stu);
+
+            double balance = tmg.getBalance(us.getEmail());
+            session.setAttribute("balance", balance);
 
             ModelAndView mav = new ModelAndView("ViewProfile");
             mav.addObject("edit", messageSource.getMessage("edit", null, Locale.forLanguageTag("th-TH")));
             mav.addObject("User", us);
             mav.addObject("Stu", stu);
+            mav.addObject("balance", balance);
             return mav;
         } else {
             ModelAndView mav = new ModelAndView("EditProfile");

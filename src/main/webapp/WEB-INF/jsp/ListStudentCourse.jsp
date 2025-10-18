@@ -54,6 +54,7 @@
     <c:if test="${empty students}">
         <p>ยังไม่มีนักเรียนลงทะเบียนในคอร์สนี้</p>
     </c:if>
+    <p>${result_confirm}</p>
 
     <c:if test="${not empty students}">
         <table>

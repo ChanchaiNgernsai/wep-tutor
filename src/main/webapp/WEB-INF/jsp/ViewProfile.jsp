@@ -71,6 +71,7 @@
         <div id="editMessage">${edit}</div>
 
         <div class="info">
+            <p>เงินคงเหลือปัจจุบัน: <strong>${balance}</strong> บาท</p>
             <p><strong>อีเมล:</strong> ${User.email}</p>
             <p><strong>ชื่อ-นามสกุล:</strong> ${User.firstName} ${User.lastName}</p>
             <p><strong>รหัสนักศึกษา:</strong> ${Stu.studentId}</p>

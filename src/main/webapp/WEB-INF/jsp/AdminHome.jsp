@@ -83,8 +83,10 @@
  
     <div class="main-content">
         <div class="card">
+            
             <p id="resultReview" style="color: green;">${result_loginAdmin}</p>
-            <a class="btn" href="goListReport">-- หน้ารายงาน --</a>
+            <a class="btn" href="goListRequesWithdraw"> รายการติวเอตร์ขอถอนเงิน</a>
+            <a class="btn" href="goListReport">หน้ารายงาน</a>
             
             <form action="logout" method="post" style="margin-top: 20px;">
                 <input class="btn logout-btn" type="submit" value="ออกจากระบบ" />

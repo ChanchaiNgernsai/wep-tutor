@@ -486,7 +486,9 @@ public class TutorManager {
 
 	public RegisterCourse getRegisterCourseById(int registerId) {
 		RegisterCourse rc = null;
-		try (Session session = HibernateConnection.doHibernateConnection().openSession()) {
+		Session session = null;
+		try {
+			session = HibernateConnection.doHibernateConnection().openSession();
 			session.beginTransaction();
 
 			String hql = "SELECT rc FROM RegisterCourse rc "
@@ -494,7 +496,7 @@ public class TutorManager {
 					+ "JOIN FETCH c.category "
 					+ "JOIN FETCH c.tutor t "
 					+ "JOIN FETCH t.user "
-					+ "LEFT JOIN FETCH c.courseDates " // <-- เพิ่มตรงนี้
+					+ "LEFT JOIN FETCH c.courseDates "
 					+ "WHERE rc.registerCourseId = :rid";
 
 			rc = session.createQuery(hql, RegisterCourse.class)
@@ -504,8 +506,14 @@ public class TutorManager {
 			session.getTransaction().commit();
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+		} finally {
+			if (session != null)
+				session.close();
 		}
-		return rc;
+		return rc; // คืน entity detached
 	}
 
 	public boolean deleteRegisterCourse(int registerId) {
@@ -762,16 +770,20 @@ public class TutorManager {
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
 
-			String hql = "SELECT COALESCE(SUM(t.deposit),0) - COALESCE(SUM(t.withdraw),0) "
-					+ "FROM Transaction t WHERE t.user.email = :email";
-
-			Double result = (Double) session.createQuery(hql)
+			// รวมยอดฝากทั้งหมด
+			String hqlDeposit = "SELECT COALESCE(SUM(t.deposit),0) FROM Transaction t WHERE t.user.email = :email";
+			Double sumDeposit = (Double) session.createQuery(hqlDeposit)
 					.setParameter("email", email)
 					.uniqueResult();
 
-			if (result != null) {
-				balance = result;
-			}
+			// รวมยอดถอนเฉพาะที่อนุมัติแล้ว (withdrawStatus = 2)
+			String hqlWithdraw = "SELECT COALESCE(SUM(t.withdraw),0) FROM Transaction t "
+					+ "WHERE t.user.email = :email AND t.withdrawStatus = 2";
+			Double sumWithdraw = (Double) session.createQuery(hqlWithdraw)
+					.setParameter("email", email)
+					.uniqueResult();
+
+			balance = (sumDeposit != null ? sumDeposit : 0.0) - (sumWithdraw != null ? sumWithdraw : 0.0);
 
 			session.getTransaction().commit();
 			session.close();
@@ -781,27 +793,50 @@ public class TutorManager {
 		return balance;
 	}
 
-	public boolean updateWithdraw(Transaction transaction) {
+	public boolean addWithdrawRequest(Transaction transaction) {
+		SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+		Session session = null;
+
 		try {
-			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
-			Session session = sessionFactory.openSession();
+			session = sessionFactory.openSession();
 			session.beginTransaction();
 
-			double currentBalance = getBalance(transaction.getUser().getEmail());
-			if (transaction.getWithdraw() > currentBalance) {
+			session.save(transaction);
+
+			session.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
 				session.getTransaction().rollback();
-				session.close();
-				return false;
 			}
+			return false;
+		} finally {
+			if (session != null)
+				session.close();
+		}
+	}
+
+	public boolean updateWithdraw(Transaction transaction) {
+		SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
 
 			session.saveOrUpdate(transaction);
 
 			session.getTransaction().commit();
-			session.close();
 			return true;
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
 			return false;
+		} finally {
+			if (session != null)
+				session.close();
 		}
 	}
 
@@ -915,6 +950,199 @@ public class TutorManager {
 			ex.printStackTrace();
 		}
 		return isRegistered;
+	}
+
+	public List<Transaction> getAllWithdrawRequests() {
+		SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+		Session session = sessionFactory.openSession();
+		List<Transaction> list = session.createQuery(
+				"FROM Transaction t WHERE t.withdrawStatus = 1", Transaction.class).list();
+		session.close();
+		return list;
+	}
+
+	public Transaction getTransactionById(int tranId) {
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			transaction = session.get(Transaction.class, tranId);
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+		} finally {
+			if (session != null)
+				session.close();
+		}
+		return transaction;
+	}
+
+	public boolean updateRegisterCourse(RegisterCourse rc) {
+		Session session = null;
+		try {
+			session = HibernateConnection.doHibernateConnection().openSession();
+			session.beginTransaction();
+
+			session.merge(rc); // ใช้ merge กับ entity detached
+
+			session.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+			return false;
+		} finally {
+			if (session != null)
+				session.close();
+		}
+	}
+
+	public boolean hasConfirmedRegisterCourse(String email) {
+		SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+		Session session = null;
+		boolean confirmed = false;
+
+		try {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			String hql = "SELECT count(rc) FROM RegisterCourse rc " +
+					"WHERE rc.course.tutor.user.email = :email AND rc.regisStatus = 1"; // 0 ยังไม่กดยืนยัน 1
+																						// คือยื่นยันเรียบร้อย
+			Long count = (Long) session.createQuery(hql)
+					.setParameter("email", email)
+					.uniqueResult();
+
+			confirmed = (count != null && count > 0);
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+
+		return confirmed;
+	}
+
+	// ดึงค่า regisStatus
+	public Integer getRegisterCourseStatus(int registerCourseId) {
+		Integer status = null;
+		Session session = null;
+		try {
+			session = HibernateConnection.doHibernateConnection().openSession();
+			session.beginTransaction();
+
+			String hql = "SELECT rc.regisStatus FROM RegisterCourse rc WHERE rc.registerCourseId = :rid";
+			status = session.createQuery(hql, Integer.class)
+					.setParameter("rid", registerCourseId)
+					.uniqueResult();
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+		} finally {
+			if (session != null)
+				session.close();
+		}
+		return status;
+	}
+
+	public boolean updateRegisterCourseStatus(int registerCourseId, int newStatus) {
+		Session session = null;
+		try {
+			session = HibernateConnection.doHibernateConnection().openSession();
+			session.beginTransaction();
+
+			String hql = "UPDATE RegisterCourse rc SET rc.regisStatus = :status WHERE rc.registerCourseId = :rid";
+			int updated = session.createQuery(hql)
+					.setParameter("status", newStatus)
+					.setParameter("rid", registerCourseId)
+					.executeUpdate();
+
+			session.getTransaction().commit();
+			return updated > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+			return false;
+		} finally {
+			if (session != null)
+				session.close();
+		}
+	}
+
+	public boolean updateRegisterStatus(int registerCourseId, int status) {
+		Session session = null;
+		try {
+			session = HibernateConnection.doHibernateConnection().openSession();
+			session.beginTransaction();
+
+			// ใช้ HQL อัปเดตตรง ๆ
+			String hql = "UPDATE RegisterCourse rc SET rc.regisStatus = :status WHERE rc.registerCourseId = :rid";
+			int updated = session.createQuery(hql)
+					.setParameter("status", status)
+					.setParameter("rid", registerCourseId)
+					.executeUpdate();
+
+			session.getTransaction().commit();
+			return updated > 0; // ถ้ามีแถวถูกอัปเดตคืนค่า true
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+			return false;
+		} finally {
+			if (session != null)
+				session.close();
+		}
+	}
+
+	public Transaction getLastDeposit(String email) {
+		Transaction lastTran = null;
+		Session session = null;
+		try {
+			session = HibernateConnection.doHibernateConnection().openSession();
+			session.beginTransaction();
+
+			String hql = "FROM Transaction t WHERE t.user.email = :email AND t.deposit IS NOT NULL " +
+					"ORDER BY t.tranId DESC";
+			lastTran = session.createQuery(hql, Transaction.class)
+					.setParameter("email", email)
+					.setMaxResults(1)
+					.uniqueResult();
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+		} finally {
+			if (session != null)
+				session.close();
+		}
+		return lastTran;
 	}
 
 }

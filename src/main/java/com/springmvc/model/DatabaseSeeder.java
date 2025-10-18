@@ -424,7 +424,6 @@ public class DatabaseSeeder {
         Payment payment = new Payment();
         payment.setAmount(registration.getCourse().getCoursePrice());
         payment.setPaymentDate(new Date());
-        payment.setPaymentStatus(1); // Paid
 
         session.save(payment);
 

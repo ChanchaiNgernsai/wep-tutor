@@ -91,6 +91,9 @@
     .btn_report {
         background-color: #9025dd;
     }
+    .btn_confirm{
+        background-color: #47dd25;
+    }
     .btn_report:hover {
         background-color: #5d079b;
     }
@@ -152,6 +155,7 @@
   
         <div class="right-container">
             <p class="error-msg">${err_result_cancel}</p>
+            <p class="error-msg">${err_result_confirm}</p>
 
             <h2>ข้อมูลคอร์ส</h2>
             <div class="course-info">
@@ -181,6 +185,21 @@
             </form>
             <a href="goReviewCourse?id=${rc.course.courseId}" class="btn_review">รีวิวคอร์ส</a>
             <a href="goReport?id=${rc.course.courseId}" class="btn_report">รายงานผู้สอน</a>
+
+            <form action="confirmLesson" method="post">
+                <input type="hidden" name="registerCourseId" value="${rc.registerCourseId}" />
+                <c:if test="${rc.regisStatus != 1}">
+                    <button  class="btn_confirm"type="submit">ยืนยันการสอนแล้ว</button>
+                </c:if>
+                <c:if test="${rc.regisStatus == 1}">
+                    <span style="color:green; font-weight:bold;">ยืนยันแล้ว</span>
+                </c:if>
+            </form>
+
+            <c:if test="${not empty err_result_confirm}">
+                <p style="color:red;">${err_result_confirm}</p>
+            </c:if>
+
         </div>
     </div>
 </body>

@@ -113,6 +113,26 @@
     .message-success { color: green; }
     .message-error { color: red; }
 
+    .btn-back {
+        display: inline-block;
+        background-color: #009639; 
+        color: white;
+        padding: 12px 25px;      
+        border-radius: 25px;      
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background-color: #007a2f; 
+        transform: translateY(-2px); 
+        box-shadow: 0 6px 10px rgba(0,0,0,0.15); 
+    }
+
+
 </style>
 
 <script>
