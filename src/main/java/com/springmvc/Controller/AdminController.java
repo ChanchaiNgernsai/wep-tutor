@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.springmvc.model.Course;
 import com.springmvc.model.Report;
+import com.springmvc.model.Student;
 import com.springmvc.model.Transaction;
 import com.springmvc.model.Tutor;
 import com.springmvc.model.TutorManager;
@@ -118,5 +119,19 @@ public class AdminController {
         }
 
         return new ModelAndView("redirect:/goListRequesWithdraw");
+    }
+
+    @RequestMapping(value = "/goListReport", method = RequestMethod.GET)
+    public ModelAndView loadListReportPage(HttpServletRequest request, HttpSession session) {
+        Student student = (Student) session.getAttribute("Stu");
+        TutorManager tmg = new TutorManager();
+
+        List<Report> reports = tmg.getAllReports();
+
+        ModelAndView mav = new ModelAndView("ListReportTutor");
+        mav.addObject("student", student);
+        mav.addObject("reports", reports);
+
+        return mav;
     }
 }

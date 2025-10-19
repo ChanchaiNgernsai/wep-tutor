@@ -15,38 +15,29 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
-
 @Entity
-@Table(name= "courses")
+@Table(name = "courses")
 public class Course {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="course_id")
+	@Column(name = "course_id")
 	private int courseId;
-	
-	@Column(name="course_name",length = 50)
-    private String courseName;
-	
-	@Column(name="course_desc",length = 100)
-    private String courseDescription;
-    
-    @Column(name="course_status")
-    private int courseStatus;
-    
-    @Column(name="course_price")
-    private Double coursePrice;
 
-    @Column(name="max_students")
-    private int maxStudents;
-    
+	@Column(name = "course_name", length = 50)
+	private String courseName;
 
-    
-    
-    @OneToMany(mappedBy = "course") 
-    private List<ReviewCourse> reviewCourses;
-    
+	@Column(name = "course_desc", length = 100)
+	private String courseDescription;
+
+	@Column(name = "course_price")
+	private Double coursePrice;
+
+	@Column(name = "max_students")
+	private int maxStudents;
+
+	@OneToMany(mappedBy = "course")
+	private List<ReviewCourse> reviewCourses;
 
 	public List<ReviewCourse> getReviewCourses() {
 		return reviewCourses;
@@ -55,12 +46,10 @@ public class Course {
 	public void setReviewCourses(List<ReviewCourse> reviewCourses) {
 		this.reviewCourses = reviewCourses;
 	}
-	
+
 	@ManyToOne
-    @JoinColumn(name = "tutor_role_id")
-    private Tutor tutor;
-	 
-	
+	@JoinColumn(name = "tutor_role_id")
+	private Tutor tutor;
 
 	public Tutor getTutor() {
 		return tutor;
@@ -69,10 +58,10 @@ public class Course {
 	public void setTutor(Tutor tutor) {
 		this.tutor = tutor;
 	}
-	
+
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<CourseDate> courseDates;
-	
+
 	public List<CourseDate> getCourseDates() {
 		return courseDates;
 	}
@@ -82,7 +71,7 @@ public class Course {
 	}
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id") 
+	@JoinColumn(name = "category_id")
 	private Category category;
 
 	public Category getCategory() {
@@ -97,11 +86,10 @@ public class Course {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Course(String courseName, String courseDescription,int courseStatus, Double coursePrice, int maxStudents) {
+	public Course(String courseName, String courseDescription, Double coursePrice, int maxStudents) {
 		super();
 		this.courseName = courseName;
 		this.courseDescription = courseDescription;
-		this.courseStatus = courseStatus;
 		this.coursePrice = coursePrice;
 		this.maxStudents = maxStudents;
 	}
@@ -128,15 +116,6 @@ public class Course {
 
 	public void setCourseDescription(String courseDescription) {
 		this.courseDescription = courseDescription;
-	}
-
-
-	public int getCourseStatus() {
-		return courseStatus;
-	}
-
-	public void setCourseStatus(int courseStatus) {
-		this.courseStatus = courseStatus;
 	}
 
 	public Double getCoursePrice() {

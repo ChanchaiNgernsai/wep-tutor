@@ -628,7 +628,7 @@ button.removeTopicBtn:hover {
           </td>
         </tr>
         <tr>
-          <td><input type="reset" value="cancel"></td>
+          <td><input type="reset" value="Reset"></td>
           <td><input type="submit" value="Submit"></td>
         </tr>
       </tbody>

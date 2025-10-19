@@ -3,6 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="com.springmvc.model.*" %>
 <%@ taglib prefix="c" uri ="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,36 +50,47 @@
         color: #666;
         font-size: 14px;
     }
-    .back-home {
-    max-width: 600px;      /* ความกว้างเท่ากับใบเสร็จ */
-    margin: 10px auto;     /* จัดให้อยู่กลางหน้า */
-    text-align: right;     /* ชิดขวา */
+    .actions {
+        max-width: 600px;
+        margin: 15px auto;
+        text-align: right;
     }
-
-    .back-home a {
-        text-decoration: none; /* ลบขีดเส้นใต้ */
-        color: #0288d1;        /* สีฟ้า */
+    .actions a, .actions button {
+        background-color: #0288d1;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
         font-weight: bold;
-        transition: color 0.3s ease;
+        margin-left: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .actions a:hover, .actions button:hover {
+        background-color: #01579b;
     }
 
-    .back-home a:hover {
-        color: #01579b;        /* สีเข้มขึ้นเวลาชี้เมาส์ */
+    /* ซ่อนปุ่มเวลา Print */
+    @media print {
+        .actions {
+            display: none;
+        }
+        body {
+            background-color: #fff;
+        }
     }
-
-    
 </style>
 </head>
 <body>
     <div class="receipt">
         <h1>ใบเสร็จรับเงิน</h1>
 
-        <div class="back-home">
-            <a href="goHome">กลับหน้า Home</a>
-        </div>
         <p style="color: green; text-align: center;">${result_registerCourse}</p>
+
         <p><strong>ผู้ลงทะเบียน:</strong> ${User.firstName} ${User.lastName}</p>
         <p><strong>อีเมล:</strong> ${User.email}</p>
+
         <table>
             <tr>
                 <th>ชื่อคอร์ส</th>
@@ -104,6 +116,11 @@
             ขอบคุณที่ใช้บริการ<br>
             ระบบช่วยติวในมหาวิทยาลัยแม่โจ้
         </div>
+    </div>
+
+    <div class="actions">
+        <a href="goHome">กลับหน้า Home</a>
+        <button onclick="window.print()">🖨️ พิมพ์ใบเสร็จ</button>
     </div>
 </body>
 </html>

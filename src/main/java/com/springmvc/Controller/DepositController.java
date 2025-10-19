@@ -37,12 +37,12 @@ public class DepositController {
 
     private static String getOmiseSecretKey() {
         String secretKey = System.getenv("OMISE_SECRET_KEY");
-        return secretKey != null ? secretKey : "skey_test_xxxxxxxxxxxxxxxxxx";
+        return secretKey != null ? secretKey : "skey_test_xxxxxxxxxxxxxxxxxxx";
     }
 
     private static String getOmisePublicKey() {
         String publicKey = System.getenv("OMISE_PUBLIC_KEY");
-        return publicKey != null ? publicKey : "pkey_test_xxxxxxxxxxxxxxxxxx";
+        return publicKey != null ? publicKey : "pkey_test_xxxxxxxxxxxxxxxxxxx";
     }
 
     @RequestMapping(value = "/goDeposit", method = RequestMethod.GET)

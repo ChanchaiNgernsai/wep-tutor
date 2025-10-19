@@ -24,20 +24,6 @@ public class ReportTutorController {
     @Autowired
     private MessageSource messageSource;
 
-    @RequestMapping(value = "/goListReport", method = RequestMethod.GET)
-    public ModelAndView loadListReportPage(HttpServletRequest request, HttpSession session) {
-        Student student = (Student) session.getAttribute("Stu");
-        TutorManager tmg = new TutorManager();
-
-        List<Report> reports = tmg.getAllReports();
-
-        ModelAndView mav = new ModelAndView("ListReportTutor");
-        mav.addObject("student", student);
-        mav.addObject("reports", reports);
-
-        return mav;
-    }
-
     @RequestMapping(value = "/goReport", method = RequestMethod.GET)
     public ModelAndView loadReportPage(HttpServletRequest request, HttpSession session) {
         int courseId = Integer.parseInt(request.getParameter("id"));

@@ -109,7 +109,7 @@
                 return false;
             }
 
-            return true;
+            return true ;
         }
 
         function checkDeposit() {
@@ -155,7 +155,7 @@
             </form>
 
             <c:if test="${not empty qrUrl}">
-                <p class="success">กรุณาสแกน QR เพื่อชำระเงิน:</p>
+                <p class="success">${msg_deposit}</p>
                 <img class="qrcode" src="${qrUrl}" alt="QR Code" height="180" width="180"/>
             </c:if>
 
