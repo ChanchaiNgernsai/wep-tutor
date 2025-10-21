@@ -9,184 +9,162 @@
 <title>Edit Profile</title>
 <style>
     body {
-        background-color: #EBEBEB;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        color: #222;
+        background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
+        font-family: "Prompt", "Segoe UI", Tahoma, sans-serif;
         margin: 0;
-        min-height: 100vh;
+        padding: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 15px;
-        font-size: 0.8rem;
+        min-height: 100vh;
     }
+
     .main-container {
-        display: flex;
-        gap: 20px;
-        max-width: 720px;
         width: 100%;
-        background-color: #ffffffcc;
-        border-radius: 12px;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-        padding: 20px 30px;
-    }
-    .left-container {
-        flex: 0 0 18%;
-        background-color: #CECECE;
-        border-radius: 10px;
-        box-shadow: 0 1.5px 8px rgba(0,0,0,0.12);
-        padding: 20px 15px;
+        max-width: 720px;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 40px 50px;
         display: flex;
         flex-direction: column;
-        font-weight: 600;
-        color: #e1f5fe;
-        font-size: 0.9rem;
+        align-items: center;
+        animation: fadeIn 0.6s ease;
     }
-    .left-container a {
-        color: #333333;
-        text-decoration: none;
-        font-size: 0.85rem;
-        border-left: 3px solid transparent;
-        padding-left: 8px;
-        transition: border-color 0.3s ease, color 0.3s ease;
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(10px);}
+        to {opacity: 1; transform: translateY(0);}
     }
-    .left-container a:hover {
-        border-left: 3px solid #ffffff;
-        color: #fff;
-    }
-    .right-container {
-        flex: 1;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 1.5px 8px rgba(0,0,0,0.1);
-        padding: 30px 40px;
-        display: flex;
-        flex-direction: column;
-    }
+
     h1 {
-        margin-bottom: 20px;
-        color: #EB5353;
+        color: #00bfa5;
+        font-size: 2.2rem;
         font-weight: 700;
-        font-size: 1.8rem;
-        letter-spacing: 1px;
+        margin-bottom: 25px;
         text-align: center;
+        letter-spacing: 0.5px;
     }
+
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 20px;
+        border: 4px solid #00bfa5;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-img:hover {
+        transform: scale(1.05);
+    }
+
     form {
+        width: 100%;
         display: flex;
         flex-direction: column;
+        align-items: center;
     }
+
     input[type="text"],
     input[type="file"],
     select {
         width: 100%;
-        padding: 10px 12px;
+        padding: 12px 15px;
         margin: 8px 0 15px 0;
-        border: 2px solid #A1A1A1;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        color: #222;
+        border: 2px solid #d0d0d0;
+        border-radius: 10px;
+        font-size: 1rem;
+        color: #333;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
         box-sizing: border-box;
-        transition: border-color 0.3s ease;
+        background: #fafafa;
     }
+
     input[type="text"]:focus,
     input[type="file"]:focus,
     select:focus {
-        border-color: #0288d1;
+        border-color: #00bfa5;
+        box-shadow: 0 0 5px rgba(0,191,165,0.3);
         outline: none;
+        background: #fff;
     }
+
     input::placeholder {
-        color: #90a4ae;
+        color: #9e9e9e;
         font-style: italic;
-        font-size: 0.85rem;
     }
+
     .btn-group {
         display: flex;
-        justify-content: space-between;
-        gap: 10px;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+        width: 100%;
     }
+
     input[type="submit"],
-    input[type="reset"] {
+    input[type="button"] {
         flex: 1;
-        padding: 10px 0;
+        padding: 12px 0;
         font-weight: 700;
         border: none;
-        border-radius: 6px;
+        border-radius: 12px;
         cursor: pointer;
-        font-size: 0.9rem;
-        transition: background-color 0.25s ease, box-shadow 0.25s ease;
-        box-shadow: 0 3px 9px rgba(0,0,0,0.12);
-    }
-    input[type="submit"] {
-        background-color: #04BE43;
+        font-size: 1rem;
         color: #fff;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 12px rgba(0,0,0,0.15);
     }
+
+    input[type="submit"] {
+        background: linear-gradient(135deg, #00bfa5, #1de9b6);
+    }
+
     input[type="submit"]:hover {
-        background-color: #01579b;
-        box-shadow: 0 4px 12px rgba(1, 87, 155, 0.7);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0,191,165,0.3);
     }
-    input[type="reset"] {
-        background-color: #b0bec5;
-        color: #37474f;
+
+    input[type="button"] {
+        background: linear-gradient(135deg, #ff6a88, #ff99ac);
     }
-    input[type="reset"]:hover {
-        background-color: #78909c;
-        color: #eceff1;
+
+    input[type="button"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(255,105,135,0.3);
     }
+
     span.error {
-        color: #d32f2f;
-        font-size: 0.8rem;
-        margin-bottom: 4px;
+        color: #e53935;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
         display: block;
-    }
-    .email-wrapper {
-        position: relative;
         width: 100%;
-        max-width: none;
-    }
-    .email-wrapper input[type="text"] {
-        width: 100%;
-        padding-right: 90px;
-        box-sizing: border-box;
-        font-size: 0.9rem;
-    }
-    .email-domain {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #555;
-        pointer-events: none;
-        user-select: none;
-        font-weight: 600;
-        font-style: normal;
-        font-size: 0.9rem;
+        text-align: left;
+        animation: fadeIn 0.3s ease;
     }
 
-    .profile-img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 15px;
-    border: 2px solid #ddd;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
+    #err_image {
+        margin-bottom: 10px;
+    }
 
+    .error-msg {
+        color: #e53935;
+        width: 100%;
+        text-align: left;
+        margin-top: 5px;
+    }
 </style>
 
 <script>
+    // Validation script (เหมือนเดิม)
     function validate(frm1) {
-        var stuId = frm1.student_id.value.trim();
+        var stuId = frm1.student_id?.value?.trim?.() ?? "";
         var stuIdPattern = /^\d{10}$/;
-        document.getElementById('err_stu_id').innerHTML = "";
-        if(stuId === ""){
-            document.getElementById('err_stu_id').innerHTML = "กรุณากรอกรหัสนักศึกษา";
-            frm1.student_id.focus();
-            return false;
-        }
-        if(!stuIdPattern.test(stuId)){
+        if(document.getElementById('err_stu_id')) document.getElementById('err_stu_id').innerHTML = "";
+        if(stuId && !stuIdPattern.test(stuId)){
             document.getElementById('err_stu_id').innerHTML = "กรุณากรอกเป็นตัวเลข 10 ตัวเท่านั้น";
             frm1.student_id.focus();
             return false;
@@ -265,71 +243,58 @@
             }
         }
 
-    return true;
+        return true;
     }
 
     function previewImage(event) {
-    const input = event.target;
-    const preview = document.getElementById("preview");
-
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;   // แสดงรูปใหม่
+        const input = event.target;
+        const preview = document.getElementById("preview");
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
         }
-        reader.readAsDataURL(input.files[0]); // แปลงไฟล์ภาพเป็น Base64
     }
-    
-}
 </script>
 </head>
 <body>
 <div class="main-container">
-    <div class="left-container">
-        <a href="goHome">&#8592; กลับหน้า Home</a>
-    </div>
+    <h1>แก้ไขโปรไฟล์</h1>
+    <img id="preview" class="profile-img" src="getUserImage?email=${User.email}" alt="Profile Image"/>
 
-    <div class="right-container">
-        <h1>Edit Profile</h1>
-        <form name="frm1" action="editProfile" method="post" onsubmit="return validate(this);" enctype="multipart/form-data">
-            <input type="hidden" name="email" value="${User.email}">
+    <form name="frm1" action="editProfile" method="post" onsubmit="return validate(this);" enctype="multipart/form-data">
+        <input type="hidden" name="email" value="${User.email}">
 
-            <img id="preview" class="profile-img" src="getUserImage?email=${User.email}" />
-        <br>
+        <span class="error" id="err_fname"></span>
+        <input type="text" name="fname" id="fname" placeholder="ชื่อ" value="${User.firstName}">
 
+        <span class="error" id="err_lname"></span>
+        <input type="text" name="lname" id="lname" placeholder="นามสกุล" value="${User.lastName}">
 
-            <span class="error" id="err_stu_id"></span>
-            <input type="text" name="student_id" id="student_id" placeholder="Student ID" value="${Stu.studentId}">
+        <span class="error" id="err_phone"></span>
+        <input type="text" name="phon_num" id="phon_num" placeholder="เบอร์โทรศัพท์" value="${User.phoneNumber}">
 
-            <span class="error" id="err_fname"></span>
-            <input type="text" name="fname" id="fname" placeholder="First Name" value="${User.firstName}">
+        <span class="error" id="err_yfs"></span>
+        <select name="yfs" id="yfs">
+            <option value="">-- เลือกชั้นปี --</option>
+            <option value="Y1" ${Stu.yearOfStudy == 'ชั้นปีที่ 1' ? 'selected' : ''}>ชั้นปีที่ 1</option>
+            <option value="Y2" ${Stu.yearOfStudy == 'ชั้นปีที่ 2' ? 'selected' : ''}>ชั้นปีที่ 2</option>
+            <option value="Y3" ${Stu.yearOfStudy == 'ชั้นปีที่ 3' ? 'selected' : ''}>ชั้นปีที่ 3</option>
+            <option value="Y4" ${Stu.yearOfStudy == 'ชั้นปีที่ 4' ? 'selected' : ''}>ชั้นปีที่ 4</option>
+        </select>
 
-            <span class="error" id="err_lname"></span>
-            <input type="text" name="lname" id="lname" placeholder="Last Name" value="${User.lastName}">
+        <span class="error" id="err_image"></span>
+        <input type="file" name="image" id="image" accept="image/*" onchange="previewImage(event)">
 
-            <span class="error" id="err_phone"></span>
-            <input type="text" name="phon_num" id="phon_num" placeholder="Phone Number" value="${User.phoneNumber}">
+        <div class="error-msg">${error_edit}</div>
 
-            <span class="error" id="err_yfs"></span>
-            <select name="yfs" id="yfs">
-                <option value="">-- เลือกชั้นปี --</option>
-                <option value="Y1" ${Stu.yearOfStudy == 'Y1' ? 'selected' : ''}>ชั้นปีที่ 1</option>
-                <option value="Y2" ${Stu.yearOfStudy == 'Y2' ? 'selected' : ''}>ชั้นปีที่ 2</option>
-                <option value="Y3" ${Stu.yearOfStudy == 'Y3' ? 'selected' : ''}>ชั้นปีที่ 3</option>
-                <option value="Y4" ${Stu.yearOfStudy == 'Y4' ? 'selected' : ''}>ชั้นปีที่ 4</option>
-            </select>
-
-            <span class="error" id="err_image"></span>
-            <input type="file" name="image" id="image" accept="image/*" onchange="previewImage(event)">
-             
-            <div style="color:red;">${error_edit}</div>
-        
-            <div class="btn-group">
-                <input type="reset" value="ยกเลิก">
-                <input type="submit" value="บันทึก">
-            </div>
-        </form>
-    </div>
+        <div class="btn-group">
+            <input type="button" value="ย้อนกลับ" onclick="history.back();"> 
+            <input type="submit" value="บันทึก">
+        </div>
+    </form>
 </div>
 </body>
 </html>

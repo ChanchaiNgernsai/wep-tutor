@@ -188,7 +188,6 @@
 
     <div class="top-bar">
         <a href="goHome" class="back-link">⬅ กลับหน้า Home</a>
-        <a href="goWithdraw" class="withdraw-btn">💰 ถอนเงิน</a>
     </div>
 
     <h1>📚 รายการคอร์สผู้สอน</h1>

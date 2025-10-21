@@ -112,19 +112,19 @@
             return true ;
         }
 
-        function checkDeposit() {
-            fetch('checkDeposit')
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById("balanceDisplay").innerText = data.balance;
-                    if (data.newDeposit) {
-                        alert("เงินฝากสำเร็จแล้ว จำนวน: " + data.amount + " บาท");
+      function checkDeposit() {
+        fetch('checkDeposit')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("balanceDisplay").innerText = data.balance;
+                if (data.newDeposit) {
+                    if (confirm("เงินฝากสำเร็จแล้ว จำนวน: " + data.amount + " บาท\nกด OK เพื่อกลับหน้า Home")) {
+                        window.location.href = 'goHome';
                     }
-                });
-        }
-
-        setInterval(checkDeposit, 10000);
-        
+                }
+            });
+    }
+    setInterval(checkDeposit, 10000);
     </script>
 
 </head>
@@ -143,9 +143,6 @@
 
 
         <p>เงินคงเหลือ: <strong id="balanceDisplay">${balance}</strong> บาท</p>
-
-
-
 
         <div class="section">
             <form action="getQrCode" method="post" onsubmit="return validateDeposit();">

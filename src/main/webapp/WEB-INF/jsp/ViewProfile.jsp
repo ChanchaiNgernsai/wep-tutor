@@ -9,53 +9,63 @@
     <style>
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+            background: #f0f2f5;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            padding: 40px 50px;
             text-align: center;
         }
         .profile-img {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #4CAF50;
-            margin-bottom: 15px;
+            border: 4px solid #ff6a88;
+            margin-bottom: 20px;
         }
         .links a {
             display: inline-block;
-            margin: 8px;
-            padding: 8px 16px;
-            border-radius: 8px;
+            margin: 10px 8px;
+            padding: 10px 20px;
+            border-radius: 12px;
             text-decoration: none;
-            color: white;
-            background: #4CAF50;
+            color: #fff;
+            background: linear-gradient(135deg, #42e695, #3bb2b8);
+            font-weight: 600;
             transition: 0.3s;
         }
         .links a:hover {
-            background: #45a049;
+            opacity: 0.9;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        #editMessage {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1rem;
         }
         .info {
             text-align: left;
-            margin-top: 20px;
+            margin-top: 30px;
             line-height: 1.8;
-            font-size: 15px;
+            font-size: 1rem;
         }
         .info p {
-            margin: 6px 0;
+            margin: 8px 0;
         }
-        #editMessage {
-            margin-top: 10px;
-            font-weight: bold;
-            color: green;
+        .info strong {
+            color: #ff6a88;
         }
     </style>
 </head>
@@ -71,7 +81,7 @@
         <div id="editMessage">${edit}</div>
 
         <div class="info">
-            <p>เงินคงเหลือปัจจุบัน: <strong>${balance}</strong> บาท</p>
+            <p><strong>เงินคงเหลือปัจจุบัน:</strong> ${balance} บาท</p>
             <p><strong>อีเมล:</strong> ${User.email}</p>
             <p><strong>ชื่อ-นามสกุล:</strong> ${User.firstName} ${User.lastName}</p>
             <p><strong>รหัสนักศึกษา:</strong> ${Stu.studentId}</p>

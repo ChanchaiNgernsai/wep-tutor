@@ -56,22 +56,34 @@
     </c:if>
     <p>${result_confirm}</p>
 
-    <c:if test="${not empty students}">
-        <table>
+    <c:if test="${not empty registerCourses}">
+    <table>
+        <tr>
+            <th>ลำดับ</th>
+            <th>ชื่อ-นามสกุล</th>
+            <th>เบอร์โทรศัพท์</th>
+            <th>สถานะ</th>
+        </tr>
+        <c:forEach var="rc" items="${registerCourses}" varStatus="status">
             <tr>
-                <th>ลำดับ</th>
-                <th>ชื่อ-นามสกุล</th>
-                <th>เบอร์โทรศัพท์</th>
+                <td>${status.index + 1}</td>
+                <td>${rc.student.user.firstName} ${rc.student.user.lastName}</td>
+                <td>${rc.student.user.phoneNumber}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${rc.regisStatus == 0}">
+                            <span class="status-pending">รอยืนยัน</span>
+                        </c:when>
+                        <c:when test="${rc.regisStatus == 1}">
+                            <span class="status-confirm">ยืนยันแล้ว</span>
+                        </c:when>
+                    </c:choose>
+                </td>
             </tr>
-            <c:forEach var="stu" items="${students}" varStatus="status">
-                <tr>
-                    <td>${status.index + 1}</td>
-                    <td>${stu.user.firstName} ${stu.user.lastName}</td>
-                    <td>${stu.user.phoneNumber}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
+        </c:forEach>
+    </table>
+</c:if>
+
 
     <a href="getViewTutorCourse?id=${course.courseId}">⬅ กลับไปหน้าคอร์ส</a>
 

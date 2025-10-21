@@ -21,177 +21,176 @@ function showDay(dateStr, dayNameId) {
 	}
 
 
-	let DateCount = 1;
-	function addClassDate() {
-	  if (DateCount >= 5) {
-	    alert("เพิ่มได้ไม่เกิน 4 สัปดาห์");
-	    return;
-	  }
+	let DateCount = 1; // ใช้ติดตามจำนวนสัปดาห์
 
-	  const container = document.getElementById('addClassDate');
+function addClassDate() {
+    if (DateCount >= 5) {
+        alert("เพิ่มได้ไม่เกิน 4 สัปดาห์");
+        return;
+    }
 
-	  // === กล่องหลักสำหรับวันสอนแถวเดียว ===
-	  const flexDiv = document.createElement('div');
-	  flexDiv.style.display = 'flex';
-	  flexDiv.style.alignItems = 'center';
-	  flexDiv.style.gap = '8px';
-	  flexDiv.style.flexWrap = 'wrap';
-	  flexDiv.style.marginBottom = '10px';
-	  flexDiv.id = 'classSection' + DateCount;
+    const container = document.getElementById('addClassDate');
 
-	  // วันที่สอน
-	  const classDateLabel = document.createElement('label');
-	  classDateLabel.htmlFor = 'classDate' + DateCount;
-	  classDateLabel.innerText = 'วันที่สอน';
+    // === กล่องหลักสำหรับวันสอน ===
+    const classWrapper = document.createElement('div');
+    classWrapper.style.display = 'flex';
+    classWrapper.style.alignItems = 'center';
+    classWrapper.style.gap = '8px';
+    classWrapper.style.flexWrap = 'wrap';
+    classWrapper.style.marginBottom = '10px';
+    classWrapper.id = 'classSection' + DateCount;
 
-	  const dateInput = document.createElement('input');
-	  dateInput.type = 'date';
-	  dateInput.name = 'classDate';
-	  dateInput.id = 'classDate' + DateCount;
-	  dateInput.style.width = '150px';
-
-	  const dayNameP = document.createElement('p');
-	  dayNameP.id = 'dayName' + DateCount;
-	  dayNameP.style.minWidth = '80px';
-	  dayNameP.style.margin = '0';
-
-	  dateInput.addEventListener('change', function () {
-	    showDay(this.value, dayNameP.id);
-	  });
-
-	  // เวลาเริ่ม
-	  const startLabel = document.createElement('label');
-	  startLabel.htmlFor = 'startTime' + DateCount;
-	  startLabel.innerText = 'เริ่ม';
-
-	  const startInput = document.createElement('input');
-	  startInput.type = 'time';
-	  startInput.name = 'startTime';
-	  startInput.id = 'startTime' + DateCount;
-	  startInput.style.width = '100px';
-
-	  // เวลาสิ้นสุด
-	  const endLabel = document.createElement('label');
-	  endLabel.htmlFor = 'endTime' + DateCount;
-	  endLabel.innerText = 'ถึง';
-
-	  const endInput = document.createElement('input');
-	  endInput.type = 'time';
-	  endInput.name = 'endTime';
-	  endInput.id = 'endTime' + DateCount;
-	  endInput.style.width = '100px';
-
-	  // ปุ่มลบวัน
-	  const btnRemoveDay = document.createElement('button');
-	  btnRemoveDay.type = 'button';
-	  btnRemoveDay.innerText = 'ลบวัน';
+    // ปุ่มลบวัน
+    const btnRemoveDay = document.createElement('button');
+    btnRemoveDay.type = 'button';
+    btnRemoveDay.innerText = 'ลบวัน';
     btnRemoveDay.className = 'removeBtn';
-	  btnRemoveDay.onclick = function () {
-	    container.removeChild(flexDiv);
-	    container.removeChild(topicSection);
-	    container.removeChild(hr);
-	    DateCount--;
-	  };
+    btnRemoveDay.onclick = function () {
+        container.removeChild(classWrapper);
+        container.removeChild(topicSection);
+        container.removeChild(hr);
+        DateCount--;
+    };
 
-	  // === หัวข้อการสอน ===
-	  const topicSection = document.createElement('div');
+    // วันที่สอน
+    const classDateLabel = document.createElement('label');
+    classDateLabel.htmlFor = 'classDate' + DateCount;
+    classDateLabel.innerText = 'วันที่สอน';
 
-	  const topicLabel = document.createElement('p');
-	  topicLabel.innerText = 'เรื่องที่จะสอน';
+    const dateInput = document.createElement('input');
+    dateInput.type = 'date';
+    dateInput.name = 'classDate';
+    dateInput.id = 'classDate' + DateCount;
+    dateInput.style.width = '150px';
 
-	  const topicInput = document.createElement('input');
-	  topicInput.type = 'text';
-	  topicInput.name = 'topicName';
-	  topicInput.id = 'topicName' + DateCount;
-	  topicInput.placeholder = 'เช่น บทที่ 1-2';
+    const dayNameP = document.createElement('p');
+    dayNameP.id = 'dayName' + DateCount;
+    dayNameP.style.minWidth = '80px';
+    dayNameP.style.margin = '0';
 
-	  const topicContainer = document.createElement('div');
-	  topicContainer.id = 'topicContainer' + DateCount;
+    dateInput.addEventListener('change', function () {
+        showDay(this.value, dayNameP.id);
+    });
 
-	  const btnAddTopic = document.createElement('button');
-	  btnAddTopic.type = 'button';
-	  btnAddTopic.innerText = 'เพิ่มหัวข้อ';
-	  btnAddTopic.onclick = function () {
-	    addTopic(topicContainer);
-	  };
+    // เวลาเริ่ม
+    const startLabel = document.createElement('label');
+    startLabel.htmlFor = 'startTime' + DateCount;
+    startLabel.innerText = 'เริ่ม';
 
-	  const btnRemoveTopic = document.createElement('button');
-	  btnRemoveTopic.type = 'button';
-	  btnRemoveTopic.innerText = 'ลบหัวข้อ';
-    btnRemoveTopic.className = 'removeBtn'; 
-	  btnRemoveTopic.onclick = function () {
-	    removeLastTopic(topicContainer);
-	  };
+    const startInput = document.createElement('input');
+    startInput.type = 'time';
+    startInput.name = 'startTime';
+    startInput.id = 'startTime' + DateCount;
+    startInput.style.width = '100px';
 
-	  const hr = document.createElement('hr');
+    // เวลาสิ้นสุด
+    const endLabel = document.createElement('label');
+    endLabel.htmlFor = 'endTime' + DateCount;
+    endLabel.innerText = 'ถึง';
 
-	  flexDiv.appendChild(classDateLabel);
-	  flexDiv.appendChild(dateInput);
-	  flexDiv.appendChild(dayNameP);
-	  flexDiv.appendChild(startLabel);
-	  flexDiv.appendChild(startInput);
-	  flexDiv.appendChild(endLabel);
-	  flexDiv.appendChild(endInput);
-	  flexDiv.appendChild(btnRemoveDay);
+    const endInput = document.createElement('input');
+    endInput.type = 'time';
+    endInput.name = 'endTime';
+    endInput.id = 'endTime' + DateCount;
+    endInput.style.width = '100px';
 
-	  topicSection.appendChild(topicLabel);
-	  topicSection.appendChild(topicInput);
-	  topicSection.appendChild(btnAddTopic);
-	  topicSection.appendChild(btnRemoveTopic);
-	  topicSection.appendChild(topicContainer);
+    // รวมทุกอย่างลงใน classWrapper
+    classWrapper.appendChild(btnRemoveDay);
+    classWrapper.appendChild(classDateLabel);
+    classWrapper.appendChild(dateInput);
+    classWrapper.appendChild(dayNameP);
+    classWrapper.appendChild(startLabel);
+    classWrapper.appendChild(startInput);
+    classWrapper.appendChild(endLabel);
+    classWrapper.appendChild(endInput);
 
-	  container.appendChild(flexDiv);
-	  container.appendChild(topicSection);
-	  container.appendChild(hr);
+   // === หัวข้อการสอน ===
+const topicSection = document.createElement('div');
+topicSection.className = 'topicSection';
+topicSection.id = 'topicSection' + DateCount;
 
-	  DateCount++;
-	}
+const topicLabel = document.createElement('p');
+topicLabel.innerText = 'เรื่องที่จะสอน';
+
+// input หลักของสัปดาห์
+const topicInput = document.createElement('input');
+topicInput.type = 'text';
+topicInput.name = 'topicName';
+topicInput.id = 'topicName' + DateCount;
+topicInput.placeholder = 'เช่น บทที่ 1-2';
+
+// container สำหรับหัวข้อย่อย
+const topicContainer = document.createElement('div');
+topicContainer.id = 'topicContainer' + DateCount;
+
+// ปุ่มเพิ่ม-ลบหัวข้อ ย้ายมาวาง **ท้ายสุด**
+const btnAddTopic = document.createElement('button');
+btnAddTopic.type = 'button';
+btnAddTopic.innerText = 'เพิ่มหัวข้อ';
+btnAddTopic.onclick = function () {
+    addTopic(topicContainer);
+};
+
+const btnRemoveTopic = document.createElement('button');
+btnRemoveTopic.type = 'button';
+btnRemoveTopic.className = 'removeTopicBtn';
+btnRemoveTopic.innerText = 'ลบหัวข้อ';
+btnRemoveTopic.onclick = function () {
+    removeLastTopic(topicContainer);
+};
+
+// append ทุกอย่างลง topicSection
+topicSection.appendChild(topicLabel);
+topicSection.appendChild(topicInput);       // input หลัก
+topicSection.appendChild(topicContainer);   // container ว่างสำหรับหัวข้อย่อย
+topicSection.appendChild(btnAddTopic);      // ปุ่มเพิ่ม
+topicSection.appendChild(btnRemoveTopic);   // ปุ่มลบ
 
 
 
+    const hr = document.createElement('hr');
 
-  
-  function removeLastClassDate() {
-	  if (DateCount <= 1) {
-	    alert("ไม่มีวันสอนให้ลบแล้ว");
-	    return;
-	  }
-	  DateCount--;
-	  const container = document.getElementById('addClassDate');
-	  const lastSection = document.getElementById('classSection' + DateCount);
-	  if (lastSection) {
-	    container.removeChild(lastSection);
-	  }
-	}
+    // เพิ่มลง container
+    container.appendChild(classWrapper);
+    container.appendChild(topicSection);
+    container.appendChild(hr);
+
+    DateCount++;
+}
+
+
 
   function addTopic(container) {
     const topicCount = container.querySelectorAll('input[type="text"]').length + 1;
-    if (topicCount >= 5) {
-      alert("เพิ่มได้ไม่เกิน 5 หัวข้อ");
-      return;
+    if (topicCount > 5) {
+        alert("เพิ่มได้ไม่เกิน 5 หัวข้อ");
+        return;
     }
 
-    const br = document.createElement('br');
+    const topicDiv = document.createElement('div'); // div สำหรับ input ใหม่
+    topicDiv.style.marginBottom = '5px';
+
     const topicInput = document.createElement('input');
     topicInput.type = 'text';
     topicInput.name = 'topicName';
+    topicInput.placeholder = 'เช่น บทที่ 1-2';
 
-    container.appendChild(br);
-    container.appendChild(topicInput);
-  }
+    topicDiv.appendChild(topicInput);
+    container.appendChild(topicDiv);  // append ต่อ ๆ กัน
+}
+
+
 
   function removeLastTopic(container) {
-    const topics = container.querySelectorAll('input[type="text"]');
-    if (topics.length > 0) {
-      const lastInput = topics[topics.length - 1];
-      if (lastInput.previousSibling && lastInput.previousSibling.tagName === 'BR') {
-        container.removeChild(lastInput.previousSibling);
-      }
-      container.removeChild(lastInput);
+    const topicDivs = container.querySelectorAll('div'); // เลือก div แต่ละหัวข้อ
+    if (topicDivs.length > 0) {
+        const lastDiv = topicDivs[topicDivs.length - 1];
+        container.removeChild(lastDiv);
     } else {
-      alert("ไม่มีหัวข้อให้ลบ");
+        alert("ไม่มีหัวข้อให้ลบ");
     }
-  }
+}
+
 
   function isTimeBetween(timeStr, startStr, endStr) {
     const [h, m] = timeStr.split(":").map(Number);
@@ -306,6 +305,24 @@ function validateAddCourse(form) {
             classDateInput.focus();
             return false;
         }
+        // ----- ตรวจสอบวันสอนซ้ำ -----
+        let selectedDates = new Set();
+        for (let i = 0; i < DateCount; i++) {
+            const idx = i === 0 ? "" : i;
+            const classDateInput = document.getElementById('classDate' + idx);
+            if (!classDateInput) continue;
+
+            const dateVal = classDateInput.value.trim();
+            if (dateVal === "") continue;
+
+            if (selectedDates.has(dateVal)) {
+                alert("วันที่สอนซ้ำกัน! กรุณาเลือกวันอื่น (สัปดาห์ที่ " + (i + 1) + ")");
+                classDateInput.focus();
+                return false;
+            }
+            selectedDates.add(dateVal);
+        }
+
 
         // ตรวจสอบเวลาเริ่มและเลิก
         if (startTimeInput.value.trim() === "") {
@@ -401,20 +418,27 @@ function validateAddCourse(form) {
     text-decoration: underline;
   }
   table {
-    width: 100%;
+    width: 80%;                /* ลดขนาดตารางลง */
+    max-width: 900px;          /* กำหนดความกว้างสูงสุด */
     border-collapse: collapse;
     background: white;
     box-shadow: 0 0 8px rgba(0,0,0,0.1);
-  }
-  th, td {
-    padding: 15px;
+    font-size: 14px; 
+    margin: 20px auto;         /* ทำให้ table อยู่กลางหน้า */
+}
+
+th, td {
+    padding: 10px;
     vertical-align: top;
-  }
-  th {
-    background-color: #3498db;
+}
+
+th {
+    background-color: #21bf70;
     color: white;
     text-align: left;
-  }
+    font-size: 15px;
+}
+
   input[type=text],select, textarea {
     width: 100%;
     padding: 8px 10px;
@@ -448,7 +472,7 @@ function validateAddCourse(form) {
     resize: vertical;
   }
   button {
-    background-color: #2980b9;
+    background-color: #21bf70;
     border: none;
     color: white;
     padding: 7px 14px;
@@ -460,51 +484,6 @@ function validateAddCourse(form) {
   }
   button:hover {
     background-color: #1c5980;
-  }
- 
-  #addClassDate > div, #addClassDate > hr, #addClassDate > div + div {
-    margin-bottom: 15px;
-  }
-  
-  .classDateRow {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-  }
-  .classDateRow label {
-    min-width: 60px;
-    font-weight: 600;
-  }
-  .classDateRow input[type=date], 
-  .classDateRow input[type=time] {
-    width: 140px;
-  }
-  .dayNameDisplay {
-    min-width: 90px;
-    font-weight: bold;
-    font-size: 16px;
-    color: #2c3e50;
-  }
- 
-  .topicSection {
-    background: #f0f8ff;
-    padding: 10px 12px;
-    border-radius: 6px;
-  }
-  .topicSection p {
-    margin: 5px 0 10px 0;
-    font-weight: 600;
-  }
-  .topicSection input[type=text] {
-    width: auto;
-    min-width: 200px;
-    margin-right: 10px;
-    margin-bottom: 8px;
-  }
-  .topicSection button {
-    padding: 5px 10px;
-    font-size: 12px;
   }
 
   input[type=submit], input[type=reset] {
@@ -525,7 +504,7 @@ function validateAddCourse(form) {
     background-color: #e74c3c;
   }
   input[type=reset]:hover {
-    background-color: white;
+    background-color: rgb(115, 0, 0);
   }
 
   
@@ -546,22 +525,84 @@ function validateAddCourse(form) {
 button.removeTopicBtn:hover {
     background-color: #c0392b; 
 }
+.page-header {
+    text-align: center;   /* ทำให้ทั้งหมดอยู่กลาง */
+    margin-bottom: 20px;
+}
+
+.page-header h1 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.header-links {
+    display: flex;
+    justify-content: center;  /* จัดลิงก์ให้อยู่กลาง */
+    gap: 15px;                /* เว้นระยะห่างระหว่างลิงก์ */
+}
+
+.btn-link {
+    display: inline-block;
+    padding: 8px 16px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+}
 
 
-  
+.btn-home {
+    background-color: #27ae60;
+}
+.btn-home:hover {
+    background-color: #1e8449;
+    transform: translateY(-2px);
+}
+
+.btn-mycourse {
+    background-color: #27ae60;
+}
+.btn-mycourse:hover {
+    background-color: #1e8449;
+    transform: translateY(-2px);
+}
+.page-header-bar {
+    background-color: #1e70d5;  /* สีแทบด้านบน */
+    color: white;               /* สีตัวอักษร */
+    padding: 15px 20px;         /* ระยะห่างด้านบน-ล่าง, ซ้าย-ขวา */
+    text-align: center;         /* จัดให้อยู่กลาง */
+    border-radius: 6px 6px 0 0; /* มุมบนซ้าย-ขวาโค้ง ถ้าต้องการ */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* เพิ่มเงาเล็กน้อย */
+}
+.page-header-bar h1 {
+    margin: 0; /* ลบ margin ของ h1 */
+    font-size: 24px;
+}
+td a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #2980b9;
+}
+td a:hover {
+    text-decoration: underline;
+}
+
+
 
 </style>
 
 
 <body>
-  <h1>New Course</h1>
-  <a href="goHome">กลับหน้า Home</a><br>
-  <a href="listTutorCourses">คอร์สของฉัน</a> 
-
-  <p style="color: #c0392b;" class="error_result">${error_result}</p>
+    <div class="page-header">
+    <h1>Add Course</h1>
+</div>
 
   <form name="frm1" action="addCourse" method="post"  accept-charset="UTF-8" onsubmit="return validateAddCourse(this);">
+  <p style="color: #c0392b;" class="error_result">${error_result}</p>
     <table>
+      
+      
       <thead>
         <tr>
           <th>ข้อมูลหลักคอร์ส</th>
@@ -569,6 +610,11 @@ button.removeTopicBtn:hover {
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <td >
+          <a href="goHome">&#8592;กลับหน้า Home</a>
+          <a href="listTutorCourses">คอร์สของฉัน&#8594;</a>
+        </td>
         <tr>
           <td valign="top">
             <p>ชื่อรายวิชา</p>
@@ -602,28 +648,26 @@ button.removeTopicBtn:hover {
             
             
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+             <button type="button" onclick="addClassDate()">เพิ่มวัน</button>
             <label for="classDate">วันที่สอน</label>
             <input type="date" name="classDate" id="classDate" onchange="showDay(this.value, 'dayName')" style="width: 150px;">
             
             <p id="dayName"></p>
-            
             <label for="startTime">เริ่ม</label>
             <input type="time" name="startTime" id="startTime" style="width: 100px;">
             
             <label for="endTime">ถึง</label>
             <input type="time" name="endTime" id="endTime" style="width: 100px;">
-            
-            <button type="button" onclick="addClassDate()">เพิ่มวัน</button>
 		      </div>
 				
             <p>เรื่องที่จะสอน</p>
-            <input type="text" name="topicName" id="topicName" placeholder="เช่น บทที่ 1-2" >
-            	<div id="addTopic"></div>
-            <button type="button" onclick="addTopic(document.getElementById('addTopic'))">เพิ่มหัวข้อ</button>
-            <button type="button" class="removeTopicBtn" onclick="removeLastTopic(document.getElementById('addTopic'))">ลบหัวข้อ</button>
-            
+                <div id="addTopic"></div>
+                <input type="text" name="topicName" id="topicName" placeholder="เช่น บทที่ 1-2" >
+                <button type="button" onclick="addTopic(document.getElementById('addTopic'))">เพิ่มหัวข้อ</button>
+                <button type="button" class="removeTopicBtn" onclick="removeLastTopic(document.getElementById('addTopic'))">ลบหัวข้อ</button>
 			<hr>
             	<div id="addClassDate"></div>
+              
               
           </td>
         </tr>

@@ -7,177 +7,181 @@
 <title>Withdraw</title>
 <style>
   body {
-    background-color: #EBEBEB; 
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #222;
+    font-family: "Prompt", Arial, sans-serif;
+    background: linear-gradient(135deg, #e9efff 0%, #ffffff 100%);
     margin: 0;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 30px;
   }
 
   .main-container {
     display: flex;
-    gap: 30px;
+    gap: 25px;
     max-width: 900px;
     width: 100%;
-    background-color: #ffffffcc;
+    background-color: #fff;
     border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     padding: 30px 40px;
+    border-top: 6px solid #1E54D1;
   }
 
   .left-container {
-    flex: 0 0 22%;
-    background-color: #CECECE;
+    flex: 0 0 25%;
+    background-color: #f2f5ff;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
     padding: 25px 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     font-weight: 600;
-    color: #e1f5fe;
-  }
-  .left-container a {
-    color: #333333;
-    text-decoration: none;
-    margin-bottom: 20px;
-    font-size: 1.05rem;
-    border-left: 4px solid transparent;
-    padding-left: 10px;
-    transition: border-color 0.3s ease, color 0.3s ease;
-  }
-  .left-container a:hover {
-    text-decoration: none;
-    border-left: 4px solid #ffffff;
-    color: #fff;
   }
 
-.right-container {
+  .left-container a {
+    color: #1E54D1;
+    text-decoration: none;
+    margin-bottom: 18px;
+    font-size: 1rem;
+    border-left: 4px solid transparent;
+    padding-left: 10px;
+    transition: 0.3s;
+  }
+
+  .left-container a:hover {
+    border-left: 4px solid #1E54D1;
+    color: #1742a3;
+  }
+
+  .right-container {
     flex: 1;
     background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
     padding: 40px 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+  }
 
-
-.right-container h1 {
-    margin-bottom: 6px;  /* ลดระยะด้านล่าง */
-    line-height: 1.1;    /* ลดความสูงบรรทัด */
-    text-align: center;
-}
-
-
-.right-container p {
-    margin-top: 0;        /* ลบระยะด้านบน */
-    margin-bottom: 15px;  /* ระยะด้านล่างยังคงพอเหมาะ */
-    text-align: center;
-}
-
-  h1 {
+  .right-container h1 {
     margin-bottom: 10px;
     color: #1E54D1;
     font-weight: 700;
-    font-size: 3.4rem;
-    letter-spacing: 1.1px;
+    font-size: 2.4rem;
+    text-align: center;
+  }
+
+  .right-container p {
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+  }
+
+  .balance-box {
+    background-color: #edf2ff;
+    border: 1px solid #d0d8ff;
+    border-radius: 8px;
+    padding: 10px 15px;
+    text-align: center;
+    font-weight: 600;
+    color: #1E54D1;
+    margin-bottom: 20px;
   }
 
   input[type="number"], select {
     width: 100%;
     max-width: 400px;
-    padding: 14px 16px;
-    margin: 12px 0 25px 0;
-    border: 2px solid #A1A1A1;
+    padding: 12px 14px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #cdd5ec;
     border-radius: 8px;
-    font-size: 1.1rem;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
 
   input[type="number"]:focus, select:focus {
-    border-color: #0288d1;
+    border-color: #1E54D1;
     outline: none;
+    box-shadow: 0 0 4px rgba(30, 84, 209, 0.3);
   }
 
   input[type="submit"] {
     width: 100%;
     max-width: 400px;
-    padding: 14px 0;
-    font-weight: 700;
+    padding: 12px 0;
+    font-weight: 600;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1rem;
     background-color: #1E54D1;
     color: #fff;
-    transition: background-color 0.25s ease, box-shadow 0.25s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
   input[type="submit"]:hover {
-    background-color: #01579b;
-    box-shadow: 0 6px 18px rgba(1, 87, 155, 0.7);
+    background-color: #1742a3;
+    transform: translateY(-1px);
   }
 
-    button.cancel-button {
-        width: 100%;
-        max-width: 400px;
-        padding: 14px 0;
-        font-weight: 700;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1.1rem;
-        background-color: #484848;
-        color: #fff;
-        transition: background-color 0.25s ease, box-shadow 0.25s ease;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    }
-    button.cancel-button:hover {
-        background-color: #000000;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-    }
+  button.cancel-button {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 0;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    background-color: #6b6b6b;
+    color: #fff;
+    transition: 0.3s;
+  }
 
+  button.cancel-button:hover {
+    background-color: #333;
+  }
 
   p.error {
-    color: #d32f2f;
-    font-weight: 700;
-    margin: 0 0 15px 0;
+    color: #e74c3c;
+    font-weight: 600;
     text-align: center;
-    font-size: 1.1rem;
-    min-height: 26px;
   }
 
   p.success {
-    color: green;
+    color: #27ae60;
     font-weight: 600;
-    margin: 0 0 15px 0;
     text-align: center;
-    font-size: 1.1rem;
-    min-height: 26px;
   }
+/* Chrome, Safari, Edge */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* removes default spin buttons */
+    margin: 0;
+}
 
-  .link-bottom {
-    margin-top: 20px;
-    font-weight: 600;
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield; /* removes default spin buttons */
+    appearance: textfield;      /* standard property for compatibility */
+}
+input[type="number"], select {
+    width: 100%;
+    max-width: 400px; /* ให้เท่ากับ input */
+    padding: 12px 14px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #cdd5ec;
+    border-radius: 8px;
     font-size: 1rem;
-    color: #0288d1;
-    text-decoration: none;
-    text-align: center;
-    display: block;
-    width: fit-content;
-  }
-  .link-bottom:hover {
-    color: #01579b;
-    text-decoration: underline;
-  }
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box; /* เพิ่มเพื่อให้ padding ไม่ทำให้เกินขนาด */
+}
+
+
 </style>
 
 <script>
@@ -185,13 +189,12 @@ function validateWithdraw() {
     const bank = document.getElementById("bankType").value.trim();
     const account = document.getElementById("bankAccount").value.trim();
     const amountInput = document.getElementById("amount").value.trim();
-    const balance = parseInt("${balance}"); 
+    const balance = parseInt("${balance}");
 
     if (bank === "") {
         alert("กรุณาเลือกธนาคาร");
         return false;
     }
-
     if (account === "") {
         alert("กรุณากรอกเลขบัญชีธนาคาร");
         document.getElementById("bankAccount").focus();
@@ -202,7 +205,6 @@ function validateWithdraw() {
         document.getElementById("bankAccount").focus();
         return false;
     }
-
     if (amountInput === "") {
         alert("กรุณากรอกจำนวนเงินที่ต้องการถอน");
         document.getElementById("amount").focus();
@@ -226,27 +228,30 @@ function validateWithdraw() {
         return false;
     }
 
-    return confirm("ข้อมูลถูกต้อง!\nคุณต้องการถอนเงินจำนวน " + amount + " บาท ไปยังบัญชี " + account + " ธนาคาร " + bank + " หรือไม่?");  
+    return confirm("ยืนยันการถอนเงินจำนวน " + amount + " บาท\nไปยังบัญชี " + account + " (" + bank + ")");
 }
-</script>
 
+
+</script>
 </head>
+
 <body>
   <div class="main-container">
     <div class="left-container">
-        <a href="goHome">&#8592; กลับหน้า Home</a>
-        <a class="link-bottom" href="goDeposit">&#8592;ไปหน้าฝากเงิน</a>
+      <a href="goHome">&#8592; กลับหน้าหลัก</a>
     </div>
 
     <div class="right-container">
-      <h1>Withdraw</h1>
+      <h1>ถอนเงิน</h1>
       <p class="error">${err_result}</p>
       <p class="success">${msg_result}</p>
 
-      <p>เงินคงเหลือปัจจุบัน: <strong>${balance}</strong> บาท</p>
-
+      <div class="balance-box">
+        เงินคงเหลือปัจจุบัน: <strong>${balance}</strong> บาท
+      </div>
+ 
       <form action="requesWithdraw" method="post" onsubmit="return validateWithdraw();">
-        <label for="bank">ประเภทธนาคาร:</label><br />
+        <label for="bank">เลือกธนาคาร:</label><br />
         <select id="bankType" name="bankType" value="${bankType}">
             <option value="">-- กรุณาเลือกธนาคาร --</option>
             <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ (BBL)</option>
@@ -257,10 +262,10 @@ function validateWithdraw() {
 
         <label for="bankAccount">เลขบัญชีธนาคาร:</label><br />
         <input type="number" id="bankAccount" name="bankAccount" placeholder="กรุณากรอกเลขบัญชีธนาคาร" value="${bankAccount}" /><br />
-        <label for="amount">กรุณากรอกจำนวนเงินที่ต้องการถอน:</label><br />
-        <input type="number" id="amount" name="amount" min="0" step="50" value="${amount}" />
-        <input type="submit" value="Confirm Withdraw" /><br />
-        <br />
+
+        <label for="amount">จำนวนเงินที่ต้องการถอน:</label><br />
+        <input type="number" id="amount" name="amount" min="100" step="1"  placeholder="ระบุจำนวนเงิน"value="${amount}" />
+        <input type="submit" value="ยืนยันการถอนเงิน" /><br /><br />
         <button type="button" class="cancel-button" onclick="history.back();">ยกเลิก</button>
       </form>
     </div>

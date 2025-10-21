@@ -143,6 +143,21 @@
     button:hover {
         background: #45a049;
     }
+    
+    .btn_cancel {
+        background: #e42421;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: 10px;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #45a049;
+    }
 
 
     .review-box {
@@ -350,6 +365,7 @@
                         <textarea name="comment" id="comment" rows="4" placeholder="เขียนรีวิวที่นี่..."></textarea>
                         <br>
                         <button type="submit">ส่งรีวิว</button>
+                        <input type="button" class="btn_cancel" value="ยกเลิก" onclick="history.back();"> 
                     </form>
                 </c:if>
                 <c:if test="${empty student}">

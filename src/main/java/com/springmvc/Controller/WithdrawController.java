@@ -36,7 +36,7 @@ public class WithdrawController {
         }
 
         TutorManager tmg = new TutorManager();
-        double balance = tmg.getBalance(user.getEmail());
+        double balance = tmg.getBalanceByTutor(user.getEmail());
 
         ModelAndView mav = new ModelAndView("RequesWithdraw");
         mav.addObject("balance", balance);
@@ -59,18 +59,12 @@ public class WithdrawController {
             return mav;
         }
 
-        boolean canWithdraw = tmg.hasConfirmedRegisterCourse(user.getEmail());
-        double balance = tmg.getBalance(user.getEmail());
+        double balance = tmg.getBalanceByTutor(user.getEmail());
 
         ModelAndView mav = new ModelAndView("RequesWithdraw");
         mav.addObject("balance", balance);
         mav.addObject("bankAccount", bankAccount);
         mav.addObject("bankType", bankType);
-
-        if (!canWithdraw) {
-            mav.addObject("err_result", "นักเรียนทุกคนจะต้องยืนยันการสอน จึงไม่สามารถถอนเงินได้");
-            return mav;
-        }
 
         double amount = Double.parseDouble(request.getParameter("amount"));
         mav.addObject("amount", amount);

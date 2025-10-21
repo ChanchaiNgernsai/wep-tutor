@@ -85,7 +85,7 @@
 
     .btn_review {
         background-color: #f1e023;
-        color: #333;
+        color: #ffffff;
     }
     .btn_review:hover {
         background-color: #c7b91b;
@@ -100,22 +100,25 @@
         transform: translateY(-2px);
     }
 
-    .btn_confirm {
-    background-color: #1e70d5;
-    color: white;
-    width: 120px;            /* ✅ ความยาวปุ่มเท่ากับปุ่มอื่น */
-    text-align: center;
-    padding: 8px 0;          /* สูงกำลังดี */
-    border-radius: 20px;     /* มุมโค้งสวย */
-    font-size: 12.5px;
-    font-weight: 600;
+    
+.btn_confirm {
+    display: inline-block;
+    width: 150px;         
+    text-align: center;  
+    margin: 10px 5px 10px 0;
+    padding: 10px 0;      
     border: none;
+    border-radius: 25px;   
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    color: #ffffff;          
+    background-color: #42e695; 
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 
 .btn_confirm:hover {
-    background-color: #1558a8;
+    background-color: rgb(53, 193, 15); 
     transform: translateY(-2px);
 }
 
@@ -145,6 +148,23 @@
         padding-left: 20px;
         margin-top: 0;
     }
+    .btn_home {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #1e70d5;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+    margin-top: 15px;
+}
+
+.btn_home:hover {
+    background-color: #1558a8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
 </style>
 
 <script>
@@ -153,14 +173,59 @@
             document.getElementById("cancelForm").submit();
         }
     }
+
+ document.addEventListener("DOMContentLoaded", function() {
+    const endDateStr = "${lastCourseEndDate}";
+    if (endDateStr) {
+        const fixedDateStr = endDateStr.replace(" ", "T"); 
+        const endDate = new Date(fixedDateStr);
+        const now = new Date();
+
+        const btnReview = document.getElementById("btnReview");
+        const btnReport = document.getElementById("btnReport");
+        const btn_confirm = document.getElementById("btn_confirm");
+
+        if(now < endDate){
+            if (btnReview) {
+                btnReview.style.pointerEvents = "none";
+                btnReview.style.opacity = 0.5;
+                btnReview.innerText += " (ยังไม่ถึงเวลา)";
+            }
+            if (btnReport) {
+                btnReport.style.pointerEvents = "none";
+                btnReport.style.opacity = 0.5;
+                btnReport.innerText += " (ยังไม่ถึงเวลา)";
+            }
+            if (btn_confirm) {
+                btn_confirm.style.pointerEvents = "none";
+                btn_confirm.style.opacity = 0.5;
+                btn_confirm.innerText += " (ยังไม่ถึงเวลา)";
+            }
+        } else {
+            if (btnReview) {
+                btnReview.style.pointerEvents = "auto";
+                btnReview.style.opacity = 1;
+                btnReview.innerText = "รีวิวคอร์ส";
+            }
+            if (btnReport) {
+                btnReport.style.pointerEvents = "auto";
+                btnReport.style.opacity = 1;
+                btnReport.innerText = "ร้องเรียนผู้สอน";
+            }
+            if (btn_confirm) {
+                btn_confirm.style.pointerEvents = "auto";
+                btn_confirm.style.opacity = 1;
+                btn_confirm.innerText = " ยืนยันสอนแล้ว";
+            }
+        }
+    }
+});
+
 </script>
 </head>
 <body>
 
     <div class="header">
-        <a href="goHome">
-            <img src="resources/images/home_off.png" alt="Home" width="90" height="90" />
-        </a>
         <h2>รายละเอียดการลงทะเบียนคอร์ส</h2>
     </div>
 
@@ -173,8 +238,9 @@
             <p><strong>เพศ:</strong> ${rc.course.tutor.user.gender}</p>
             <p><strong>เบอร์โทรศัพท์:</strong> ${rc.course.tutor.user.phoneNumber}</p>
             <p><strong>ประสบการณ์:</strong> ${rc.course.tutor.expertise}</p>
+            <a class="btn_home" onclick="history.back();">&#8592; คอร์สที่ลงทะเบียน</a>
         </div>
-  
+
         <div class="right-container">
             <p class="error-msg">${err_result_cancel}</p>
             <p class="error-msg">${err_result_confirm}</p>
@@ -205,13 +271,13 @@
                 <input type="hidden" name="registerId" value="${rc.registerCourseId}" />
                 <button type="button" class="btn_cancel" onclick="confirmCancel()">ยกเลิกคอร์ส</button>
             </form>
-            <a href="goReviewCourse?id=${rc.course.courseId}" class="btn_review">รีวิวคอร์ส</a>
-            <a href="goReport?id=${rc.course.courseId}" class="btn_report">รายงานผู้สอน</a><br>
+            <a id="btnReview" href="goReviewCourse?id=${rc.course.courseId}" class="btn_review">รีวิวคอร์ส</a>
+            <a id="btnReport" href="goReport?id=${rc.course.courseId}" class="btn_report">ร้องเรียนผู้สอน</a>
 
             <form action="confirmLesson" method="post" style="display:inline;">
                 <input type="hidden" name="registerCourseId" value="${rc.registerCourseId}" />
                 <c:if test="${rc.regisStatus != 1}">
-                    <button class="btn_confirm" type="submit">✅ ยืนยันสอนแล้ว</button>
+                    <button id="btn_confirm" class="btn_confirm" type="submit">✅ ยืนยันสอนแล้ว</button>
                 </c:if>
                 <c:if test="${rc.regisStatus == 1}">
                     <span style="color:green; font-weight:bold;">✔ ยืนยันแล้ว</span>

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springmvc.model.Course;
+import com.springmvc.model.CourseDate;
 import com.springmvc.model.Payment;
 import com.springmvc.model.RegisterCourse;
 import com.springmvc.model.Student;
-import com.springmvc.model.Transaction;
 import com.springmvc.model.TutorManager;
 import com.springmvc.model.User;
 
@@ -51,10 +51,19 @@ public class RegisterCourseController {
 
         session.setAttribute("RegisterCourse", rc);
 
+        List<CourseDate> courseDates = rc.getCourse().getCourseDates();
+        String lastCourseEndDate = "";
+
+        if (!courseDates.isEmpty()) {
+            CourseDate lastCd = courseDates.get(courseDates.size() - 1);
+            lastCourseEndDate = lastCd.getClass_date() + "T" + lastCd.getEndTime() + ":00";
+        }
+
         ModelAndView mav = new ModelAndView("ViewRegisterCourse");
         mav.addObject("rc", rc);
         mav.addObject("course", rc.getCourse());
-        mav.addObject("courseDates", rc.getCourse().getCourseDates());
+        mav.addObject("courseDates", courseDates);
+        mav.addObject("lastCourseEndDate", lastCourseEndDate);
         return mav;
     }
 
@@ -73,7 +82,7 @@ public class RegisterCourseController {
         User us = student.getUser();
         RegisterCourse rc = tmg.getRegisterCourseById(id);
 
-        double balance = tmg.getBalance(us.getEmail());
+        double balance = tmg.getBalanceByStudent(us.getEmail());
 
         ModelAndView mav = new ModelAndView("RegisterCourse");
         mav.addObject("course", course);
@@ -102,10 +111,11 @@ public class RegisterCourseController {
         if (course == null) {
             return new ModelAndView("redirect:/goHome");
         }
-        double balance = tmg.getBalance(student.getUser().getEmail());
+
+        double balance = tmg.getBalanceByStudent(student.getUser().getEmail());
         if (balance < course.getCoursePrice()) {
             ModelAndView mav = new ModelAndView("RegisterCourse");
-            mav.addObject("err_money", messageSource.getMessage("err_money", null, Locale.forLanguageTag("th-TH")));
+            mav.addObject("err_money", "ยอดเงินไม่เพียงพอ กรุณาเติมเงินก่อนลงทะเบียน");
             mav.addObject("course", course);
             mav.addObject("balance", balance);
             return mav;
@@ -114,9 +124,9 @@ public class RegisterCourseController {
         int checkNumStu = tmg.getRegisterCoursesByCourse(courseId).size();
         if (checkNumStu >= course.getMaxStudents()) {
             ModelAndView mav = new ModelAndView("RegisterCourse");
-            mav.addObject("err_maxstu", messageSource.getMessage("err_maxstu", null, Locale.forLanguageTag("th-TH")));
+            mav.addObject("err_maxstu", "จำนวนผู้เรียนเต็มแล้ว");
             mav.addObject("course", course);
-            mav.addObject("balance", tmg.getBalance(student.getUser().getEmail()));
+            mav.addObject("balance", balance);
             return mav;
         }
 
@@ -124,34 +134,6 @@ public class RegisterCourseController {
         payment.setAmount(course.getCoursePrice());
         payment.setPaymentDate(new Date());
         tmg.insertPayment(payment);
-
-        User tutorUser = course.getTutor().getUser();
-
-        Transaction transaction = new Transaction();
-        transaction.setDeposit(course.getCoursePrice());
-        transaction.setWithdraw(0.0);
-        transaction.setDepositDate(new java.util.Date());
-        transaction.setUser(tutorUser);
-        tmg.insertTransaction(transaction);
-
-        User studentUser = student.getUser();
-
-        Transaction studentTransaction = new Transaction();
-        studentTransaction.setDeposit(0.0);
-        studentTransaction.setWithdraw(course.getCoursePrice());
-        studentTransaction.setWithdrawDate(new java.util.Date());
-        studentTransaction.setUser(studentUser);
-
-        studentTransaction.setWithdrawStatus(2); // หัก
-        tmg.insertTransaction(studentTransaction);
-
-        boolean transactionResult = tmg.insertTransaction(transaction);
-        if (!transactionResult) {
-            ModelAndView mav = new ModelAndView("RegisterCourse");
-            mav.addObject("err_result", "เกิดข้อผิดพลาดในการบันทึกธุรกรรมให้ติวเตอร์");
-            mav.addObject("course", course);
-            return mav;
-        }
 
         RegisterCourse rc = new RegisterCourse();
         rc.setStudent(student);
@@ -163,16 +145,14 @@ public class RegisterCourseController {
 
         if (result) {
             ModelAndView mav = new ModelAndView("Payment");
-            mav.addObject("result_payment",
-                    messageSource.getMessage("result_registerCourse", null, Locale.forLanguageTag("th-TH")));
+            mav.addObject("result_payment", "ลงทะเบียนคอร์สเรียบร้อยแล้ว รอยืนยันการสอนก่อนหักเงิน");
             mav.addObject("student", student);
             mav.addObject("course", course);
             mav.addObject("payment", payment);
             return mav;
         } else {
             ModelAndView mav = new ModelAndView("RegisterCourse");
-            mav.addObject("err_registerCourse",
-                    messageSource.getMessage("err_registerCourse", null, Locale.forLanguageTag("th-TH")));
+            mav.addObject("err_registerCourse", "เกิดข้อผิดพลาดในการลงทะเบียนคอร์ส");
             mav.addObject("course", course);
             mav.addObject("balance", balance);
             return mav;
@@ -234,31 +214,51 @@ public class RegisterCourseController {
         Course course = tmg.getCourseById(courseId);
 
         List<Student> students = tmg.getStudentsByCourseId(courseId);
+        List<RegisterCourse> registerCourses = tmg.getRegisterCoursesByCourse(courseId);
         ModelAndView mav = new ModelAndView("ListStudentCourse");
         mav.addObject("course", course);
         mav.addObject("students", students);
+        mav.addObject("registerCourses", registerCourses);
 
         return mav;
     }
 
     @RequestMapping(value = "/confirmLesson", method = RequestMethod.POST)
     public ModelAndView confirmLesson(HttpServletRequest request, HttpSession session) {
-        int registerCourseId = Integer.parseInt(request.getParameter("registerCourseId"));
+
+        String registerCourseIdStr = request.getParameter("registerCourseId");
+        if (registerCourseIdStr == null || registerCourseIdStr.isEmpty()) {
+            return new ModelAndView("redirect:/goListRegisterCourse");
+        }
+        int registerCourseId = Integer.parseInt(registerCourseIdStr);
+
         Student student = (Student) session.getAttribute("Stu");
         if (student == null) {
             return new ModelAndView("Login", "error", "กรุณาเข้าสู่ระบบก่อนดูรายการคอร์ส");
         }
+
         TutorManager tmg = new TutorManager();
         RegisterCourse rc = tmg.getRegisterCourseById(registerCourseId);
 
-        tmg.updateRegisterStatus(rc.getRegisterCourseId(), 1);
+        if (rc == null) {
+            ModelAndView mav = new ModelAndView("ViewRegisterCourse");
+            mav.addObject("err_result_confirm", "ไม่พบข้อมูลคอร์สที่ต้องยืนยัน");
+            return mav;
+        }
 
+        boolean success = tmg.confirmRegisterCourse(rc);
         rc = tmg.getRegisterCourseById(registerCourseId);
 
         ModelAndView mav = new ModelAndView("ViewRegisterCourse");
         mav.addObject("rc", rc);
         mav.addObject("courseDates", rc.getCourse().getCourseDates());
-        mav.addObject("success_msg", "ยืนยันการสอนเรียบร้อยแล้ว");
+
+        if (success) {
+            mav.addObject("success_msg", "ยืนยันการสอนเรียบร้อยแล้ว และเงินถูกโอนให้นักศึกษา → ติวเตอร์เรียบร้อย");
+        } else {
+            mav.addObject("err_result_confirm", "เกิดข้อผิดพลาดในการยืนยันการสอน/โอนเงิน");
+        }
+
         return mav;
     }
 

@@ -126,27 +126,35 @@
   function validateTutor() {
     let isValid = true;
 
-    
     const skillInputs = document.querySelectorAll('input[name="skill"]');
-    const skillError = document.getElementById("skillError");
-    const skillPattern = /^[A-Za-z\u0E00-\u0E7F\s]{4,100}$/; 
+    const skillError = document.getElementById("skillError") || createSkillErrorElement();
+    const skillPattern = /^[A-Za-z\u0E00-\u0E7F\s]{4,100}$/;
 
     skillError.textContent = "";
+    let hasSkill = false;
     for (let skillInput of skillInputs) {
         const skillValue = skillInput.value.trim();
-        if (!skillPattern.test(skillValue)) {
+        if(skillValue !== "") hasSkill = true; // มีค่า
+        if(skillValue !== "" && !skillPattern.test(skillValue)) {
             skillError.textContent = "กรุณากรอกทักษะอย่างน้อย 4 ตัวอักษร (ภาษาไทยหรืออังกฤษ)";
             isValid = false;
             break;
         }
     }
+    if(!hasSkill) {
+        skillError.textContent = "กรุณากรอกอย่างน้อย 1 วิชา";
+        isValid = false;
+    }
 
     const expertise = document.getElementById("expertise").value.trim();
-    const expertiseError = document.getElementById("expertiseError");
-    const specialCharPattern = /[<>$%^*+=\\|]/; 
+    const expertiseError = document.getElementById("expertiseError") || createExpertiseErrorElement();
+    const specialCharPattern = /[<>$%^*+=\\|]/;
 
     expertiseError.textContent = "";
-    if (expertise.length < 10) {
+    if (expertise === "") {
+        expertiseError.textContent = "กรุณากรอกประสบการณ์";
+        isValid = false;
+    } else if (expertise.length < 10) {
         expertiseError.textContent = "กรุณากรอกประสบการณ์อย่างน้อย 10 ตัวอักษร";
         isValid = false;
     } else if (specialCharPattern.test(expertise)) {
@@ -156,6 +164,25 @@
 
     return isValid;
 }
+
+function createSkillErrorElement() {
+    const el = document.createElement("p");
+    el.id = "skillError";
+    el.className = "error";
+    const container = document.getElementById("skillCon");
+    container.insertBefore(el, container.firstChild);
+    return el;
+}
+
+function createExpertiseErrorElement() {
+    const el = document.createElement("p");
+    el.id = "expertiseError";
+    el.className = "error";
+    const container = document.getElementById("expertise").parentNode;
+    container.insertBefore(el, document.getElementById("expertise"));
+    return el;
+}
+
 </script>
 </head>
 <body>
@@ -176,7 +203,8 @@
       <p>ประสบการณ์ (*จำเป็นต้องระบุ)</p>
       <textarea name="expertise" id="expertise" rows="4"></textarea><br>
       
-      <input type="reset" class="btn btn-reset" value="ยกเลิก">
+     <button type="button" class="btn btn-reset" onclick="window.location.href='goHome';">ยกเลิก
+    </button>
       <input type="submit" class="btn btn-submit" value="ลงทะเบียน">
     </form>
   </div>

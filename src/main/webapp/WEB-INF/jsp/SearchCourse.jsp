@@ -8,87 +8,126 @@
 <head>
 <meta charset="UTF-8">
 <title>ผลการค้นหา</title>
-</head>
 <style>
   body {
-    background-color: #EBEBEB;
+    background: #f0f2f5;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
+    color: #333;
   }
-  
+
   a {
-    color: #2CC06C;
     text-decoration: none;
-    font-weight: bold;
-  }
-  
-  a:hover {
-    color: #2853B8;
+    font-weight: 600;
   }
   
   .container {
     max-width: 900px;
     margin: 20px auto;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    padding: 20px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    padding: 30px;
   }
-  
+
   h2 {
-    font-weight: bold;
-    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ff6a88;
+    border-bottom: 3px solid #42e695;
+    padding-bottom: 8px;
   }
-  
+
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #42e695;
+  }
+
+  .back-link:hover {
+    color: #3bb2b8;
+  }
+
   .course-item {
-    background-color: white;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
-  
-  .course-item p {
-    margin: 5px 0;
+
+  .course-item img.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #42e695;
+    flex-shrink: 0;
   }
-  
-  .course-item a {
+
+  .course-info {
+    flex: 1;
+  }
+
+  .course-info p {
+    margin: 6px 0;
+    font-size: 1rem;
+  }
+
+  .course-info a {
     display: inline-block;
     margin-top: 10px;
-    padding: 6px 12px;
-    background-color: #2CC06C;
-    color: white;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #42e695, #3bb2b8);
+    color: #fff;
     border-radius: 8px;
-    transition: background-color 0.3s;
+    font-weight: 700;
+    transition: all 0.3s ease;
   }
-  
-  .course-item a:hover {
-    background-color: #2853B8;
-  }
-  
-</style>
 
-<body>
+  .course-info a:hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .no-results {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #d32f2f;
+    margin-top: 20px;
+  }
+
+</style>
+</head>
 <body>
 
   <div class="container">
     <h2>ผลการค้นหา: ${keyword}</h2>
-    <a href="goHome">กลับหน้า Home</a><br><br>
+    <a href="goHome" class="back-link">← กลับหน้า Home</a>
 
     <c:if test="${empty results}">
-      <p>ไม่พบผลลัพธ์</p>
+      <p class="no-results">ไม่พบผลลัพธ์</p>
     </c:if>
 
     <c:forEach var="course" items="${results}">
       <div class="course-item">
-        <p>ชื่อคอร์ส: ${course.courseName}</p>
-        <p>ราคา: ${course.coursePrice}</p>
-        <a href="getViewCourse?id=${course.courseId}">ดูคอร์ส</a>
+        <img class="profile-img" src="getUserImage?email=${course.tutor.user.email}" alt="Tutor Image">
+        <div class="course-info">
+          <p><strong>ชื่อคอร์ส:</strong> ${course.courseName}</p>
+          <p><strong>ราคา:</strong> ${course.coursePrice} บาท</p>
+          <a href="getViewCourse?id=${course.courseId}">ดูคอร์ส</a>
+        </div>
       </div>
     </c:forEach>
   </div>
-</body>
 
 </body>
 </html>

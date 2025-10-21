@@ -1,295 +1,195 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<!DOCTYPE html> 
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Home</title>
-    
-    <script>
-        function validateSearchForm() {
-            const keyword = document.forms["searchForm"]["keyword"].value.trim();
-            const regex = /^[\u0E00-\u0E7Fa-zA-Z\s]{1,20}$/;
-            if (keyword !== "" && !regex.test(keyword)) {
-                alert("กรุณากรอกเฉพาะตัวอักษรภาษาไทยหรืออังกฤษ (ไม่เกิน 20 ตัว)");
-                return false;
-            }
-            return true;
-        }
 
-        setTimeout(function() {
-            const loginMsg = document.getElementById("resultLogin");
-            const tutorMsg = document.getElementById("resultTutor");
-            const reviewMsg = document.getElementById("resultReview");
-            if (loginMsg) loginMsg.style.display = "none";
-            if (tutorMsg) tutorMsg.style.display = "none";
-            if (reviewMsg) reviewMsg.style.display = "none";
-        }, 5000);
-    </script>
-    
     <style>
-        body {
-            background-color: #f2f2f2;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0; padding: 0;
-        }
+        /* --- Reset & Base --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; color: #333; }
 
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- Header --- */
         .header {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            background-color: #fff;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            display: flex; align-items: center; justify-content: space-between;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            color: white; padding: 15px 30px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-radius: 0 0 20px 20px;
         }
-
-        .header h2 {
-            margin-left: 15px;
-            font-size: 22px;
-            color: #2c3e50;
-        }
-
-        .header form {
-            margin-left: auto;
-            display: flex;
-        }
-
+        .header h1 { font-size: 24px; font-weight: 700; }
+        .header form { display: flex; gap: 5px; }
         .header input[type="text"] {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 20px 0 0 20px;
-            outline: none;
-            font-size: 16px;
-            width: 180px;
-            transition: border-color 0.3s;
+            padding: 8px 12px; border-radius: 20px 0 0 20px; border: none; outline: none; width: 200px;
         }
-
-        .header input[type="text"]:focus {
-            border-color: #009639;
-        }
-
         .header input[type="submit"] {
-            padding: 8px 18px;
-            border: none;
-            background-color: #009639;
-            color: white;
-            font-weight: bold;
-            border-radius: 0 20px 20px 0;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            padding: 8px 16px; border-radius: 0 20px 20px 0; border: none;
+            background: #42e695; color: white; cursor: pointer; font-weight: bold;
+            transition: 0.3s;
         }
+        .header input[type="submit"]:hover { background: #eb6750; }
 
-        .header input[type="submit"]:hover {
-            background-color: #007a2f;
-        }
+        /* --- Layout --- */
+        .main { display: flex; max-width: 1000px; margin: 30px auto; gap: 25px; }
+        .sidebar { flex: 0 0 280px; background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .content { flex: 1; background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
 
-        .main-content {
-            display: flex;
-            max-width: 950px;
-            margin: 25px auto;
-            gap: 25px;
-            padding: 0 15px;
+        /* --- Profile --- */
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; display: block; margin: 0 auto 15px; object-fit: cover; }
+        .btn {
+            display: block; width: 100%; padding: 10px 0; margin: 8px 0; text-align: center; border-radius: 12px; font-weight: 600;
+            cursor: pointer; transition: 0.3s; color: white; border: none; font-size: 14px;
         }
+        .btn-profile { background: #ff6a88; background: linear-gradient(45deg, #ff6a88, #ff99ac); }
+        .btn-profile:hover { opacity: 0.9; }
+        .btn-deposit { background: #42e695; background: linear-gradient(45deg, #42e695, #3bb2b8); }
+        .btn-deposit:hover { opacity: 0.9; }
+        .btn-tutor { background: #4776e6; background: linear-gradient(45deg, #4776e6, #8e54e9); }
+        .btn-tutor:hover { opacity: 0.9; }
+        .btn-course { background: #f7971e; background: linear-gradient(45deg, #f7971e, #ffd200); }
+        .btn-course:hover { opacity: 0.9; }
+        .btn-registered { background: #ff9966; background: linear-gradient(45deg, #ff9966, #ff5e62); }
+        .btn-registered:hover { opacity: 0.9; }
+        .btn-logout { background: #e52d27; background: linear-gradient(45deg, #e52d27, #b31217); }
+        .btn-logout:hover { opacity: 0.9; }
 
-        .left-container, .right-container {
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            padding: 20px;
-        }
+        /* --- Messages --- */
+        .message { text-align: center; margin: 8px 0; font-size: 14px; color: #2ecc71; }
 
-        .left-container { flex: 0 0 25%; }
-        .right-container { flex: 1; }
+        /* --- Roles --- */
+        .roles { margin: 15px 0; padding-left: 15px; }
+        .roles li { margin-bottom: 6px; }
 
-        .profile-img {
-            border-radius: 50%;
-            object-fit: cover;
-            width: 120px; height: 120px;
-            display: block;
-            margin: 0 auto 10px;
-        }
-
-        .profile-img-reviewTutor {
-            border-radius: 12px;
-            object-fit: cover;
-            width: 120px; height: 120px;
-            border: 2px solid #ccc;
-            margin-bottom: 8px;
-        }
-
-        .hover-shadow {
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            display: block;
-            transition: box-shadow 0.2s ease;
-            margin-bottom: 10px;
-        }
-        .hover-shadow:hover {
-            box-shadow: 0 0 12px rgba(0,0,0,0.4);
-        }
-
-        .course-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            background-color: #fdfdfd;
-        }
-        .course-item a {
-            color: #009639;
-            font-weight: bold;
-            text-decoration: none;
-        }
+        /* --- Course list --- */
+        .course-item { display: flex; gap: 15px; padding: 12px; border-radius: 12px; margin-bottom: 12px;
+                       align-items: center; background: #f7f7f7; transition: transform 0.2s, box-shadow 0.2s; }
+        .course-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        .course-item img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; }
+        .course-item a { color: #2ecc71; font-weight: 600; }
         .course-item a:hover { text-decoration: underline; }
 
-        #resultLogin, #resultTutor, #resultReview {
-            font-size: 14px;
-            margin: 6px 0;
-        }
-
-        .role-list { padding-left: 20px; margin-bottom: 10px; }
-
-        /* ปุ่มหลายสีไม่ซ้ำกัน */
-        .btn-profile { background-color: #28a745; } /* เขียว */
-        .btn-profile:hover { background-color: #1e7e34; }
-
-        .btn-deposit { background-color: #1E54D1; } /* ส้ม */
-        .btn-deposit:hover { background-color: #2d14d0; }
-
-        .btn-tutor { background-color: #1e70d5; } /* น้ำเงิน */
-        .btn-tutor:hover { background-color: #2d14d0; }
-
-        .btn-course { background-color: #1e70d5; } /* ม่วง */
-        .btn-course:hover { background-color: #2d14d0; }
-
-        .btn-registered { background-color: #1e70d5; } /* ฟ้า */
-        .btn-registered:hover { background-color: #2d14d0; }
-
-        .btn-logout { background-color: #dc3545; } /* แดง */
-        .btn-logout:hover { background-color: #a71d2a; }
-
-        .btn, .btn-profile, .btn-deposit, .btn-tutor, .btn-course, .btn-registered, .btn-logout {
-            display: inline-block;
-            margin: 8px 5px 8px 0;
-            padding: 6px 12px;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: background-color 0.3s;
-            border: none;
+        .profile-img {
+            width: 120px;       
+            height: 120px;
+            border-radius: 50%;  
+            object-fit: cover;   
+            transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
             cursor: pointer;
         }
-        .btn-profile {
-    display: block;       /* ให้เป็น block */
-    width: 120px;         /* ความกว้างปุ่มตามต้องการ */
-    margin: 0 auto 8px;   /* กึ่งกลางแนวนอน และเว้นระยะด้านล่าง 8px */
-    text-align: center;   /* ตัวอักษรอยู่กลาง */
-    background-color: #28a745; 
-    color: white;
-    text-decoration: none;
-    padding: 6px 0;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
 
-.btn-profile:hover {
-    background-color: #1e7e34;
-}
+        .profile-img:hover {
+            transform: scale(1.05);          
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2); 
+            filter: brightness(1.1);        
+        }
 
     </style>
+
+    <script>
+        // function validateSearchForm() {
+        //     const keyword = document.forms["searchForm"]["keyword"].value.trim();
+        //     const regex = /^[\u0E00-\u0E7Fa-zA-Z\s]{1,20}$/;
+        //     if (keyword !== "" && !regex.test(keyword)) {
+        //         alert("กรุณากรอกเฉพาะตัวอักษรภาษาไทยหรืออังกฤษ (ไม่เกิน 20 ตัว)");
+        //         return false;
+        //     }
+        //     return true;
+        // }
+
+        setTimeout(function() {
+            document.querySelectorAll('.message').forEach(el => el.style.display = 'none');
+        }, 5000);
+    </script>
 </head>
+
 <body>
 
-<div class="header">
-    <a href="goHome">
-        <img src="resources/images/home_on.png" alt="Home" width="120" height="120" />
-    </a>
-    <h2>ช่วยติวในมหาวิทยาลัยแม่โจ้</h2>
-    <form name="searchForm" action="search" method="get" onsubmit="return validateSearchForm();">
-        <input type="text" name="keyword" placeholder="ค้นหาคอร์ส" />
-        <input type="submit" value="ค้นหา" />
-    </form>
-</div>
-
-<div class="main-content">
-    <div class="left-container">
-        <c:if test="${not empty sessionScope.User}">
-            <img class="profile-img" src="getUserImage?email=${User.email}" alt="รูปโปรไฟล์"/>
-            <p id="resultLogin" style="color: green; text-align: center;">${result_login}</p>
-            <p id="resultTutor" style="color: green; text-align: center;">${result_RegisTutor}</p>
-            <p id="resultReview" style="color: green; text-align: center;">${result_review}</p>
-            <p id="resultReview" style="color: green; text-align: center;">${message_completed}</p>
-
-
-            <a class="btn-profile" href="goProfile">ดูโปรไฟล์</a><br/>
-            <p>ชื่อ: ${sessionScope.User.firstName} ${sessionScope.User.lastName}</p>
-            <p>สถานะของคุณ</p>
-            <ul class="role-list">
-                <c:forEach var="role" items="${sessionScope.Roles}">
-                    <li>${role}</li>
-                </c:forEach>
-            </ul>
-
-            <a class="btn-deposit" href="goDeposit">ฝากเงิน</a><br/>
-
-            <c:if test="${empty sessionScope.Tutor}">
-                <a class="btn-tutor" href="goRegisterTutor">สมัครเป็นติวเตอร์</a><br/>
-            </c:if>
-
-            <c:if test="${not empty sessionScope.Tutor}">
-                <a class="btn-course" href="goAddCourse?email=${sessionScope.email}"><spring:message code="home.add_course"/></a><br />
-                <a class="btn-course" href="listTutorCourses"><spring:message code="home.course_list"/></a><br />
-            </c:if>
-
-            <a class="btn-registered" href="goListRegisterCourse">คอร์สที่ลงทะเบียน</a><br/>
-
-            <form action="logout" method="post" style="margin-top: 10px;">
-                <input class="btn-logout" type="submit" value="ออกจากระบบ" />
-            </form>
-        </c:if>
-
-        <c:if test="${empty sessionScope.User}">
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                <a href="goLogin">
-                    <img class="hover-shadow" src="resources/images/login_off.png" alt="Login" />
-                </a>
-                <a href="goRegisterStu" style="margin-top: 15px;">
-                    <img class="hover-shadow" src="resources/images/Register_off.png" alt="Register" />
-                </a>
-            </div>
-        </c:if>
-
+    <div class="header">
+        <a href="goHome">
+            <h1>ช่วยติวในมหาวิทยาลัยแม่โจ้</h1>
+        </a>
+        
+        <form name="searchForm" action="search" method="get" onsubmit="return validateSearchForm();">
+            <input type="text" name="keyword" placeholder="ค้นหาคอร์ส" />
+            <input type="submit" value="ค้นหา" />
+        </form>
     </div>
 
-    <div class="right-container">
-        <h2>คอร์สเปิดใหม่ล่าสุด</h2>
-        <c:if test="${not empty latestCourses}">
-            <c:forEach var="course" items="${latestCourses}">
-                <div class="course-item">
-                    <img class="profile-img-reviewTutor" src="getUserImage?email=${course.tutor.user.email}" alt="รูปโปรไฟล์ติวเตอร์"/>
-                    <div>
-                        ผู้สอน: ${course.tutor.user.firstName} ${course.tutor.user.lastName} <br/>
-                        <a href="getViewCourse?id=${course.courseId}">${course.courseName}</a>
-                    </div>
+    <div class="main">
+        <div class="sidebar">
+            <c:if test="${not empty sessionScope.User}">
+                <a class="btn-profile" href="goProfile">
+                    <img class="profile-img" src="getUserImage?email=${User.email}" alt="รูปโปรไฟล์"/>
+                </a>
+                <p class="message">${result_login}</p>
+                <p class="message">${result_RegisTutor}</p>
+                <p class="message">${result_review}</p>
+                <p class="message">${message_completed}</p>
+
+                <a class="btn btn-profile" href="goProfile">ดูโปรไฟล์</a>
+                <p style="text-align:center;">${sessionScope.User.firstName} ${sessionScope.User.lastName}</p>
+                <p>สถานะของคุณ:</p>
+                <ul class="roles">
+                    <c:forEach var="role" items="${sessionScope.Roles}">
+                        <li>${role}</li>
+                    </c:forEach>
+                </ul>
+
+                <a class="btn btn-deposit" href="goDeposit">💳ฝากเงิน</a>
+                <c:if test="${not empty sessionScope.Tutor}">
+                    <a class="btn btn-deposit" href="goWithdraw">💰 ถอนเงิน</a>
+                </c:if>
+
+                <c:if test="${empty sessionScope.Tutor}">
+                    <a class="btn btn-tutor" href="goRegisterTutor">สมัครเป็นติวเตอร์</a>
+                </c:if>
+
+                <c:if test="${not empty sessionScope.Tutor}">
+                    <a class="btn btn-course" href="goAddCourse?email=${sessionScope.email}"><spring:message code="home.add_course"/></a>
+                    <a class="btn btn-course" href="listTutorCourses">รายการคอร์ส</a>
+                </c:if>
+
+                <a class="btn btn-registered" href="goListRegisterCourse">คอร์สที่ลงทะเบียน</a>
+                <form action="logout" method="post">
+                    <input class="btn btn-logout" type="submit" value="ออกจากระบบ" />
+                </form>
+            </c:if>
+
+            <c:if test="${empty sessionScope.User}">
+                <div style="text-align:center;">
+                    <a href="goLogin">
+                        <img class="profile-img" src="resources/images/login_off.png" alt="Login"/>
+                    </a>
+                    <a href="goRegisterStu" style="margin-top:15px;">
+                        <img class="profile-img" src="resources/images/Register_off.png" alt="Register"/>
+                    </a>
                 </div>
-            </c:forEach>
-        </c:if>
-        <c:if test="${empty latestCourses}">
-            <p>ยังไม่มีคอร์สล่าสุดให้แสดง</p>
-        </c:if>
+            </c:if>
+        </div>
+
+        <div class="content">
+            <h2>คอร์สเปิดใหม่ล่าสุด</h2>
+            <c:if test="${not empty latestCourses}">
+                <c:forEach var="course" items="${latestCourses}">
+                    <div class="course-item">
+                        <img src="getUserImage?email=${course.tutor.user.email}" alt="ติวเตอร์"/>
+                        <div>
+                            ผู้สอน: ${course.tutor.user.firstName} ${course.tutor.user.lastName}<br/>
+                            <a href="getViewCourse?id=${course.courseId}">${course.courseName}</a>
+                        </div>
+                    </div>
+                </c:forEach>
+            </c:if>
+            <c:if test="${empty latestCourses}">
+                <p>ยังไม่มีคอร์สล่าสุดให้แสดง</p>
+            </c:if>
+        </div>
     </div>
-</div>
 
 </body>
 </html>

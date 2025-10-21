@@ -10,43 +10,41 @@
 <title>View Course</title>
 <style>
     body {
-        background-color: #f4f6f8;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2f5;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
-        padding: 0;
+        padding: 20px;
         color: #333;
     }
-
     a {
         text-decoration: none;
-        color: #2CC06C;
+        color: #42e695;
         font-weight: 600;
     }
-    a:hover { color: #2853B8; }
+    a:hover { color: #3bb2b8; }
 
     .container {
         max-width: 1000px;
         margin: 30px auto;
-        padding: 20px 30px;
-        background-color: #fff;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        padding: 30px 40px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
     h1 {
-        font-size: 32px;
+        font-size: 2rem;
         font-weight: 700;
-        color: #2C3E50;
+        color: #ff6a88;
         text-align: center;
-        margin-bottom: 25px;
-        border-bottom: 3px solid #2CC06C;
-        padding-bottom: 10px;
+        margin-bottom: 30px;
     }
 
     .back-link {
         display: block;
         margin-bottom: 20px;
         font-size: 14px;
+        text-align: center;
     }
 
     .course-content {
@@ -56,10 +54,10 @@
     }
 
     .card {
-        background-color: #fdfdfd;
+        background: #ffffff;
         border-radius: 12px;
         padding: 20px;
-        box-shadow: inset 0 0 8px #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     .profile-img {
@@ -69,41 +67,48 @@
         object-fit: cover;
         display: block;
         margin: 0 auto 20px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border: 4px solid #42e695;
     }
 
     .section-title {
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: 700;
         color: #2C3E50;
         margin-bottom: 15px;
         text-align: center;
-        border-bottom: 2px solid #2CC06C;
+        border-bottom: 2px solid #42e695;
         padding-bottom: 6px;
     }
 
     p {
-        font-size: 16px;
+        font-size: 1rem;
         line-height: 1.6;
         margin: 8px 0;
         color: #444;
     }
 
+    ul {
+        padding-left: 20px;
+    }
+
     .register-btn {
-        display: block;
+        display: inline-block;
+        width: 100%;
         text-align: center;
-        background-color: #2CC06C;
+        background: linear-gradient(135deg, #42e695, #3bb2b8);
         color: #fff;
         font-weight: 700;
-        font-size: 18px;
+        font-size: 1rem;
         padding: 12px 0;
-        border-radius: 8px;
+        border-radius: 10px;
         margin-top: 20px;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
+
     .register-btn:hover {
-        background-color: #25a059;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        opacity: 0.9;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
 
     .reviews {
@@ -111,7 +116,7 @@
     }
 
     .review-box {
-        background-color: #f7f9fa;
+        background: #f7f9fa;
         padding: 15px 20px;
         border-radius: 10px;
         margin-bottom: 12px;
@@ -145,11 +150,20 @@
             <p><strong>ราคา:</strong> ${course.coursePrice} บาท</p>
             <p><strong>จำนวนนักศึกษา:</strong> ${course.maxStudents} คน</p>
             <p><strong>ประเภท:</strong> ${course.category.categoryName}</p>
+            <p><strong>วันที่สอน:</strong></p>
+            <ul>
+                <c:forEach var="cd" items="${courseDates}">
+                    <li>${cd.class_date} เวลา ${cd.startTime} - ${cd.endTime} (หัวข้อ: ${cd.topic})</li>
+                </c:forEach>
+            </ul>
 
             <c:if test="${not empty sessionScope.Stu and sessionScope.Stu.user.email ne course.tutor.user.email}">
                 <c:choose>
                     <c:when test="${alreadyRegistered}">
                         <p style="color: gray; text-align: center; font-weight: bold;">คุณได้ลงทะเบียนคอร์สนี้แล้ว</p>
+                    </c:when>
+                    <c:when test="${!registrationOpen}">
+                        <p style="color: red; text-align: center; font-weight: bold;">คอร์สนี้ปิดการลงทะเบียนแล้ว</p>
                     </c:when>
                     <c:otherwise>
                         <a href="getRegisterCourse?id=${course.courseId}" class="register-btn">ลงทะเบียนเรียน</a>
@@ -169,7 +183,7 @@
                     </c:forEach>
                 </c:if>
                 <c:if test="${empty reviews}">
-                    <p>ยังไม่มีรีวิว</p>
+                    <p style="text-align:center;">ยังไม่มีรีวิว</p>
                 </c:if>
             </div>
         </div>

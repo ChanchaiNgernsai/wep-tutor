@@ -37,12 +37,12 @@ public class DepositController {
 
     private static String getOmiseSecretKey() {
         String secretKey = System.getenv("OMISE_SECRET_KEY");
-        return secretKey != null ? secretKey : "skey_test_xxxxxxxxxxxxxxxxxxx";
+        return secretKey != null ? secretKey : "skey_test_xxxxxxxxxxxxxxxxxxxxx";
     }
 
     private static String getOmisePublicKey() {
         String publicKey = System.getenv("OMISE_PUBLIC_KEY");
-        return publicKey != null ? publicKey : "pkey_test_xxxxxxxxxxxxxxxxxxx";
+        return publicKey != null ? publicKey : "pkey_test_xxxxxxxxxxxxxxxxxxxxx";
     }
 
     @RequestMapping(value = "/goDeposit", method = RequestMethod.GET)
@@ -55,7 +55,7 @@ public class DepositController {
         }
 
         TutorManager tmg = new TutorManager();
-        double balance = tmg.getBalance(user.getEmail());
+        double balance = tmg.getBalanceByStudent(user.getEmail());
 
         ModelAndView mav = new ModelAndView("Deposit");
         mav.addObject("balance", balance);
@@ -113,7 +113,7 @@ public class DepositController {
         }
 
         TutorManager tmg = new TutorManager();
-        double balance = tmg.getBalance(user.getEmail());
+        double balance = tmg.getBalanceByStudent(user.getEmail());
 
         ModelAndView mav = new ModelAndView("Deposit");
         mav.addObject("amount", amount);
@@ -178,7 +178,7 @@ public class DepositController {
         User user = (User) session.getAttribute("User");
         if (user != null) {
             TutorManager tmg = new TutorManager();
-            double balance = tmg.getBalance(user.getEmail());
+            double balance = tmg.getBalanceByStudent(user.getEmail());
             resp.put("balance", balance);
 
             Transaction lastTran = tmg.getLastDeposit(user.getEmail());

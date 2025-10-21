@@ -40,7 +40,7 @@ public class ProfileController {
         }
 
         TutorManager tmg = new TutorManager();
-        double balance = tmg.getBalance(user.getEmail());
+        double balance = tmg.getBalanceByStudent(user.getEmail());
         session.setAttribute("balance", balance);
 
         ModelAndView mav = new ModelAndView("ViewProfile");
@@ -96,7 +96,7 @@ public class ProfileController {
             tmg.updateRegister(us);
             tmg.updateStudent(stu);
 
-            double balance = tmg.getBalance(us.getEmail());
+            double balance = tmg.getBalanceByStudent(us.getEmail());
             session.setAttribute("balance", balance);
 
             ModelAndView mav = new ModelAndView("ViewProfile");

@@ -1,5 +1,7 @@
 package com.springmvc.Controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -136,16 +138,32 @@ public class AddCourseController {
 
 		Course course = tmg.getCourseById(courseId);
 		List<ReviewCourse> reviews = tmg.getReviewsByCourse(courseId);
+		List<CourseDate> courseDates = course.getCourseDates();
+
+		boolean checkDayCourse = true;
+		if (!courseDates.isEmpty()) {
+			CourseDate lastDate = courseDates.get(courseDates.size() - 1);
+			String lastDateStr = lastDate.getClass_date();
+			LocalDate lastDateObj = LocalDate.parse(lastDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			LocalDate today = LocalDate.now();
+
+			if (lastDateObj.isBefore(today)) {
+				checkDayCourse = false;
+			}
+		}
 
 		ModelAndView mav = new ModelAndView("ViewCourse");
 		mav.addObject("course", course);
 		mav.addObject("reviews", reviews);
+		mav.addObject("courseDates", courseDates);
+		mav.addObject("registrationOpen", checkDayCourse);
 
 		Student student = (Student) session.getAttribute("Stu");
 		if (student != null) {
 			boolean alreadyRegistered = tmg.checkStuRegisterCourse(student, course);
 			mav.addObject("alreadyRegistered", alreadyRegistered);
 		}
+
 		return mav;
 	}
 
