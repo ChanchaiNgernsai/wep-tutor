@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springmvc.model.Course;
+import com.springmvc.model.CourseDate;
 import com.springmvc.model.Report;
+import com.springmvc.model.ReviewCourse;
 import com.springmvc.model.Student;
 import com.springmvc.model.Transaction;
 import com.springmvc.model.Tutor;
@@ -33,10 +35,14 @@ public class AdminController {
         Course course = tmg.getCourseById(courseId);
 
         List<Report> reports = tmg.getReportsByCourse(courseId);
+        List<ReviewCourse> reviews = tmg.getReviewsByCourse(courseId);
+        List<CourseDate> courseDates = course.getCourseDates();
 
         ModelAndView mav = new ModelAndView("ListReportTutor");
         mav.addObject("course", course);
         mav.addObject("reports", reports);
+        mav.addObject("reviews", reviews);
+        mav.addObject("courseDates", courseDates);
 
         return mav;
     }

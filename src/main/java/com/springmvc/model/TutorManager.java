@@ -621,12 +621,16 @@ public class TutorManager {
 		return reviews;
 	}
 
-	public List<Course> getLatestCourses(int limit) {
+	public List<Course> getLatestCourses() {
 		Session session = HibernateConnection.doHibernateConnection().openSession();
 		try {
-			String hql = "FROM Course c ORDER BY c.courseId DESC";
+			String hql = "SELECT DISTINCT c FROM Course c "
+					+ "JOIN FETCH c.tutor t "
+					+ "JOIN FETCH t.user u "
+					+ "LEFT JOIN FETCH c.courseDates cd "
+					+ "WHERE t.banStatus = 1 "
+					+ "ORDER BY c.courseId DESC";
 			return session.createQuery(hql, Course.class)
-					.setMaxResults(limit)
 					.getResultList();
 		} finally {
 			session.close();

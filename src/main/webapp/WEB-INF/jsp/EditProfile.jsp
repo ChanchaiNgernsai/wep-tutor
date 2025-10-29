@@ -8,57 +8,65 @@
 <meta charset="UTF-8">
 <title>Edit Profile</title>
 <style>
+    /* --- Reset & Base --- */
     body {
-        background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
         font-family: "Prompt", "Segoe UI", Tahoma, sans-serif;
         margin: 0;
-        padding: 20px;
+        padding: 0;
+        background-color: #f0f2f5;
+        color: #333;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; padding: 0; margin: 0; }
+
+    /* --- Header --- */
+    .header {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        min-height: 100vh;
+        background-color: #007F3E;
+        color: white;
+        padding: 12px 25px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+    .header h1 { font-size: 26px; margin: 0; cursor: pointer; }
+    .user-info { display: flex; align-items: center; gap: 20px; }
+    .profile-img-header {
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid white;
     }
 
+    /* --- Main Container --- */
     .main-container {
-        width: 100%;
-        max-width: 720px;
-        background: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        padding: 40px 50px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        animation: fadeIn 0.6s ease;
-    }
+    width: 100%;
+    max-width: 500px; 
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
+    padding: 30px 35px; 
+    margin: 20px auto; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.6s ease;
+}
 
-    @keyframes fadeIn {
-        from {opacity: 0; transform: translateY(10px);}
-        to {opacity: 1; transform: translateY(0);}
-    }
 
-    h1 {
-        color: #00bfa5;
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin-bottom: 25px;
-        text-align: center;
-        letter-spacing: 0.5px;
-    }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+
+    h1.page-title { color: #007F3E; font-size: 2rem; font-weight: 700; margin-bottom: 25px; text-align: center; }
 
     .profile-img {
-        width: 150px;
-        height: 150px;
+        width: 150px; height: 150px;
         object-fit: cover;
         border-radius: 50%;
         margin-bottom: 20px;
-        border: 4px solid #00bfa5;
+        border: 4px solid #007F3E;
         transition: transform 0.3s ease;
     }
-
-    .profile-img:hover {
-        transform: scale(1.05);
-    }
+    .profile-img:hover { transform: scale(1.05); }
 
     form {
         width: 100%;
@@ -81,20 +89,15 @@
         box-sizing: border-box;
         background: #fafafa;
     }
-
     input[type="text"]:focus,
     input[type="file"]:focus,
     select:focus {
-        border-color: #00bfa5;
-        box-shadow: 0 0 5px rgba(0,191,165,0.3);
+        border-color: #007F3E;
+        box-shadow: 0 0 5px rgba(0,127,62,0.3);
         outline: none;
         background: #fff;
     }
-
-    input::placeholder {
-        color: #9e9e9e;
-        font-style: italic;
-    }
+    input::placeholder { color: #9e9e9e; font-style: italic; }
 
     .btn-group {
         display: flex;
@@ -103,7 +106,6 @@
         margin-top: 20px;
         width: 100%;
     }
-
     input[type="submit"],
     input[type="button"] {
         flex: 1;
@@ -117,20 +119,16 @@
         transition: all 0.3s ease;
         box-shadow: 0 5px 12px rgba(0,0,0,0.15);
     }
-
     input[type="submit"] {
-        background: linear-gradient(135deg, #00bfa5, #1de9b6);
+        background: linear-gradient(135deg, #007F3E, #04d167);
     }
-
     input[type="submit"]:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 15px rgba(0,191,165,0.3);
+        box-shadow: 0 8px 15px rgba(0,127,62,0.3);
     }
-
     input[type="button"] {
         background: linear-gradient(135deg, #ff6a88, #ff99ac);
     }
-
     input[type="button"]:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 15px rgba(255,105,135,0.3);
@@ -145,17 +143,8 @@
         text-align: left;
         animation: fadeIn 0.3s ease;
     }
-
-    #err_image {
-        margin-bottom: 10px;
-    }
-
-    .error-msg {
-        color: #e53935;
-        width: 100%;
-        text-align: left;
-        margin-top: 5px;
-    }
+    #err_image { margin-bottom: 10px; }
+    .error-msg { color: #e53935; width: 100%; text-align: left; margin-top: 5px; }
 </style>
 
 <script>
@@ -260,8 +249,21 @@
 </script>
 </head>
 <body>
+
+<!-- Header -->
+<div class="header">
+    <a href="goHome"><h1>แก้ไขโปรไฟล์</h1></a>
+    <c:if test="${not empty sessionScope.User}">
+        <div class="user-info">
+            <img src="getUserImage?email=${User.email}" class="profile-img-header" alt="รูปโปรไฟล์"/>
+            <p>${User.firstName} ${User.lastName}</p>
+        </div>
+    </c:if>
+</div>
+
+<!-- Main Container -->
 <div class="main-container">
-    <h1>แก้ไขโปรไฟล์</h1>
+    <h1 class="page-title">แก้ไขโปรไฟล์</h1>
     <img id="preview" class="profile-img" src="getUserImage?email=${User.email}" alt="Profile Image"/>
 
     <form name="frm1" action="editProfile" method="post" onsubmit="return validate(this);" enctype="multipart/form-data">
@@ -296,5 +298,6 @@
         </div>
     </form>
 </div>
+
 </body>
 </html>

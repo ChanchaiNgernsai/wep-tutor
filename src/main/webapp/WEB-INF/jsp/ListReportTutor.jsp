@@ -19,7 +19,7 @@
         display: flex;
         align-items: center;
         padding: 20px 30px;
-        background-color: white;
+        background-color: #007F3E;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
@@ -32,7 +32,7 @@
     .header h2 {
         margin: 0;
         font-size: 24px;
-        color: #111111;
+        color: #ffffff;
     }
 
     .main-content {
@@ -131,6 +131,22 @@
         transform: translateY(-2px); 
         box-shadow: 0 6px 10px rgba(0,0,0,0.15); 
     }
+    .btn-course {
+    display: inline-block;
+    background-color: #009639;  /* สีเขียวเข้ม */
+    color: white;
+    padding: 4px 10px;          /* ปรับให้เล็กลง */
+    border-radius: 12px;        /* ปรับโค้งมนเล็กลง */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;            /* ขนาดตัวอักษรเล็กลง */
+    transition: all 0.2s ease;
+}
+
+.btn-course:hover {
+    background-color: #007a2f; /* สีเขียวเข้มขึ้นเมื่อ hover */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
 
 
 </style>
@@ -150,7 +166,6 @@ function banTutorPrompt(tutorId) {
 <body>
 
     <div class="header">
-        <a href="goAdminHome"><img src="resources/images/home_off.png" alt="Home"></a>
         <h2>ช่วยติวในมหาวิทยาลัยแม่โจ้</h2>
     </div>
 
@@ -170,6 +185,7 @@ function banTutorPrompt(tutorId) {
                     <th>ชื่อผู้ถูกรายงาน</th>
                     <th>รายละเอียดรายงาน</th>
                     <th>วันที่รายงาน</th>
+                    <th>รายละเอียดคอร์ส</th>
                     <th>จัดการ</th>
                 </tr>
                 <c:forEach var="report" items="${reports}" varStatus="status">
@@ -179,6 +195,9 @@ function banTutorPrompt(tutorId) {
                         <td>${report.reported.user.firstName} ${report.reported.user.lastName}</td>
                         <td>${report.reportDescription}</td>
                         <td><fmt:formatDate value="${report.reportDate}" pattern="dd/MM/yyyy"/></td>
+                        <td>
+                            <a href="getViewCourse?id=${report.course.courseId}"class="btn-course">รายละเอียดคอร์ส</a>
+                        </td>
                         <td>
                             <c:choose>
                                 <c:when test="${report.reported.banStatus == 1}">

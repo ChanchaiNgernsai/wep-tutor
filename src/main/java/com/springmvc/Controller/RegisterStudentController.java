@@ -30,7 +30,7 @@ public class RegisterStudentController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView loadHomePage() {
 		TutorManager tmg = new TutorManager();
-		List<Course> latestCourses = tmg.getLatestCourses(5); // ดึงล่าสุด 5 คอร์ส
+		List<Course> latestCourses = tmg.getLatestCourses();
 		ModelAndView mav = new ModelAndView("Home");
 		mav.addObject("latestCourses", latestCourses);
 		return mav;
@@ -58,7 +58,7 @@ public class RegisterStudentController {
 	@RequestMapping(value = "/goHome", method = RequestMethod.GET)
 	public ModelAndView loadgoHomePage() {
 		TutorManager tmg = new TutorManager();
-		List<Course> latestCourses = tmg.getLatestCourses(5);
+		List<Course> latestCourses = tmg.getLatestCourses();
 		ModelAndView mav = new ModelAndView("Home");
 		mav.addObject("latestCourses", latestCourses);
 		return mav;
@@ -172,7 +172,7 @@ public class RegisterStudentController {
 			}
 
 			session.setAttribute("Roles", roleTypes);
-			List<Course> latestCourses = tmg.getLatestCourses(5);
+			List<Course> latestCourses = tmg.getLatestCourses();
 
 			if (isAdmin) {
 				ModelAndView mav = new ModelAndView("AdminHome");

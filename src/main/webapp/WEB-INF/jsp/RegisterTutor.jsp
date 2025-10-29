@@ -23,19 +23,29 @@
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    h1 {
-        text-align: center;
-        color: #333;
-    }
-    a {
-        display: inline-block;
-        margin-bottom: 15px;
-        color: #007bff;
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
+    .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007F3E;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none; 
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 24px; 
+        }
+          h2 {
+            color: #007F3E;
+            font-size: 24px; 
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: #007F3E;
+        }
     p {
         margin: 10px 0;
         font-weight: bold;
@@ -186,13 +196,16 @@ function createExpertiseErrorElement() {
 </script>
 </head>
 <body>
+          <div class="header">
+          <a href="goHome"><h1>สมัครเป็นติวเตอร์</h1></a>
+    </div>
   <div class="container">
-    <h1>Register Tutor</h1>
+    <h2>สมัครเป็นติวเตอร์</h2>
     <a href="goHome">⬅ กลับหน้า Home</a>
     <p class="error">${err_result}</p>
 
     <form name="frm1" action="addRegisterTutor" method="post" onsubmit="return validateTutor();">
-      <p>วิชาที่ถนัด (*สามารถมีได้มากกว่า 1 ไม่เกิน 5)</p>
+      <p>วิชาที่ถนัด</p>
       <div id="skillCon">
         <div id="skillDiv1" >
           <input type="text" name="skill" id="skill1">
@@ -200,7 +213,7 @@ function createExpertiseErrorElement() {
         </div>
       </div>
       
-      <p>ประสบการณ์ (*จำเป็นต้องระบุ)</p>
+      <p>ประสบการณ์</p>
       <textarea name="expertise" id="expertise" rows="4"></textarea><br>
       
      <button type="button" class="btn btn-reset" onclick="window.location.href='goHome';">ยกเลิก

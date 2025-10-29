@@ -12,6 +12,30 @@
             margin: 0;
             padding: 0;
         }
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007F3E;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none; 
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 24px; 
+        }
+          h2 {
+            color: #007F3E;
+            font-size: 24px; 
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: #007F3E;
+        }
+        
         .container {
             max-width: 600px;
             margin: 40px auto;
@@ -19,10 +43,6 @@
             padding: 30px 40px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
         }
         .top-links {
             display: flex;
@@ -62,7 +82,7 @@
             margin-top: 20px;
             width: 100%;
             padding: 10px;
-            background-color: #1E54D1;
+            background-color: #007F3E;
             border: none;
             border-radius: 5px;
             color: white;
@@ -129,9 +149,11 @@
 
 </head>
 <body>
+      <div class="header">
+          <a href="goHome"><h1>ฝากเงินเข้าระบบ</h1></a>
+    </div>
     <div class="container">
-        <h1>Deposit Page</h1>
-
+        <h2>ฝากเงินเข้าระบบ</h2>
         <div class="top-links">
             <a href="goHome">&#8592; กลับสู่หน้าหลัก</a>
         </div>

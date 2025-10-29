@@ -13,26 +13,23 @@
             padding: 0;
         }
 
+        /* --- Header --- */
         .header {
             display: flex;
             align-items: center;
-            padding: 20px 30px;
-            background-color: white;
+            padding: 20px 15px; /* ลด padding ด้านซ้ายให้ชิดมากขึ้น */
+            background-color: #007F3E;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .header img {
-            width: 80px;
-            height: 80px;
-            margin-right: 20px;
         }
 
         .header h2 {
             margin: 0;
             font-size: 24px;
-            color: #181818;
+            color: #ffffff;
+            text-align: left; /* ชิดซ้าย */
         }
 
+        /* --- Main Content --- */
         .main-content {
             max-width: 700px;
             margin: 30px auto;
@@ -46,7 +43,15 @@
             padding: 30px;
             text-align: center;
         }
+        .card h2 {
+            text-align: left;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #333;
+        }
 
+        /* --- Buttons --- */
         .btn {
             display: inline-block;
             margin: 15px 10px;
@@ -57,12 +62,10 @@
             border-radius: 8px;
             font-size: 16px;
             transition: 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .btn:hover {
             background-color: #007a2f;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .logout-btn {
@@ -76,19 +79,21 @@
 </head>
 <body>
 
+    <!-- Header -->
     <div class="header">
-        <a href="goAdminHome"><img src="resources/images/home_on.png" alt="Home"></a>
         <h2>ช่วยติวในมหาวิทยาลัยแม่โจ้</h2>
     </div>
  
+    <!-- Main Content -->
     <div class="main-content">
         <div class="card">
-            
+            <h2>หน้าจัดการแอดมิน</h2>
             <p id="resultReview" style="color: green;">${result_loginAdmin}</p>
-            <a class="btn" href="goListRequesWithdraw"> รายการติวเอตร์ขอถอนเงิน</a>
-            <a class="btn" href="goListReport">หน้ารายงาน</a>
             
-            <form action="logout" method="post" style="margin-top: 20px;">
+            <a class="btn" href="goListRequesWithdraw">รายการติวเตอร์ขอถอนเงิน</a><br>
+            <a class="btn" href="goListReport">หน้ารายงาน</a><br>
+            
+            <form action="logout" method="post">
                 <input class="btn logout-btn" type="submit" value="ออกจากระบบ" />
             </form>
         </div>

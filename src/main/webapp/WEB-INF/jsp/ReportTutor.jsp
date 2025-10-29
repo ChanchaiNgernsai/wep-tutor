@@ -5,124 +5,146 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Report Tutor</title>
+<title>รายงานผู้สอน</title>
 <style>
     body {
-        background-color: #EBEBEB;
+        background-color: #f0f2f5;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-    }
-    .header {
-        display: flex;
-        align-items: center;
-        padding: 20px;
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .header a {
-        margin-right: 15px;
-    }
-    .header h2 {
-        margin: 0;
+        color: #333;
     }
 
+    .header {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    background-color: #007F3E;
+    color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    font-size: 1.6rem;
+    font-weight: 700;
+    gap: 10px; /* เพิ่มช่องว่างระหว่างลิงก์กับชื่อ */
+}
+
+    .header a { color: white; text-decoration: none; }
+    
     .main-content {
         display: flex;
-        max-width: 900px;
-        margin: 20px auto;
-        justify-content: flex-start;
-        padding-left: 20px;
+        flex-wrap: wrap;
+        max-width: 950px;
+        margin: 30px auto;
+        gap: 20px;
+        padding: 0 15px;
     }
 
     .left-container, .right-container {
-        background-color: white;
+        background-color: #ffffff;
         border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         padding: 20px;
     }
 
     .left-container {
-        flex: 0 0 25%;
-        margin-right: 30px;
+        flex: 0 0 30%;
+        text-align: center;
     }
+    .left-container {
+    flex: 0 0 30%;
+    text-align: left; /* เปลี่ยนจาก center เป็น left */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.left-container .profile-img {
+    display: block;
+    margin: 0 auto 15px auto; /* รูปยังอยู่กลาง */
+}
+
     .right-container {
         flex: 1;
     }
 
     .profile-img {
-        border-radius: 50%;  
-        object-fit: cover;   
-        width: 150px;        
-        height: 150px;       
+        border-radius: 50%;
+        object-fit: cover;
+        width: 140px;
+        height: 140px;
+        margin-bottom: 15px;
+        border: 3px solid #007F3E;
     }
+
+    h3 { color: #383838; margin-bottom: 15px; }
 
     .btn_cancel, .btn_submit {
         display: inline-block;
-        width: 120px;       
-        text-align: center;  
-        margin: 10px 5px 10px 0;
-        padding: 8px 0;      
+        width: 130px;
+        text-align: center;
+        margin: 10px 5px 0 0;
+        padding: 10px 0;
         border: none;
-        border-radius: 20px;
+        border-radius: 25px;
         font-weight: bold;
         cursor: pointer;
         color: white;
         text-decoration: none;
-        transition: background-color 0.3s;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
     }
+    .btn_cancel { background-color: #f44336; }
+    .btn_cancel:hover { background-color: #c62828; transform: translateY(-2px); }
+    .btn_submit { background-color: #4caf50; }
+    .btn_submit:hover { background-color: #2e7d32; transform: translateY(-2px); }
 
-    .btn_cancel {
-        background-color: #f50d1c;
-    }
-    .btn_cancel:hover {
-        background-color: #b10a15;
-    }
-
-    .btn_submit {
-        background-color: #24ea42;
-    }
-    .btn_submit:hover {
-        background-color: #3cb508;
-    }
-
-    .error-msg {
-        color: red;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-    .success-msg {
-        color: green;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
+    .error-msg { color: #e53935; font-weight: bold; margin-bottom: 10px; }
+    .success-msg { color: #2e7d32; font-weight: bold; margin-bottom: 10px; }
 
     .course-info {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
+        flex-wrap: wrap;
         margin-bottom: 20px;
+        gap: 15px;
     }
-    .left-info, .right-info {
-        width: 48%;
-    }
-    .right-info ul {
-        padding-left: 20px;
-        margin-top: 0;
-    }
+    .left-info, .right-info { width: 48%; }
+    .right-info ul { padding-left: 20px; margin-top: 0; }
 
     textarea {
         width: 100%;
         resize: vertical;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1.5px solid #ccc;
+        font-size: 1rem;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    textarea:focus {
+        border-color: #007F3E;
+        outline: none;
+        box-shadow: 0 0 6px rgba(0,127,62,0.3);
+    }
+
+    @media (max-width: 768px) {
+        .main-content { flex-direction: column; padding: 0 10px; }
+        .left-container, .right-container { width: 100%; }
+        .left-info, .right-info { width: 100%; }
     }
 </style>
 
 <script>
 function validateForm() {
     const details = document.getElementById("details").value.trim();
-    const regex = /^[\u0E00-\u0E7Fa-zA-Z0-9\s.,/#-]{20,255}$/;
-    if (!regex.test(details)) {
-        alert("กรุณากรอกรายละเอียดให้ถูกต้อง (อย่างน้อย 20 ตัวอักษร และไม่เกิน 255 ตัว)");
+    if(details === "") {
+        alert("กรุณากรอกรายละเอียดรายงาน");
+        document.getElementById("details").focus();
+        return false;
+    }
+    if(details.length < 20 || details.length > 255) {
+        alert("รายละเอียดต้องมีความยาว 20-255 ตัวอักษร");
+        document.getElementById("details").focus();
         return false;
     }
     return true;
@@ -133,17 +155,14 @@ function validateForm() {
 <body>
 
 <div class="header">
-    <a href="goHome">
-            <img src="resources/images/home_off.png" alt="Home" width="90" height="90" />
-    </a>
-    <h2>รายงานผู้สอน</h2>
+    <a href="goHome"> รายงานผู้สอน</a>
 </div>
 
 <div class="main-content">
 
     <div class="left-container">
         <h3>ผู้สอน</h3>
-        <img class="profile-img" src="getUserImage?email=${course.tutor.user.email}" alt="Tutor Image"><br><br>
+        <img class="profile-img" src="getUserImage?email=${course.tutor.user.email}" alt="Tutor Image">
         <p><strong>ชื่อ-นามสกุล:</strong> ${course.tutor.user.firstName} ${course.tutor.user.lastName}</p>
         <p><strong>เพศ:</strong> ${course.tutor.user.gender}</p>
         <p><strong>เบอร์โทรศัพท์:</strong> ${course.tutor.user.phoneNumber}</p>
@@ -176,7 +195,7 @@ function validateForm() {
             <input type="hidden" name="courseId" value="${course.courseId}" />
             <input type="hidden" name="registerId" value="${rc.registerId}" />
             <label for="details">รายละเอียดรายงาน:</label><br>
-            <textarea id="details" name="details" rows="4" required></textarea><br><br>
+            <textarea id="details" name="details" rows="5" placeholder="กรอกรายละเอียดรายงานอย่างน้อย 20 ตัวอักษร"></textarea><br>
             <input type="button" class="btn_cancel" value="ยกเลิก" onclick="history.back();"> 
             <input type="submit" class="btn_submit" value="ส่งรายงาน">
         </form>

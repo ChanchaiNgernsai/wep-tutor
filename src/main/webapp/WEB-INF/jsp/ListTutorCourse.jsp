@@ -7,214 +7,219 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>List Tutor Course</title>
+<title>รายการคอร์สผู้สอน</title>
 <style>
-    /* 🌐 โทนสีหลัก */
-    :root {
-        --primary: #1e70d5;
-        --primary-dark: #1559ad;
-        --success: #2e7d32;
-        --background: #f4f8ff;
-        --text-main: #333;
-        --text-secondary: #555;
-        --card-bg: #fff;
-    }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
 
-    /* พื้นหลังและโครงสร้างโดยรวม */
-    body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, var(--background), #ffffff);
-        margin: 0;
-        padding: 40px;
-        color: var(--text-main);
-    }
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007F3E;
+    color: white;
+    padding: 15px 30px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: center;
+}
 
-    /* หัวข้อหลัก */
-    h1 {
-        text-align: center;
-        color: var(--primary);
-        font-size: 2.3rem;
-        margin-bottom: 15px;
-        letter-spacing: 0.5px;
-    }
+.header a {
+    color: white;
+    text-decoration: none;
+}
+.header a:hover {
+    color: #e0e0e0;
+}
 
-    /* แถบด้านบน */
-    .top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
+/* Main layout */
+.main-content {
+    display: flex;
+    max-width: 1000px;
+    margin: 30px auto;
+    gap: 25px;
+    flex-wrap: wrap;
+    padding: 0 15px;
+}
+/* ปุ่มลิงก์ทั่วไป */
+.link-btn {
+    display: inline-block;
+    background-color: #007F3E;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
 
-    /* ลิงก์กลับหน้า */
-    a.back-link {
-        color: var(--primary);
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 1rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.3s ease;
-    }
+.link-btn:hover {
+    background-color: #005f2e;
+    transform: translateY(-2px);
+}
 
-    a.back-link:hover {
-        color: var(--primary-dark);
-        transform: translateX(-3px);
-    }
+/* ปรับให้ container ลิงก์เรียงตัวแนวนอน */
+.action-links {
+    margin: 15px 0;
+}
 
-    /* ปุ่มถอนเงิน */
-    .withdraw-btn {
-        background-color: var(--primary);
-        color: white;
-        text-decoration: none;
-        padding: 10px 20px;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 1rem;
-        box-shadow: 0 3px 6px rgba(30,112,213,0.2);
-        transition: all 0.3s ease;
-    }
 
-    .withdraw-btn:hover {
-        background-color: var(--primary-dark);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 10px rgba(30,112,213,0.25);
-    }
 
-    /* กล่องข้อความสำเร็จ */
-    .success-msg {
-        color: var(--success);
-        background-color: #e8f5e9;
-        border-left: 6px solid var(--success);
-        padding: 12px 16px;
-        border-radius: 10px;
-        text-align: center;
-        font-weight: 600;
-        font-size: 1rem;
-        margin: 20px auto;
-        width: 80%;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
-    }
 
-    /* พื้นที่รายการคอร์ส */
-    .courses-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-        gap: 25px;
-        margin-top: 25px;
-    }
+.right-container {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 25px 30px;
+    overflow-x: auto;
+}
 
-    /* กล่องคอร์ส */
-    .course-card {
-        background-color: var(--card-bg);
-        border-radius: 14px;
-        box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-        padding: 22px 25px;
-        border-top: 5px solid var(--primary);
-        transition: all 0.25s ease;
-    }
+/* Success message */
+.success-msg {
+    color: #2e7d32;
+    background-color: #e8f5e9;
+    padding: 12px 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 1rem;
+}
 
-    .course-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
+/* Course card */
+.course-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    margin-bottom: 20px;
+    position: relative;
+}
 
-    .course-title {
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: var(--primary);
-        margin-bottom: 10px;
-    }
+.course-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #007F3E;
+}
 
-    .course-category {
-        font-size: 1rem;
-        color: var(--text-secondary);
-        margin-bottom: 10px;
-        font-style: italic;
-    }
+.course-category {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: #555;
+    margin-bottom: 10px;
+}
 
-    .course-dates {
-        background-color: #f9fbff;
-        border-left: 4px solid var(--primary);
-        padding: 10px 12px;
-        border-radius: 6px;
-        font-size: 0.95rem;
-        color: #444;
-        margin-bottom: 6px;
-        line-height: 1.4;
-    }
+.course-dates {
+    font-size: 0.9rem;
+    background-color: #f7f9fc;
+    padding: 8px 10px;
+    border-left: 4px solid #007F3E;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
 
-    .course-actions {
-        margin-top: 15px;
-        text-align: right;
-    }
+/* ปุ่มดูรายละเอียดติดขวาล่าง */
+.course-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+}
 
-    .course-actions a {
-        text-decoration: none;
-        background-color: var(--primary);
-        color: white;
-        padding: 9px 16px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        box-shadow: 0 3px 6px rgba(30,112,213,0.2);
-        transition: all 0.3s ease;
-    }
+.btn_view {
+    display: inline-block;
+    background-color: #007F3E;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
-    .course-actions a:hover {
-        background-color: var(--primary-dark);
-        transform: translateY(-2px);
-    }
+.btn_view:hover {
+    background-color: #005f2e;
+    transform: translateY(-2px);
+}
 
-    /* Responsive */
-    @media (max-width: 600px) {
-        body {
-            padding: 20px;
-        }
-        .top-bar {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .success-msg {
-            width: 100%;
-        }
-    }
+/* Empty message */
+.no-course {
+    text-align: center;
+    color: #555;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .main-content { flex-direction: column; margin: 20px; gap: 15px; }
+    .left-container, .right-container { flex: 1; }
+}
 </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <a href="goHome" class="back-link">⬅ กลับหน้า Home</a>
-    </div>
+<div class="header">รายการคอร์สผู้สอน</div>
 
-    <h1>📚 รายการคอร์สผู้สอน</h1>
+<div class="main-content">
+    
 
-    <c:if test="${not empty result_addCourse}">
-        <div class="success-msg">${result_addCourse}</div>
-    </c:if>
+    <div class="right-container">
+        <h2> คอร์สที่ผู้สอนลงทะเบียน</h2>
+        <div class="action-links">
+            <a href="goHome" class="link-btn">← กลับหน้า Home</a>
+            <a href="goAddCourse" class="link-btn">เพิ่มคอร์สใหม่</a>
+        </div>
 
-    <div class="courses-container">
+    
+
+        <c:if test="${not empty result_addCourse}">
+            <div class="success-msg">${result_addCourse}</div>
+        </c:if>
+
+        <c:if test="${empty courses}">
+            <p class="no-course">ยังไม่มีคอร์สที่ผู้สอนลงทะเบียน</p>
+        </c:if>
+
         <c:forEach var="course" items="${courses}">
             <div class="course-card">
-                <div class="course-title">${course.courseName}</div>
-                <div class="course-category">ประเภท: ${course.category.categoryName}</div>
+                <div>
+                    <div class="course-title">${course.courseName}</div>
+                    <div class="course-category">ประเภท: ${course.category.categoryName}</div>
 
-                <c:forEach var="cd" items="${course.courseDates}">
-                    <div class="course-dates">
-                        วันที่: ${cd.class_date} | เวลา: ${cd.startTime} - ${cd.endTime}<br>
-                        หัวข้อ: ${cd.topic}
-                    </div>
-                </c:forEach>
+                    <c:forEach var="cd" items="${course.courseDates}">
+                        <div class="course-dates">
+                            วันที่: ${cd.class_date} | เวลา: ${cd.startTime} - ${cd.endTime}<br>
+                            หัวข้อ: ${cd.topic}
+                        </div>
+                    </c:forEach>
+                </div>
 
                 <div class="course-actions">
-                    <a href="getViewTutorCourse?id=${course.courseId}">🔍 ดูรายละเอียด</a>
+                    <a href="getViewTutorCourse?id=${course.courseId}" class="btn_view">ดูรายละเอียด</a>
                 </div>
             </div>
         </c:forEach>
+
     </div>
+</div>
 
 </body>
 </html>

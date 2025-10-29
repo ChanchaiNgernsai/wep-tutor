@@ -25,18 +25,29 @@
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
-    h1 {
-        text-align: center;
-        color: #333;
-    }
-
-    a {
-        color: #007bff;
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
+     .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007F3E;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none; 
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 24px; 
+        }
+          h2 {
+            color: #007F3E;
+            font-size: 24px; 
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: #007F3E;
+        }
 
     hr {
         margin: 20px 0;
@@ -120,8 +131,12 @@
 </script>
 </head>
 <body>
+    <div class="header">
+        <a href="goHome"><h1>ลงทะเบียนคอร์ส</h1></a>
+    </div>
+
 <div class="container">
-    <h1>ลงทะเบียนคอร์ส</h1>
+    <h2>ลงทะเบียนคอร์ส</h2>
     <a href="goHome">กลับหน้า Home</a>
     
     <c:if test="${not empty err_result}">

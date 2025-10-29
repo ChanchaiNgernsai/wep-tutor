@@ -18,10 +18,10 @@
     }
     a {
         text-decoration: none;
-        color: #42e695;
+        color: #007F3E;
         font-weight: 600;
     }
-    a:hover { color: #3bb2b8; }
+    a:hover { color: #04d167; }
 
     .container {
         max-width: 1000px;
@@ -35,7 +35,7 @@
     h1 {
         font-size: 2rem;
         font-weight: 700;
-        color: #ff6a88;
+        color: #383838;
         text-align: center;
         margin-bottom: 30px;
     }
@@ -43,8 +43,8 @@
     .back-link {
         display: block;
         margin-bottom: 20px;
-        font-size: 14px;
-        text-align: center;
+        font-size: 16px;
+        text-align: left;
     }
 
     .course-content {
@@ -67,7 +67,7 @@
         object-fit: cover;
         display: block;
         margin: 0 auto 20px;
-        border: 4px solid #42e695;
+        border: 4px solid #007F3E;
     }
 
     .section-title {
@@ -76,7 +76,7 @@
         color: #2C3E50;
         margin-bottom: 15px;
         text-align: center;
-        border-bottom: 2px solid #42e695;
+        border-bottom: 2px solid #007F3E;
         padding-bottom: 6px;
     }
 
@@ -95,7 +95,7 @@
         display: inline-block;
         width: 100%;
         text-align: center;
-        background: linear-gradient(135deg, #42e695, #3bb2b8);
+        background: linear-gradient(135deg, #007F3E, #04d167);
         color: #fff;
         font-weight: 700;
         font-size: 1rem;
@@ -107,9 +107,12 @@
     }
 
     .register-btn:hover {
-        opacity: 0.9;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    }
+    opacity: 0.9;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    color: #ffffff;
+    font-weight: 800;
+}
+
 
     .reviews {
         margin-top: 20px;
@@ -129,10 +132,10 @@
 
 <div class="container">
     <h1>รายละเอียดคอร์ส</h1>
-    <a href="goHome" class="back-link">← กลับหน้า Home</a>
+    <a class="btn-back" href="#" onclick="history.back(); return false;">← กลับหน้า Home</a>
+
 
     <div class="course-content">
-        <!-- ผู้สอน -->
         <div class="card">
             <img class="profile-img" src="getUserImage?email=${course.tutor.user.email}" alt="Tutor Image">
             <div class="section-title">ผู้สอนคอร์สนี้</div>
@@ -142,7 +145,6 @@
             <p><strong>ประสบการณ์:</strong> ${course.tutor.expertise}</p>
         </div>
 
-        <!-- ข้อมูลคอร์ส -->
         <div class="card">
             <div class="section-title">ข้อมูลคอร์ส</div>
             <p><strong>ชื่อคอร์ส:</strong> ${course.courseName}</p>

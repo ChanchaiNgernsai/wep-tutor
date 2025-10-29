@@ -19,12 +19,12 @@
     /* Header */
     .header {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        padding: 20px;
-        background-color: white;
-        border-radius: 12px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        margin-bottom: 30px;
+        background-color: #007F3E;
+        color: white;
+        padding: 12px 25px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.15);
     }
 
     .header img {
@@ -40,9 +40,16 @@
         font-size: 32px;
         font-weight: bold;
     }
+    .header a {
+    color: white;          
+    text-decoration: none; 
+    font-weight: bold;
+    font-size: 24px;     
+}
 
 
-    /* ข้อความผลลัพธ์ */
+
+   
     .message {
         text-align: center;
         margin: 10px 0 20px 0;
@@ -289,11 +296,9 @@
 <body>
 
     <div class="header">
-        <a href="goHome">
-            <img src="resources/images/home_off.png" alt="Home" />
-        </a>
-        <h2>รีวิวคอร์ส</h2>
+        <a href="goHome">รีวิวคอร์ส</a>
     </div>
+    <br>
 
 
     <c:if test="${not empty resultReview}">

@@ -11,7 +11,7 @@
 <style>
   body {
     background: #f0f2f5;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
     color: #333;
@@ -21,11 +21,11 @@
     text-decoration: none;
     font-weight: 600;
   }
-  
+
   .container {
     max-width: 900px;
-    margin: 20px auto;
-    background: #fff;
+    margin: 30px auto;
+    background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     padding: 30px;
@@ -36,20 +36,21 @@
     font-size: 1.8rem;
     margin-bottom: 20px;
     text-align: center;
-    color: #ff6a88;
-    border-bottom: 3px solid #42e695;
+    color: #383838;
+    border-bottom: 3px solid #04d167;
     padding-bottom: 8px;
   }
 
   .back-link {
     display: block;
-    text-align: center;
+    text-align: left;
     margin-bottom: 20px;
-    color: #42e695;
+    color: #007F3E;
+    transition: color 0.3s ease;
   }
 
   .back-link:hover {
-    color: #3bb2b8;
+    color: #04d167;
   }
 
   .course-item {
@@ -68,7 +69,7 @@
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #42e695;
+    border: 3px solid #007F3E;
     flex-shrink: 0;
   }
 
@@ -85,16 +86,19 @@
     display: inline-block;
     margin-top: 10px;
     padding: 10px 20px;
-    background: linear-gradient(135deg, #42e695, #3bb2b8);
+    background: linear-gradient(135deg, #007F3E, #04d167);
     color: #fff;
     border-radius: 8px;
     font-weight: 700;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
 
   .course-info a:hover {
     opacity: 0.9;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    color: #ffffff;
+    font-weight: 800;
   }
 
   .no-results {
@@ -112,7 +116,7 @@
   <div class="container">
     <h2>ผลการค้นหา: ${keyword}</h2>
     <a href="goHome" class="back-link">← กลับหน้า Home</a>
-
+    
     <c:if test="${empty results}">
       <p class="no-results">ไม่พบผลลัพธ์</p>
     </c:if>

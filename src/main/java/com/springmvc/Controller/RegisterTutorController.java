@@ -60,7 +60,7 @@ public class RegisterTutorController {
 
 		TutorManager tmg = new TutorManager();
 		boolean result = tmg.insertRegisterTutor(user, tutor, skillList);
-		List<Course> latestCourses = tmg.getLatestCourses(5);
+		List<Course> latestCourses = tmg.getLatestCourses();
 
 		if (result) {
 

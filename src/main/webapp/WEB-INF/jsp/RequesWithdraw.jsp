@@ -6,16 +6,35 @@
 <meta charset="UTF-8">
 <title>Withdraw</title>
 <style>
-  body {
-    font-family: "Prompt", Arial, sans-serif;
-    background: linear-gradient(135deg, #e9efff 0%, #ffffff 100%);
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
-  }
+    body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007F3E;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none; 
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 24px; 
+        }
+          h2 {
+            color: #007F3E;
+            font-size: 35px; 
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: #007F3E;
+        }
 
   .main-container {
     display: flex;
@@ -26,7 +45,8 @@
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     padding: 30px 40px;
-    border-top: 6px solid #1E54D1;
+    border-top: 6px solid #007F3E;
+    margin: 40px auto;
   }
 
   .left-container {
@@ -41,7 +61,7 @@
   }
 
   .left-container a {
-    color: #1E54D1;
+    color: #007F3E;
     text-decoration: none;
     margin-bottom: 18px;
     font-size: 1rem;
@@ -51,8 +71,8 @@
   }
 
   .left-container a:hover {
-    border-left: 4px solid #1E54D1;
-    color: #1742a3;
+    border-left: 4px solid #007F3E;
+    color: #007F3E;
   }
 
   .right-container {
@@ -67,7 +87,7 @@
 
   .right-container h1 {
     margin-bottom: 10px;
-    color: #1E54D1;
+    color: #007F3E;
     font-weight: 700;
     font-size: 2.4rem;
     text-align: center;
@@ -87,7 +107,7 @@
     padding: 10px 15px;
     text-align: center;
     font-weight: 600;
-    color: #1E54D1;
+    color: #007F3E;
     margin-bottom: 20px;
   }
 
@@ -103,7 +123,7 @@
   }
 
   input[type="number"]:focus, select:focus {
-    border-color: #1E54D1;
+    border-color: #007F3E;
     outline: none;
     box-shadow: 0 0 4px rgba(30, 84, 209, 0.3);
   }
@@ -117,14 +137,14 @@
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
-    background-color: #1E54D1;
+    background-color: #007F3E;
     color: #fff;
     transition: 0.3s;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
   input[type="submit"]:hover {
-    background-color: #1742a3;
+    background-color: #1a5a39;
     transform: translateY(-1px);
   }
 
@@ -157,28 +177,28 @@
     font-weight: 600;
     text-align: center;
   }
-/* Chrome, Safari, Edge */
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none; /* removes default spin buttons */
+    -webkit-appearance: none; 
     margin: 0;
 }
 
-/* Firefox */
+
 input[type=number] {
-    -moz-appearance: textfield; /* removes default spin buttons */
-    appearance: textfield;      /* standard property for compatibility */
+    -moz-appearance: textfield; 
+    appearance: textfield;      
 }
 input[type="number"], select {
     width: 100%;
-    max-width: 400px; /* ให้เท่ากับ input */
+    max-width: 400px;
     padding: 12px 14px;
     margin: 10px 0 20px 0;
     border: 1px solid #cdd5ec;
     border-radius: 8px;
     font-size: 1rem;
     transition: border-color 0.3s, box-shadow 0.3s;
-    box-sizing: border-box; /* เพิ่มเพื่อให้ padding ไม่ทำให้เกินขนาด */
+    box-sizing: border-box; 
 }
 
 
@@ -236,13 +256,13 @@ function validateWithdraw() {
 </head>
 
 <body>
-  <div class="main-container">
-    <div class="left-container">
-      <a href="goHome">&#8592; กลับหน้าหลัก</a>
+    <div class="header">
+          <a href="goHome"><h1>ทำเรื่องขอถอนเงิน</h1></a>
     </div>
+  <div class="main-container">
 
     <div class="right-container">
-      <h1>ถอนเงิน</h1>
+      <h2>ถอนเงิน</h2>
       <p class="error">${err_result}</p>
       <p class="success">${msg_result}</p>
 

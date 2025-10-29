@@ -9,10 +9,11 @@
 <title>คอร์สที่ลงทะเบียน</title>
 <style>
     body {
-        background-color: #f4f7ff;
+        background-color: #f0f2f5;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
+        color: #333;
     }
 
     /* Header */
@@ -20,59 +21,64 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 20px 40px;
-        background-color: #ffffff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 15px 40px;
+        background-color: #007F3E;
+        color: #fff;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         position: sticky;
         top: 0;
         z-index: 10;
     }
     .header h2 {
         margin: 0;
-        color: #1e70d5;
         font-weight: 700;
+        font-size: 1.6rem;
         letter-spacing: 0.5px;
     }
 
     /* Layout */
     .main-content {
         display: flex;
-        max-width: 1100px;
-        margin: 40px auto;
-        gap: 30px;
+        max-width: 1000px;
+        margin: 30px auto;
+        gap: 25px;
+        flex-wrap: wrap;
     }
 
     .left-container {
         flex: 0 0 200px;
         background-color: #ffffff;
         border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        padding: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        padding: 20px;
         text-align: center;
+        height: fit-content;
     }
 
     .left-container a {
         display: block;
-        background-color: #1e70d5;
-        color: white;
+        background-color: #007F3E;
+        color: #fff;
         text-decoration: none;
         border-radius: 25px;
         padding: 10px 0;
         font-weight: 600;
-        transition: background-color 0.3s, transform 0.2s;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
     }
 
     .left-container a:hover {
-        background-color: #155bb0;
-        transform: scale(1.03);
+        background-color: #005f2e;
+        transform: translateY(-2px);
     }
 
     .right-container {
         flex: 1;
         background-color: #ffffff;
         border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         padding: 25px 30px;
+        overflow-x: auto;
     }
 
     .msg {
@@ -88,27 +94,27 @@
         border-collapse: collapse;
         border-radius: 10px;
         overflow: hidden;
+        font-size: 0.95rem;
     }
 
     th, td {
-        padding: 14px 16px;
+        padding: 12px 15px;
         text-align: left;
     }
 
     th {
-        background-color: #1e70d5;
+        background-color: #007F3E;
         color: #fff;
-        font-size: 15px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     tr:nth-child(even) {
-        background-color: #f9f9f9;
+        background-color: #f7f9fc;
     }
 
     tr:hover {
-        background-color: #e8f1ff;
+        background-color: #e0f2e9;
     }
 
     td {
@@ -119,19 +125,19 @@
     /* ปุ่มดูรายละเอียด */
     .btn_view {
         display: inline-block;
-        background-color: #1e70d5;
+        background-color: #007F3E;
         color: white;
-        padding: 8px 16px;
+        padding: 6px 14px;
         border-radius: 25px;
-        font-size: 14px;
+        font-size: 0.9rem;
         font-weight: 600;
         text-decoration: none;
         text-align: center;
-        transition: background-color 0.3s, transform 0.2s;
+        transition: all 0.3s ease;
     }
 
     .btn_view:hover {
-        background-color: #155bb0;
+        background-color: #005f2e;
         transform: translateY(-2px);
     }
 
@@ -142,22 +148,53 @@
         font-size: 16px;
         margin-top: 20px;
     }
+    /* ปุ่มลิงก์ทั่วไป */
+.link-btn {
+    display: inline-block;
+    background-color: #007F3E;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
 
+.link-btn:hover {
+    background-color: #005f2e;
+    transform: translateY(-2px);
+}
+
+/* ปรับให้ container ลิงก์เรียงตัวแนวนอน */
+.action-links {
+    margin: 15px 0;
+}
+
+
+    @media (max-width: 768px) {
+        .main-content { flex-direction: column; margin: 20px; gap: 15px; }
+        .left-container { flex: 1; }
+        .right-container { flex: 1; }
+    }
 </style>
 </head>
 <body>
 
     <div class="header">
-        <h2>📚 คอร์สที่ลงทะเบียน</h2>
+        <h2> คอร์สที่ลงทะเบียน</h2>
     </div>
 
     <div class="main-content">
-        <div class="left-container">
-            <a href="goHome">🏠 กลับหน้า Home</a>
-        </div>
 
         <div class="right-container">
+             <h2>คอร์สที่ลงทะเบียน</h2>
+            <div class="action-links">
+            <a href="goHome" class="link-btn">← กลับหน้า Home</a>
+        </div>
             <p class="msg">${err_result_cancel}</p>
+
             <c:if test="${empty registerCourses}">
                 <p class="no-course">คุณยังไม่ได้ลงทะเบียนคอร์สใดในขณะนี้</p>
             </c:if>
