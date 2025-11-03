@@ -405,6 +405,7 @@ function validateAddCourse(form) {
             endTimeInput.focus();
             return false;
         }
+
         if (startTimeInput.value.trim() >= endTimeInput.value.trim()) {
             alert("เวลาเริ่มเรียนต้องน้อยกว่าเวลาเลิกเรียน (สัปดาห์ที่ " + (i + 1) + ")");
             startTimeInput.focus();
@@ -428,6 +429,7 @@ function validateAddCourse(form) {
             endTimeInput.focus();
             return false;
         }
+        
 
         // ตรวจสอบหัวข้อสอน
         const topicPattern = /^[ก-๙A-Za-z0-9\s]{4,100}$/;
@@ -474,210 +476,221 @@ function validateAddCourse(form) {
     padding: 0;
     background-color: #f0f2f5; 
     color: #333;
-}
+    }
 
 
-.header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #007F3E;
-    color: white;
-    padding: 15px 25px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-}
-  h1 {
-    color: #ffffff;
-    font-size: 24px; 
-  }
-   a {
-            text-decoration: none;
-            color: #007F3E;
-        }
-  table {
-    width: 80%;                
-    max-width: 900px;          
-    border-collapse: collapse;
-    background: white;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
-    font-size: 14px; 
-    margin: 20px auto;         
-}
+    .header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #007F3E;
+        color: white;
+        padding: 15px 25px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+    h1 {
+        color: #ffffff;
+        font-size: 24px; 
+    }
+    a {
+                text-decoration: none;
+                color: #007F3E;
+            }
+    table {
+        width: 90%;                
+        max-width: 1200px ;          
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        font-size: 14px; 
+        margin: 20px auto;         
+    }
 
-th, td {
-    padding: 10px;
-    vertical-align: top;
-}
+    th, td {
+        padding: 10px;
+        vertical-align: top;
+    }
 
-th {
-    background-color: #007F3E;
-    color: white;
-    text-align: left;
-    font-size: 15px;
-}
+    th {
+        background-color: #007F3E;
+        color: white;
+        text-align: left;
+        font-size: 15px;
+    }
 
-  input[type=text],select, textarea {
-    width: 100%;
-    padding: 8px 10px;
-    margin: 6px 0 15px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 14px;
-    transition: 0.3s;
-  }
-  input[type=text]:focus, select:focus, textarea:focus {
-    border-color: #2980b9;
-    outline: none;
-  }
-
-
-  input[type=date], input[type=time]{
-    width: 180%;
+    input[type=text],select, textarea {
+        width: 100%;
+        padding: 8px 10px;
+        margin: 6px 0 15px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+    input[type=text]:focus, select:focus, textarea:focus {
+        border-color: #2980b9;
+        outline: none;
+    }
 
 
-  }
-  input[type=date]:focus, input[type=time]:focus{
-    border-color: #2980b9;
-    outline: none;
-
-  }
-
-  
-
-  textarea {
-    resize: vertical;
-  }
-  button {
-    background-color: green;
-    border: none;
-    color: white;
-    padding: 7px 14px;
-    margin: 5px 5px 15px 0;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background-color 0.3s;
-  }
-  button:hover {
-    background-color: #1c5980;
-  }
-
-  input[type=submit], input[type=reset] {
-    background-color: green;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    margin: 10px 0;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  input[type=submit]:hover {
-    background-color: #1e8449;
-  }
-  input[type=reset] {
-    background-color: #e74c3c;
-  }
-  input[type=reset]:hover {
-    background-color: rgb(115, 0, 0);
-  }
-
-  
-  button.removeBtn {
-      background-color: #e74c3c; 
-      color: white;
-  }
-
-  button.removeBtn:hover {
-      background-color: #c0392b; 
-  }
-
-  button.removeTopicBtn {
-    background-color: #e74c3c; 
-    color: white;
-}
-
-button.removeTopicBtn:hover {
-    background-color: #c0392b; 
-}
-.page-header {
-    text-align: center;   
-    margin-bottom: 20px;
-}
-
-.page-header h1 {
-    color: #2c3e50;
-    margin-bottom: 15px;
-}
-
-.header-links {
-    display: flex;
-    justify-content: center;  
-    gap: 15px;                
-}
-
-.btn-link {
-    display: inline-block;
-    padding: 8px 16px;
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 20px;
-    transition: background-color 0.3s, transform 0.2s;
-}
+    input[type=date], input[type=time]{
+        width: 180%;
 
 
-.btn-home {
-    background-color: #27ae60;
-}
-.btn-home:hover {
-    background-color: #1e8449;
-    transform: translateY(-2px);
-}
+    }
+    input[type=date]:focus, input[type=time]:focus{
+        border-color: #2980b9;
+        outline: none;
 
-.btn-mycourse {
-    background-color: #27ae60;
-}
-.btn-mycourse:hover {
-    background-color: #1e8449;
-    transform: translateY(-2px);
-}
-.page-header-bar {
-    background-color: #1e70d5;  
-    color: white;               
-    padding: 15px 20px;         
-    text-align: center;         
-    border-radius: 6px 6px 0 0; 
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
-}
-.page-header-bar h1 {
-    margin: 0; 
-    font-size: 24px;
-}
-td a {
-    margin-right: 15px;
-    text-decoration: none;
-    color: #2980b9;
-}
-td a:hover {
-    text-decoration: underline;
-}
-.classDateRow {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-}
+    }
 
-.classDateRow label, 
-.classDateRow input, 
-.classDateRow p {
-    margin: 0;
-}
+    
+
+    textarea {
+        resize: vertical;
+    }
+    button {
+        background-color: green;
+        border: none;
+        color: white;
+        padding: 7px 14px;
+        margin: 5px 5px 15px 0;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #1c5980;
+    }
+
+    input[type=submit], input[type=reset] {
+        background-color: green;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        margin: 10px 0;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+    input[type=submit]:hover {
+        background-color: #1e8449;
+    }
+    input[type=reset] {
+        background-color: #e74c3c;
+    }
+    input[type=reset]:hover {
+        background-color: rgb(115, 0, 0);
+    }
+
+    
+    button.removeBtn {
+        background-color: #e74c3c; 
+        color: white;
+    }
+
+    button.removeBtn:hover {
+        background-color: #c0392b; 
+    }
+
+    button.removeTopicBtn {
+        background-color: #e74c3c; 
+        color: white;
+    }
+
+    button.removeTopicBtn:hover {
+        background-color: #c0392b; 
+    }
+    .page-header {
+        text-align: center;   
+        margin-bottom: 20px;
+    }
+
+    .page-header h1 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+
+    .header-links {
+        display: flex;
+        justify-content: center;  
+        gap: 15px;                
+    }
+
+    .btn-link {
+        display: inline-block;
+        padding: 8px 16px;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 20px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none; 
+        margin: 0;
+    }
+
+
+    input[type=number] {
+        -moz-appearance: textfield; 
+        appearance: textfield;      
+    }
+
+
+    .btn-home {
+        background-color: #27ae60;
+    }
+    .btn-home:hover {
+        background-color: #1e8449;
+        transform: translateY(-2px);
+    }
+
+    .btn-mycourse {
+        background-color: #27ae60;
+    }
+    .btn-mycourse:hover {
+        background-color: #1e8449;
+        transform: translateY(-2px);
+    }
+    .page-header-bar {
+        background-color: #1e70d5;  
+        color: white;               
+        padding: 15px 20px;         
+        text-align: center;         
+        border-radius: 6px 6px 0 0; 
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+    }
+    .page-header-bar h1 {
+        margin: 0; 
+        font-size: 24px;
+    }
+    td a {
+        margin-right: 15px;
+        text-decoration: none;
+        color: #2980b9;
+    }
+    td a:hover {
+        text-decoration: underline;
+    }
+    .classDateRow {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+    .classDateRow label, 
+    .classDateRow input, 
+    .classDateRow p {
+        margin: 0;
+    }
 
 </style>
 
@@ -732,19 +745,19 @@ td a:hover {
           </td>
           <td valign="top">
           
-          <div >
+          <div>
              <button type="button" onclick="addClassDate()">เพิ่มวัน</button>
           <div id="addClassDate">
-          <div class="classDateRow" id="classSection0">
+          <div class="classDateRow" id="classSection0" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
               <label for="classDate0">วันที่สอน</label>
               <input type="date" name="classDate" id="classDate0" style="width:150px; gap: 20;" onchange="showDay(this.value, 'dayName0')">
-              <p id="dayName0" style="width:150px; gap: 20;" ></p>
+              <p id="dayName0" style="width:100px; margin:0;" ></p>
 
               <label for="startTime0">เริ่ม</label>
               <input type="time" name="startTime" id="startTime0" style="width:100px;" onchange="updateEndTime(document.getElementById('duration0'))">
 
              <label for="duration0">จำนวนชั่วโมง</label>
-             <input type="number" name="duration" id="duration0" style="width:60px;" min="0.5" step="0.5" onchange="updateEndTime(this)">
+             <input type="number" name="duration" id="duration0" style="width:60px;"  onchange="updateEndTime(this)">
 
               <label for="endTime0">เวลาสิ้นสุด</label>
               <input type="time" name="endTime" id="endTime0" style="width:100px;" readonly>

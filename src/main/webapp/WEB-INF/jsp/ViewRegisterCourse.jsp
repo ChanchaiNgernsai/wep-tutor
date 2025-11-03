@@ -39,7 +39,7 @@
 
     .main-content {
         display: flex;
-        max-width: 1000px;
+        max-width: 1100px ;
         margin: 30px auto;
         gap: 25px;
         flex-wrap: wrap;
@@ -53,7 +53,7 @@
     }
 
     .left-container {
-        flex: 0 0 250px;
+        flex: 0 0 500px auto;
         text-align: left;
     }
 
@@ -68,7 +68,7 @@
 
 
     .right-container {
-        flex: 1;
+        flex: 1 1 700px;
     }
 
     .btn_common {
@@ -241,22 +241,25 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
 
         <h2>การจัดการคอร์ส</h2>
-        <form id="cancelForm" action="cancelRegisterCourse" method="post" style="display:inline;">
-            <input type="hidden" name="registerId" value="${rc.registerCourseId}" />
-            <button type="button" class="btn_common btn_cancel" onclick="confirmCancel()">ออกจากคอร์ส</button>
-        </form>
-        <a id="btnReview" class="btn_common btn_review" href="goReviewCourse?id=${rc.course.courseId}">รีวิวคอร์ส</a>
-        <a id="btnReport" class="btn_common btn_report" href="goReport?id=${rc.course.courseId}">ร้องเรียนผู้สอน</a><br/><br/>
 
-        <form id="confirmForm" action="confirmLesson" method="post" style="display:inline;">
-            <input type="hidden" name="registerCourseId" value="${rc.registerCourseId}" />
-            <c:if test="${rc.regisStatus != 1}">
-                <button type="button" id="btn_confirm" class="btn_common btn_confirm" onclick="confirmLesson()">ยืนยันสอนแล้ว</button>
-            </c:if>
-            <c:if test="${rc.regisStatus == 1}">
-                <span style="color:green; font-weight:bold;">✔ ยืนยันแล้ว</span>
-            </c:if>
-        </form>
+<form id="cancelForm" action="cancelRegisterCourse" method="post" style="display:inline-block;">
+    <input type="hidden" name="registerId" value="${rc.registerCourseId}" />
+    <button type="button" class="btn_common btn_cancel" onclick="confirmCancel()">ออกจากคอร์ส</button>
+</form>
+
+<a id="btnReview" class="btn_common btn_review" href="goReviewCourse?id=${rc.course.courseId}" style="display:inline-block;">รีวิวคอร์ส</a>
+<a id="btnReport" class="btn_common btn_report" href="goReport?id=${rc.course.courseId}" style="display:inline-block;">ร้องเรียนผู้สอน</a>
+
+<form id="confirmForm" action="confirmLesson" method="post" style="display:inline-block;">
+    <input type="hidden" name="registerCourseId" value="${rc.registerCourseId}" />
+    <c:if test="${rc.regisStatus != 1}">
+        <button type="button" id="btn_confirm" class="btn_common btn_confirm" onclick="confirmLesson()">ยืนยันสอนแล้ว</button>
+    </c:if>
+    <c:if test="${rc.regisStatus == 1}">
+        <span style="color:green; font-weight:bold;">✔ ยืนยันแล้ว</span>
+    </c:if>
+</form>
+
     </div>
 </div>
 </body>

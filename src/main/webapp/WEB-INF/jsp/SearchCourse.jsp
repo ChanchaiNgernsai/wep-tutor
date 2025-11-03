@@ -127,7 +127,17 @@
         <div class="course-info">
           <p><strong>ชื่อคอร์ส:</strong> ${course.courseName}</p>
           <p><strong>ราคา:</strong> ${course.coursePrice} บาท</p>
-          <a href="getViewCourse?id=${course.courseId}">ดูคอร์ส</a>
+          <p><strong>ผู้สอน:</strong> ${course.tutor.user.firstName} ${course.tutor.user.lastName}</p>
+          <p class="course-price">ราคา: <span>${course.coursePrice} บาท</span></p>
+          <c:if test="${not empty course.courseDates}">
+                            <ul class="course-dates">
+                                <c:forEach var="cd" items="${course.courseDates}">
+                                    <li>วันที่สอน: <span>${cd.class_date}</span> เวลา <span>${cd.startTime} - ${cd.endTime}</span></li>
+                                </c:forEach>
+                            </ul>
+                        </c:if>
+                      
+          <a href="getViewCourse?id=${course.courseId}">ดูรายละเอียด </a>
         </div>
       </div>
     </c:forEach>

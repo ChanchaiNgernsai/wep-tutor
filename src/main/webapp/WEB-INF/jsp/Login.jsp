@@ -116,7 +116,7 @@ function validateLogin() {
         return false; 
     }
     if (prefix.length !== 13) { 
-        alert("ความยาวรหัสนักศึกษาต้องมี 13 ตัวพอดี"); 
+        alert("ความยาวอีเมล นักศึกษาต้องมี 13 ตัวพอดี"); 
         return false; 
     }
     if (/\s/.test(prefix) || /\s/.test(password)) { 

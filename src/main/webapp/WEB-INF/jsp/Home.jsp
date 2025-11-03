@@ -360,16 +360,16 @@
 </head>
 <body>
 
-<!-- Header -->
+
 <div class="header">
     <a href="goHome"><h1>ช่วยติวในมหาวิทยาลัยแม่โจ้</h1></a>
 
-    <!-- User logged in -->
+
     <c:if test="${not empty sessionScope.User}">
         <div class="user-info">
            
 
-            <!-- Student Dropdown -->
+          
             <div class="dropdown">
                 <a href="#">นักศึกษา ▼</a>
                 <div class="dropdown-content">
@@ -381,7 +381,7 @@
                 </div>
             </div>
 
-            <!-- Tutor Dropdown -->
+        
             <c:if test="${not empty sessionScope.Tutor}">
                 <div class="dropdown">
                     <a href="#">ติวเตอร์ ▼</a>
@@ -392,12 +392,12 @@
                 </div>
             </c:if>
 
-            <!-- Register as Tutor -->
+            
             <c:if test="${empty sessionScope.Tutor}">
                 <a class="btn" href="goRegisterTutor">สมัครเป็นติวเตอร์</a>
             </c:if>
 
-            <!-- Finance Dropdown -->
+           
             <div class="dropdown">
                 <a href="#">จัดการเงิน ▼</a>
                 <div class="dropdown-content">
@@ -425,7 +425,7 @@
         </div>
     </c:if>
 
-    <!-- User not logged in -->
+
     <c:if test="${empty sessionScope.User}">
         <div class="dropdown">
             
@@ -439,13 +439,13 @@
 
 </div>
 
-<!-- Search Form -->
+
 <form class="search-form" name="searchForm" action="search" method="get">
     <input type="text" name="keyword" placeholder="ค้นหาคอร์ส" />
     <input type="submit" value="ค้นหา" />
 </form>
 
-<!-- Content -->
+
  <div class="content-container">
 <div class="content">
     <h2>คอร์สเปิดใหม่ล่าสุด</h2>

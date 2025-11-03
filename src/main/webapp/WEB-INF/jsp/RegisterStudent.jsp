@@ -234,10 +234,10 @@ function validate(frm1) {
         <span class="error" id="err_yfs"></span>
         <select name="yfs" id="yfs">
             <option value="">-- เลือกชั้นปี --</option>
-            <option value="ชั้นปีที่ 1">ชั้นปีที่ 1</option>
-            <option value="ชั้นปีที่ 2">ชั้นปีที่ 2</option>
-            <option value="ชั้นปีที่ 3">ชั้นปีที่ 3</option>
-            <option value="ชั้นปีที่ 4">ชั้นปีที่ 4</option>
+            <option value="1">ชั้นปีที่ 1</option>
+            <option value="2">ชั้นปีที่ 2</option>
+            <option value="3">ชั้นปีที่ 3</option>
+            <option value="4">ชั้นปีที่ 4</option>
         </select>
 
         <span class="error" id="err_email"></span>
@@ -251,8 +251,8 @@ function validate(frm1) {
         <input type="password" name="password" id="password" placeholder="Password">
 
         <div class="radio-group">
-            <label><input type="radio" name="gender" value="man" checked> Man</label>
-            <label><input type="radio" name="gender" value="women"> Women</label>
+            <label><input type="radio" name="gender" value="Male" checked> Male</label>
+            <label><input type="radio" name="gender" value="Female"> Female</label>
         </div>
 
         <span class="error" id="err_image"></span>
